@@ -1,0 +1,390 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { useParams } from "next/navigation"
+import {
+  ArrowLeft,
+  User,
+  Phone,
+  Mail,
+  Home,
+  Calendar,
+  CheckCircle,
+  Clock,
+  AlertCircle,
+  Download,
+  Send,
+  Loader2,
+} from "lucide-react"
+import Link from "next/link"
+
+export default function PaymentDetails() {
+  const params = useParams()
+  const paymentId = String(params.id)
+  const [showMarkPaidModal, setShowMarkPaidModal] = useState(false)
+  const [paymentDate, setPaymentDate] = useState("")
+  const [paymentMethod, setPaymentMethod] = useState("bank-transfer")
+  const [payment , setPayment] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  // Find student and generate invoice
+  useEffect(() => {
+   const fetchPaymentDetails = async()=>{
+   try {
+     const response = await fetch(`/api/admin/payments/${paymentId}`)
+    const data = await response.json()
+    
+    setPayment(data)
+   } catch (error) {
+    
+   }finally{
+    setLoading(false)
+   }
+   }
+
+   fetchPaymentDetails()
+    
+    
+  },[] )
+  
+    
+      if (loading) {
+        return (
+          <div className="flex items-center justify-center h-screen">
+            <Loader2 className="w-8 h-8 animate-spin text-accent" />
+          </div>
+        )
+      } 
+
+      if (!payment) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-foreground/60">Invoice not found</p>
+      </div>
+    )
+  }
+
+  
+
+  const invoiceDate = new Date(payment.invoice.invoiceYear, payment.invoice.invoiceMonth, 1)
+  const dueDate = new Date(payment.invoice.invoiceYear, payment.invoice.invoiceMonth + 1, 1)
+  const monthName = invoiceDate.toLocaleString("default", { month: "long", year: "numeric" })
+
+  const currentDate = new Date()
+  let paymentStatus = "Pending"
+  if (invoiceDate.getTime() < currentDate.getTime()) {
+    paymentStatus = payment.invoice?.some((inv:any) => inv.month === monthName && inv.status === "Paid")
+      ? "Paid"
+      : "Overdue"
+  }
+
+  const statusColor =
+    paymentStatus === "Paid"
+      ? "bg-green-100 text-green-700"
+      : paymentStatus === "Overdue"
+        ? "bg-red-100 text-red-700"
+        : "bg-blue-100 text-blue-700"
+
+  const handleDownloadInvoice = () => {
+    const invoiceContent = `
+════════════════════════════════════════════════════════════════
+                          INVOICE
+════════════════════════════════════════════════════════════════
+Invoice ID: ${payment.invoice.id}
+Date: ${invoiceDate.toLocaleDateString("en-PK")}
+Due Date: ${dueDate.toLocaleDateString("en-PK")}
+
+BILL TO:
+Student Name: ${payment.invoice.student.firstName} ${payment.invoice.student.lastName}
+Email: ${payment.invoice.student.email}
+Phone: ${payment.invoice.student.phone}
+Hostel: "Orhan"}
+Room: ${payment.invoice.student.room.roomNumber} (${payment.invoice.student.room.roomType}) - ${payment.invoice.student.room.floor} Floor
+
+INVOICE DETAILS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Description                                    Amount
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Monthly Hostel Rent (${monthName})             Rs ${payment.invoice.student.room.pricePerMonth.toLocaleString()}
+
+═════════════════════════════════════════════════════════════════
+TOTAL AMOUNT DUE:                         Rs ${payment.invoice.student.room.pricePerMonth.toLocaleString()}
+═════════════════════════════════════════════════════════════════
+
+Payment Status: ${paymentStatus}
+${paymentStatus === "Paid" ? `Paid Date: ${new Date().toLocaleDateString("en-PK")}` : ""}
+
+Thank you for your business!
+    `
+
+    const element = document.createElement("a")
+    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(invoiceContent))
+    element.setAttribute("download", `${payment.invoiceId}.txt`)
+    element.style.display = "none"
+    document.body.appendChild(element)
+    element.click()
+    document.body.removeChild(element)
+  }
+ 
+  return (
+    <div className="space-y-8">
+      {/* Back Button */}
+      <Link href="/admin/payments" className="flex items-center gap-2 text-accent hover:text-accent/80">
+        <ArrowLeft className="w-4 h-4" />
+        Back to Payments
+      </Link>
+
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-4xl font-bold text-primary mb-2">Invoice {payment.invoiceId}</h1>
+          <p className="text-foreground/60">{monthName} Invoice</p>
+        </div>
+        <span className={`px-4 py-2 rounded-full text-sm font-semibold ${statusColor}`}>{paymentStatus}</span>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Main Content */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Invoice Header */}
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+            <div className="grid grid-cols-2 gap-8">
+              <div>
+                <p className="text-sm text-foreground/60 mb-2">Invoice Date</p>
+                <p className="font-semibold text-foreground text-lg">{invoiceDate.toLocaleDateString("en-PK")}</p>
+              </div>
+              <div>
+                <p className="text-sm text-foreground/60 mb-2">Due Date</p>
+                <p className="font-semibold text-foreground text-lg">{dueDate.toLocaleDateString("en-PK")}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Student Information */}
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+            <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
+              Student Information
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex items-start gap-4">
+                <User className="w-5 h-5 text-accent mt-1" />
+                <div>
+                  <p className="text-sm text-foreground/60">Full Name</p>
+                  <p className="font-semibold text-foreground">{payment.invoice.student.firstName}</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <Mail className="w-5 h-5 text-accent mt-1" />
+                <div>
+                  <p className="text-sm text-foreground/60">Email</p>
+                  <p className="font-semibold text-foreground">{payment.invoice.student.email}</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <Phone className="w-5 h-5 text-accent mt-1" />
+                <div>
+                  <p className="text-sm text-foreground/60">Phone</p>
+                  <p className="font-semibold text-foreground">{payment.invoice.student.phone}</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <Home className="w-5 h-5 text-accent mt-1" />
+                <div>
+                  <p className="text-sm text-foreground/60">Student ID</p>
+                  <p className="font-semibold text-foreground">#{payment.invoice.student.id}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Hostel & Room Information */}
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+            <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
+              Accommodation Details
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex items-start gap-4">
+                <Home className="w-5 h-5 text-accent mt-1" />
+                <div>
+                  <p className="text-sm text-foreground/60">Hostel</p>
+                  <p className="font-semibold text-foreground">Orhan</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <span className="text-accent text-lg">🏠</span>
+                <div>
+                  <p className="text-sm text-foreground/60">Room Number</p>
+                  <p className="font-semibold text-foreground">Room {payment.invoice.student.room.roomNumber}</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <span className="text-accent text-lg">📊</span>
+                <div>
+                  <p className="text-sm text-foreground/60">Room Type</p>
+                  <p className="font-semibold text-foreground capitalize">{payment.invoice.student.room.roomType}</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <Calendar className="w-5 h-5 text-accent mt-1" />
+                <div>
+                  <p className="text-sm text-foreground/60">Check-in Date</p>
+                  <p className="font-semibold text-foreground">{payment.invoice.student.checkInDate}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Invoice Amount */}
+          <div className="bg-accent/10 border border-accent rounded-lg p-6">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <p className="text-foreground/60">Monthly Hostel Rent ({monthName})</p>
+                <p className="font-semibold text-foreground">Rs {payment.invoice.student.room.pricePerMonth.toLocaleString()}</p>
+              </div>
+              <div className="border-t border-accent pt-3 flex items-center justify-between">
+                <p className="text-lg font-bold text-primary">Total Amount Due</p>
+                <p className="text-2xl font-bold text-primary">Rs {payment.invoice.amount.toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Payment History */}
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+            <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
+              Payment Status & History
+            </h2>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+                <div className="flex items-center gap-3">
+                  {paymentStatus === "Paid" ? (
+                    <CheckCircle className="w-6 h-6 text-green-600" />
+                  ) : paymentStatus === "Overdue" ? (
+                    <AlertCircle className="w-6 h-6 text-red-600" />
+                  ) : (
+                    <Clock className="w-6 h-6 text-blue-600" />
+                  )}
+                  <div>
+                    <p className="font-semibold text-foreground">{paymentStatus}</p>
+                    <p className="text-sm text-foreground/60">
+                      {paymentStatus === "Paid" ? "Payment received" : "Awaiting payment"}
+                    </p>
+                  </div>
+                </div>
+                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor}`}>{paymentStatus}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar - Actions */}
+        <div className="lg:col-span-1">
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-border sticky top-4 space-y-4">
+            <h3 className="text-lg font-bold text-primary pb-4 border-b-2 border-secondary">Actions</h3>
+
+            <button
+              onClick={handleDownloadInvoice}
+              className="w-full flex items-center justify-center gap-2 bg-accent text-primary font-semibold py-2 rounded-lg hover:bg-accent/90 transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Download Invoice
+            </button>
+
+            <button className="w-full flex items-center justify-center gap-2 border border-border font-semibold py-2 rounded-lg hover:bg-secondary transition-colors">
+              <Send className="w-4 h-4" />
+              Send Reminder
+            </button>
+
+            <button
+              onClick={() => setShowMarkPaidModal(true)}
+              className={`w-full flex items-center justify-center gap-2 font-semibold py-2 rounded-lg transition-colors ${
+                paymentStatus === "Paid"
+                  ? "bg-secondary text-foreground/60 cursor-not-allowed"
+                  : "bg-green-600 text-white hover:bg-green-700"
+              }`}
+              disabled={paymentStatus === "Paid"}
+            >
+              <CheckCircle className="w-4 h-4" />
+              {paymentStatus === "Paid" ? "Already Paid" : "Mark as Paid"}
+            </button>
+
+            {/* Quick Info */}
+            <div className="mt-8 pt-6 border-t-2 border-secondary space-y-4">
+              <div>
+                <p className="text-xs font-semibold text-foreground/60 uppercase mb-2">Invoice Info</p>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-foreground/60">Invoice ID:</span>
+                    <span className="text-sm font-mono font-semibold text-foreground">{payment.invoiceId}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-foreground/60">Student ID:</span>
+                    <span className="text-sm font-semibold text-foreground">#{payment.invoice.student.id}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Mark as Paid Modal */}
+      {showMarkPaidModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
+            <h3 className="text-lg font-bold text-primary mb-4">Mark Invoice as Paid</h3>
+
+            <div className="space-y-4 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Payment Date</label>
+                <input
+                  type="date"
+                  value={paymentDate}
+                  onChange={(e) => setPaymentDate(e.target.value)}
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Payment Method</label>
+                <select
+                  value={paymentMethod}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                >
+                  <option value="bank-transfer">Bank Transfer</option>
+                  <option value="cash">Cash</option>
+                  <option value="check">Check</option>
+                  <option value="card">Card Payment</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div className="bg-accent/10 rounded-lg p-3">
+                <p className="text-sm text-foreground">
+                  <span className="font-semibold">Amount to Receive:</span> Rs {payment.invoice.amount.toLocaleString()}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowMarkPaidModal(false)
+                  // Backend will handle payment marking
+                }}
+                className="flex-1 bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700"
+              >
+                Confirm Payment
+              </button>
+              <button
+                onClick={() => setShowMarkPaidModal(false)}
+                className="flex-1 border border-border font-semibold py-2 rounded-lg hover:bg-secondary"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

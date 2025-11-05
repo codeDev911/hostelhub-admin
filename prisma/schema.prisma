@@ -1,0 +1,325 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Hostel Owner/Admin Model
+model HostelOwner {
+  id                String   @id @default(cuid())
+  ownerName         String
+  email             String   @unique
+  phone             String
+  businessName      String
+  businessType      String
+  address           String?
+  city              String?
+  state             String?
+  postalCode        String?
+  cnnic             String   @unique
+  bankAccountHolder String? @default("")
+  bankName          String? @default("")
+  bankAccountNumber String? @default("")
+  iban              String? @default("")
+  registrationDate  DateTime @default(now())
+  isVerified        Boolean  @default(false)
+  isActive          Boolean  @default(true)
+
+  // Relations
+  hostel    Hostel?
+  admin     Admin?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Hostel Model
+model Hostel {
+  id                 String      @id @default(cuid())
+  name               String
+  address            String
+  city               String
+  state              String?
+  area               String?
+  postalCode         String?
+  metaDetails        Json? // For SEO meta tags
+  phone              String
+  email              String
+  description        String?
+  gender             String?    @default("boys")
+  short_description  String?
+  amenities          String[] // Array of amenities
+  checkInTime        String      @default("14:00")
+  checkOutTime       String      @default("11:00")
+  rating             Float       @default(0)
+  totalReviews       Int         @default(0)
+  images             String[]
+  rules              String[] @default(["No loud music after 10 PM", "No smoking inside the premises"])
+  pricePerMonth      Float @default(0)
+  mealPlan           String[] @default([])
+  guestPolicy        String? @default("Guests are allowed with prior permission from the management.")
+  cancellationPolicy String? @default("Cancellations must be made 24 hours in advance for a full refund.")
+  status             String      @default("active") // "active", "inactive", "suspended"
+  
+  // Relations
+  ownerId            String      @unique
+  owner              HostelOwner @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  rooms              Room[]
+  students           Student[]
+  invoices           Invoice[]
+  bookings           Booking[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerId])
+  feedback Feedback[]
+}
+
+// Review or complaint
+model Feedback{
+  id  Int @id @default(autoincrement())
+  type String @default("review") // revire or complaint
+  priority String? // ratings for reviews & high, urgent, medium for complaints
+  text String? @default("")
+
+  // static data -> Can't be changed, No directly relations
+  roomDetails Json?
+  
+  hostelId    String?
+  hostel      Hostel?  @relation(fields: [hostelId], references: [id])
+  status      String? @default("pending") // for complaints only. pending/resolve/rejected
+
+  studentId String
+  student Student @relation(fields: [studentId],references: [id], onDelete: Cascade)
+}
+
+// Room Model
+model Room {
+  id             String   @id @default(cuid())
+  roomNumber     String
+  roomType       String // "single", "double", "dorm", "triple"
+  floor          String   @default("1")
+  totalSeats     Int     @default(0)
+  pricePerMonth  Float
+  amenities      String[]
+  images         String[]
+  isActive       Boolean  @default(true)
+
+  // Relations
+  hostelId String
+  hostel   Hostel @relation(fields: [hostelId], references: [id], onDelete: Cascade)
+
+  students Student[]
+  bookings Booking[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([hostelId])
+}
+
+// Student Model
+model Student {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  password    String?
+  email       String?   @unique
+  phone       String?
+  cnnic       String?   @unique
+  dateOfBirth DateTime?
+  gender      String?
+  bloodGroup  String?
+  address     String?
+  city        String?
+  state       String?
+  postalCode  String?
+
+  // Father/Guardian Information
+  fatherName       String?
+  fatherPhone      String?
+  fatherCnic       String? @default("")
+  fatherOccupation String?
+
+  // Room Assignment
+  hostelId String?
+  hostel   Hostel? @relation(fields: [hostelId], references: [id], onDelete: SetNull)
+
+  roomId String?
+  room   Room?   @relation(fields: [roomId], references: [id], onDelete: SetNull)
+
+  checkInDate DateTime?
+  status      String    @default("active") // "active", "inactive", "revoked"
+
+  // Relations
+  invoices Invoice[]
+  payments Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  feedback Feedback[]
+
+  @@index([hostelId])
+  @@index([roomId])
+}
+
+// Booking Model
+model Booking {
+  id            String @id @default(cuid())
+  bookingNumber String @unique
+
+  studentInformation Json
+  hostelId           String
+  hostel             Hostel @relation(fields: [hostelId], references: [id])
+
+  roomId        String
+  room          Room      @relation(fields: [roomId], references: [id])
+  // Booking Details
+  roomType      String // "whole_room" or "seats"
+  numberOfSeats Int       @default(1)
+  checkInDate   DateTime
+  checkOutDate  DateTime?
+  duration      Int // in months
+  pricePerMonth Float
+  totalPrice    Float
+
+  // Booking Status
+  status       String  @default("pending") // "pending", "confirmed", "checked_in", "checked_out", "cancelled"
+  bookingNotes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Invoice Model (Auto-generated monthly on 1st)
+model Invoice {
+  id            String @id @default(cuid())
+  invoiceNumber String @unique
+
+  // Student Information
+  studentId String
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  // Hostel Information
+  hostelId String
+  hostel   Hostel @relation(fields: [hostelId], references: [id])
+
+  // Invoice Details
+  invoiceMonth Int // 1-12
+  invoiceYear  Int
+  amount       Float
+  dueDate      DateTime
+  issuedDate   DateTime @default(now())
+
+  // Invoice Status
+  status String  @default("pending") // "pending", "paid", "overdue"
+  notes  String?
+
+  // Relations
+  payments Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([studentId])
+  @@index([hostelId])
+}
+
+// Payment Model
+model Payment {
+  id            String  @id @default(cuid())
+  transactionId String? @unique
+
+  // Relations
+  studentId String
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  invoiceId String
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  // Payment Details
+  amount        Float
+  paymentMethod String // "cash", "bank_transfer", "online", "cheque"
+  paymentDate   DateTime @default(now())
+  receiptNumber String?
+  notes         String?
+
+  // Payment Status
+  status String @default("completed") // "pending", "completed", "failed", "refunded"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([studentId])
+  @@index([invoiceId])
+}
+
+// Admin model for authentication
+model Admin {
+  id            String      @id @default(cuid())
+  hostelOwnerId String      @unique
+  hostelOwner   HostelOwner @relation(fields: [hostelOwnerId], references: [id], onDelete: Cascade)
+  email         String      @unique
+  password      String // Will be hashed
+  role          String      @default("admin") // "admin", "super_admin"
+  isActive      Boolean     @default(true)
+  lastLogin     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Hostel Registration and Verification Token Models
+model HostelRegistration {
+  id String @id @default(cuid())
+
+  // Owner Information
+  ownerName String
+  email     String @unique
+  phone     String
+  cnnic     String @unique
+
+  // Hostel Information
+  businessName String
+  businessType String
+  address      String
+  city         String
+  state        String
+  postalCode   String
+  description  String?
+
+
+  // Registration Status
+  status          String  @default("pending") // "pending", "approved", "rejected"
+  rejectionReason String?
+
+  // Admin Review
+  reviewedBy String? // Admin email who reviewed
+  reviewedAt DateTime?
+
+  // Relations
+  verificationToken VerificationToken?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model VerificationToken {
+  id    String @id @default(cuid())
+  token String @unique
+
+  // Relation to registration
+  hostelRegistrationId String             @unique
+  hostelRegistration   HostelRegistration @relation(fields: [hostelRegistrationId], references: [id], onDelete: Cascade)
+
+  // Token expiry
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  createdAt DateTime @default(now())
+}
