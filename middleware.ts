@@ -12,7 +12,7 @@ const publicRoutes = [
   "/api/students/login", 
 ];
 
-const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
+const allowedOrigins = ["https://hostelhub-pk.vercel.app", "http://localhost:3001"];
 
 export async function middleware(request: NextRequest) {
   const origin = request.headers.get("origin") || "";
@@ -58,13 +58,6 @@ export async function middleware(request: NextRequest) {
     if(!verify ){
       return NextResponse.json({error:"Unauthorized user"},{status:401})
     }
-
-    res.headers.set("Access-Control-Allow-Credentials", "true");
-    res.headers.set("Access-Control-Allow-Origin", "https://hostelhub-pk.vercel.app");
-    res.headers.set("Access-Control-Allow-Methods", "GET,DELETE,PATCH,POST,PUT,OPTIONS");
-    res.headers.set("Access-Control-Allow-Headers", "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, x-api-token");
-
-    
     response.headers.append("user",JSON.stringify(verify))
   }
   
