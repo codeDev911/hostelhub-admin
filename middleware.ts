@@ -12,7 +12,7 @@ const publicRoutes = [
   "/api/students/login", 
 ];
 
-const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
+const allowedOrigins = ["https://hostelhub-pk.vercel.app", "http://localhost:3001"];
 
 export async function middleware(request: NextRequest) {
   const origin = request.headers.get("origin") || "";
@@ -58,9 +58,6 @@ export async function middleware(request: NextRequest) {
     if(!verify ){
       return NextResponse.json({error:"Unauthorized user"},{status:401})
     }
-
-    
-    
     response.headers.append("user",JSON.stringify(verify))
   }
   
