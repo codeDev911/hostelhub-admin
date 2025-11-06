@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Users, DoorOpen, TrendingUp, ArrowUpRight, Calendar, AlertCircle, Loader2 } from "lucide-react"
+import { Users, DoorOpen, TrendingUp, ArrowUpRight, Calendar, AlertCircle, Loader2, Sparkles } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
@@ -177,11 +177,11 @@ export default function AdminDashboard() {
       </div>
 
       {/* Quick Actions */}
-      <Card className="p-6 rounded-lg border-0 bg-gradient-to-br from-accent/10 to-yellow-100/10">
+      <Card className="p-6 rounded-lg border-0 bg-linear-to-br from-accent/10 to-yellow-100/10">
         <div className="flex items-start gap-4">
-          <AlertCircle className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
+          <Sparkles className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
           <div>
-            <h3 className="font-bold text-primary mb-2">System Overview</h3>
+            <h3 className="font-bold text-primary mb-2">Smarter</h3>
             <ul className="space-y-2 text-sm text-foreground">
               <li>• Total {stats.totalStudents} students registered in the system</li>
               <li>

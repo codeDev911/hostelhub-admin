@@ -93,10 +93,12 @@ model Feedback{
   
   hostelId    String?
   hostel      Hostel?  @relation(fields: [hostelId], references: [id])
-  status      String? @default("pending") // for complaints only. pending/resolve/rejected
+  status      String? @default("pending") // for complaints only. pending/resolve/rejected/reviewed
 
   studentId String
   student Student @relation(fields: [studentId],references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 }
 
 // Room Model

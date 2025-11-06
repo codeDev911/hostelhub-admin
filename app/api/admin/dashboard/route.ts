@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
 
     const totalSeats = rooms.reduce((sum, room) => sum + room.totalSeats, 0)
     const availableSeats = rooms.reduce((sum, room) => sum + (room.totalSeats - (room?.students?.length||0)), 0)
-    const occupiedSeats = rooms.reduce((sum, room) => sum + (room.totalSeats - (room?.students?.length||0)), 0)
+    const occupiedSeats = rooms.reduce((sum, room) => sum + ((room?.students?.length||0)), 0)
     const occupancyRate = totalSeats > 0 ? Math.round((occupiedSeats / totalSeats) * 100) : 0
 
     return NextResponse.json({

@@ -21,6 +21,7 @@ const fontVariables = `${geist.variable} ${geistMono.variable}`
 export { fontVariables }
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
+import { Toaster } from "sonner"
 
  
 export const metadata: Metadata = {
@@ -41,6 +42,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans antialiased`}>
         {children}
+        <Toaster position="top-center" closeButton/>
         <Analytics />
       </body>
     </html>

@@ -5,7 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Menu, X, LayoutDashboard, Building2, DoorOpen, LogOut, Users, Calendar, Receipt } from "lucide-react"
+import { Menu, X, LayoutDashboard, Building2, DoorOpen, LogOut, Users, Calendar, Receipt, Newspaper } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/hooks/use-auth"
 import { toast } from "sonner"
@@ -31,6 +31,7 @@ export default function AdminLayout({
     { href: "/admin/students", label: "Students", icon: Users },
     { href: "/admin/bookings", label: "Bookings", icon: Calendar },
     { href: "/admin/payments", label: "Payments", icon: Receipt },
+    { href: "/admin/feedbacks", label: "Feedbacks", icon: Newspaper },
   ]
 
   return (
