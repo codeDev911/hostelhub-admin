@@ -2,3 +2,4 @@
 ### Setup invoice and payments system
 ### fixes some issues with rooms, invoices 
 ### added QR code and new student form regestration method
+## a small update
