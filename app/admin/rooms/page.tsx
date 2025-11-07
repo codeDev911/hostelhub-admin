@@ -10,6 +10,7 @@ import Link from "next/link";
 import AddMultiplyRoomModal from "@/components/AddMultiplyRoomModal";
 import { getRoomCapacity } from "@/lib/room-capicity";
 import RoomsSearch from "@/components/RoomsSearch";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Room {
   id: number;
@@ -26,7 +27,7 @@ export default function RoomManagementPage() {
   const [loading, setLoading] = useState(true);
   const [isAddingRoom, setIsAddingRoom] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-
+  const [deleteRoomLoading,setDeleteRoomLoading] = useState(false)
   const [formData, setFormData] = useState({
     roomNumber: "",
     floor: "",
@@ -126,18 +127,24 @@ export default function RoomManagementPage() {
   };
 
   const handleDeleteRoom = async (id: number) => {
+    
     try {
+      setDeleteRoomLoading(true)
       const response = await fetch(`/api/admin/rooms/${id}`, {
         method: "DELETE",
       });
-
+      
       if (response.ok) {
         setRooms(rooms.filter((r:any) => r.id !== id));
         toast.success("Room deleted successfully");
+      }else{
+        toast.error("Error occure, please try again");
       }
     } catch (error) {
-      console.error("[v0] Delete room error:", error);
+      console.error("Delete room error:", error);
       toast.error("Failed to delete room");
+    }finally{
+      setDeleteRoomLoading(false)
     }
   };
 
@@ -168,7 +175,7 @@ export default function RoomManagementPage() {
           <Plus className="w-4 h-4 mr-2" />
           Add Room
         </Button>
-        <AddMultiplyRoomModal/>
+        <AddMultiplyRoomModal numberOfRooms={rooms?.length||0}/>
         </div>
       </div>
 
@@ -304,12 +311,18 @@ export default function RoomManagementPage() {
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
+                  {deleteRoomLoading?
+                  <button 
+                    className="p-2 hover:bg-destructive/10 rounded-lg text-destructive"
+                  >
+                    <Spinner className="w-4 h-4" />
+                  </button>:
                   <button
                     onClick={() => handleDeleteRoom(room.id)}
                     className="p-2 hover:bg-destructive/10 rounded-lg text-destructive"
                   >
                     <Trash2 className="w-4 h-4" />
-                  </button>
+                  </button>}
                  
                 </div>
               </div>

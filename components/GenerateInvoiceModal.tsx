@@ -23,16 +23,17 @@ import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 interface InvoiceDialogType{
     studentId :string,
     studentName:string
+    roomPriceMonthly:any
 }
 
-export default function InvoiceDialog({studentId,studentName}:InvoiceDialogType) {
+export default function InvoiceDialog({studentId,studentName,roomPriceMonthly}:InvoiceDialogType) {
   const [open, setOpen] = useState(false);
   const [loading,setLoading] = useState(false)
   const [form, setForm] = useState({
     studentId: studentId,
     invoiceMonth: new Date().getMonth(),
     invoiceYear: new Date().getFullYear(),
-    amount: 0,
+    amount: roomPriceMonthly,
     dueDate: new Date(),
     notes: "",
     status: "pending",
@@ -130,6 +131,7 @@ export default function InvoiceDialog({studentId,studentName}:InvoiceDialogType)
             <Input
               type="number"
               placeholder="5000"
+              value={form.amount}
               onChange={(e) => handleUpdate("amount", Number(e.target.value))}
             />
           </div>
@@ -146,11 +148,9 @@ export default function InvoiceDialog({studentId,studentName}:InvoiceDialogType)
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
                 <Calendar
-                
                   mode="single"
                   selected={form.dueDate}
                   onSelect={(v) => handleUpdate("dueDate", v)}
-                  initialFocus
                 />
               </PopoverContent>
             </Popover>

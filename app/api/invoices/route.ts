@@ -15,7 +15,6 @@ export async function GET(request: NextRequest) {
       },
       include: {
         student: true,
-        booking: true,
         payments: true,
       },
       orderBy: {
@@ -41,7 +40,6 @@ export async function POST(request: NextRequest) {
       },
       include: {
         student: true,
-        booking: true,
       },
     })
 
@@ -49,7 +47,6 @@ export async function POST(request: NextRequest) {
       data: {
         studentId: body.studentId,
         invoiceId: body.invoiceId,
-        bookingId: body.bookingId,
         amount: body.amount,
         paymentMethod: body.paymentMethod,
         receiptNumber: body.receiptNumber,

@@ -39,7 +39,10 @@ export async function DELETE(request: NextRequest, { params }: any) {
     }
 
     await prisma.room.delete({
-      where:{id:id}
+      where:{id:id},
+      include:{
+        bookings:true
+      }
     })
 
     return NextResponse.json({ success: true },{status:201})

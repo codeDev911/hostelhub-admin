@@ -295,7 +295,7 @@ export default function StudentDetails() {
                     <LogOut className="w-4 h-4" />
                     Revoke {student.firstName} {student.lastName}
                   </button>
-                <InvoiceDialog studentId={student.id} studentName={student.firstName+" "+student.lastName}   />
+                <InvoiceDialog studentId={student.id} roomPriceMonthly={student?.room?.pricePerMonth} studentName={student.firstName+" "+student.lastName}   />
                 </div>
                 
               </div>

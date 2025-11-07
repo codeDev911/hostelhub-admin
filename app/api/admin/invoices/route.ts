@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getSession } from "@/lib/auth";
+import { generateTransactionId } from "../payments/route";
 
 export async function GET(request: NextRequest) {
   try {
@@ -88,11 +89,38 @@ export async function POST(request: NextRequest) {
         ...data
       }
     })
-    console.log(invoice);
+    
+    // create payments if the invoice status is paid
+    if(invoice.status == 'paid'){
+      const trxId = generateTransactionId()
+      await prisma.payment.create({
+        data:{
+           student:{
+          connect:{
+            id:studentId,
+          }
+        },
+        amount:invoice.amount,
+        paymentMethod:"Others",
+        invoice:{
+          connect:{
+            id:invoice.id
+          }
+        },
+        paymentDate:new Date(),
+        receiptNumber:"",
+        status:invoice.status,
+        transactionId:trxId,
+        notes:invoice.notes,
+        }
+      })
+    }
+
+    
     
     return NextResponse.json({sucess:true},{status:201})
   } catch (error) {
-    console.error("[v0] Get invoices error:", error)
+    console.error("Get invoices error:", error)
     return NextResponse.json({ error: "Failed to fetch invoices" }, { status: 500 })
   }
 }

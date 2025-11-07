@@ -1,4 +1,4 @@
-import { PlusSquareIcon, SparklesIcon } from 'lucide-react'
+import { InfoIcon, PlusSquareIcon, SparklesIcon } from 'lucide-react'
 import { Button } from './ui/button'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
 import { Form } from './ui/form'
@@ -10,14 +10,16 @@ import { Spinner } from './ui/spinner'
 import { useToast } from '@/hooks/use-toast'
 import { Alert, AlertDescription, AlertTitle } from './ui/alert'
 import { useRouter } from 'next/navigation'
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip'
 
-const AddMultiplyRoomModal = () => {
+const AddMultiplyRoomModal = ({numberOfRooms}:any) => {
     const router= useRouter()
     const [formData,setFormData]= useState({
         floor:"",
         numberOfrooms:0,
         pricePerMonth:0,
         roomType :"",
+        startingNumber:numberOfRooms
     })
     const [loading,setLoading] = useState(false)
     const [isOpen,setIsOpen] = useState(true)
@@ -55,7 +57,8 @@ const AddMultiplyRoomModal = () => {
             floor:"",
             numberOfrooms:0,
             pricePerMonth:0,
-            roomType:""
+            roomType:"",
+            startingNumber:numberOfRooms,
         })
      }
 
@@ -89,11 +92,11 @@ const AddMultiplyRoomModal = () => {
             }} className='grid grid-cols-2 gap-4'>
                 <div className='flex flex-col space-y-1'>
                     <Label htmlFor='floor' className='text-sm font-semibold'>Floor</Label>
-                    <Input type='text' onChange={handleChange} placeholder='Enter floor number (e.g) 4' name='floor'/>
+                    <Input type='text' required onChange={handleChange} placeholder='Enter floor number (e.g) 4' name='floor'/>
                 </div>
                 <div className='flex flex-col space-y-1'>
                     <Label htmlFor='numberOfRooms' className='text-sm font-semibold'>Number of rooms</Label>
-                     <Select onValueChange={(e)=>setFormData({...formData,numberOfrooms:Number.parseInt(e)})}>
+                     <Select required onValueChange={(e)=>setFormData({...formData,numberOfrooms:Number.parseInt(e)})}>
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select number of rooms" />
                     </SelectTrigger>
@@ -116,11 +119,11 @@ const AddMultiplyRoomModal = () => {
                 </div>
                 <div className='flex flex-col space-y-1'>
                     <Label htmlFor='pricePerMonth' className='text-sm font-semibold'>Price/ month</Label>
-                    <Input type="number" min={0}  onChange={handleChange} placeholder='(e.g) 14000' name='pricePerMonth'/>
+                    <Input required type="number" min={0}  onChange={handleChange} placeholder='(e.g) 14000' name='pricePerMonth'/>
                 </div>
                 <div className='flex flex-col space-y-1'>
                     <Label htmlFor='roomType' className='text-sm font-semibold'>Room type</Label>
-                    <Select onValueChange={(e)=>setFormData({...formData,roomType:e})}>
+                    <Select required onValueChange={(e)=>setFormData({...formData,roomType:e})}>
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select room type" />
                     </SelectTrigger>
@@ -137,8 +140,20 @@ const AddMultiplyRoomModal = () => {
                     </SelectContent>
                 </Select>
                 </div>
+                <div className='flex flex-col space-y-1'>
+                    <div className="flex items-center space-x-1">
+                        <Label htmlFor='startingNumber' className='text-sm font-semibold'>Room starts from</Label>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <InfoIcon className='w-3'/>
+                        </TooltipTrigger>
+                        <TooltipContent>It will automatically add the rooms number by one. Enter the last room number. (e.g) {numberOfRooms}</TooltipContent>
+                    </Tooltip>
+                    </div>
+                    <Input required type="number" min={0} value={formData.startingNumber}  onChange={handleChange} placeholder='(e.g) 14000' name='startingNumber'/>
+                </div>
 
-                <DialogFooter className='flex justify-end'>
+                <DialogFooter className=''>
                    {!loading? <Button variant={"outline"} className='w-full'>Submit</Button>
                    :
                     <Button variant={"outline"} className='flex w-full text-muted-foreground space-x-1'>

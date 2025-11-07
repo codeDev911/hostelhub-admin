@@ -9,7 +9,7 @@ import { getRoomCapacity } from "@/lib/room-capicity";
 export async function POST(request: NextRequest) {
   try {
     const session = await getSession();
-    let {floor,numberOfrooms,pricePerMonth,roomType} = await request.json()
+    let {floor,numberOfrooms,pricePerMonth,roomType,startingNumber} = await request.json()
 
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
         hostelId:session.hostelId!,
         pricePerMonth:pricePerMonth,
         roomType:roomType,
-        roomNumber : `${i+1}`,
+        roomNumber : `${Number.parseInt(startingNumber)+i}`,
         floor:floor,
         totalSeats:getRoomCapacity(roomType),
     }));
