@@ -11,7 +11,8 @@ import InvoiceDialog from "@/components/GenerateInvoiceModal"
 
 export default function StudentDetails() {
   const params = useParams()
-  const studentId = Number(params.id) 
+  const studentId = params.id
+
   const [student, setStudent] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [revokingLoading,setRevokingLoading]=useState(false)
@@ -20,9 +21,10 @@ export default function StudentDetails() {
 
       try {
         setLoading(true)
-        const response = await fetch(`/api/admin/students?studentId=${studentId}`)
+        const response = await fetch(`/api/admin/students/${studentId}`)
         const data = await response.json()
-        setStudent(data[0])
+        
+        setStudent(data)
         
       } catch (error) {
         toast.error("Failed to load rooms")

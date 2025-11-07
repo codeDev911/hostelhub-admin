@@ -153,7 +153,7 @@ export default function AdminLayout({
         {/* Page Content */}
         <div className="flex-1 overflow-auto">
           <div className="p-4 sm:p-6 lg:p-8">{children}</div>
-              <Dialog>
+              {/* <Dialog>
                 <DialogTrigger asChild>
                     <Button onClick={()=>{
                       QrImage == "" ? fetchFormQRCode():""
@@ -229,7 +229,7 @@ export default function AdminLayout({
                 </div>
                 </DialogContent>
 
-              </Dialog>
+              </Dialog> */}
         </div>
       </div>
 

@@ -35,7 +35,7 @@ export async function GET(request: NextRequest, { params }: any) {
       return NextResponse.json({ error: "Student not found" }, { status: 404 })
     }
 
-    return NextResponse.json(student)
+    return NextResponse.json(student,{status:200})
   } catch (error) {
     console.error("[v0] Get student error:", error)
     return NextResponse.json({ error: "Failed to fetch student" }, { status: 500 })

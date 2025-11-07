@@ -2,9 +2,30 @@ export const runtime = "nodejs";
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(request: NextRequest, { params }: any) {
+
   try {
     const { id } = await params
+    const url = new URL(request.url);
+    const studentId = url.searchParams.get("fetchStudent"); 
+    var  student : any
+
+    if(studentId){
+      student = await prisma.student.findUnique({
+        where:{
+          id:studentId
+        },
+        select:{
+          id:true,
+          address:true,
+          firstName:true,
+          lastName:true,
+          email:true,
+          phone:true,
+          cnnic:true
+        }
+      })
+    }
     const hostel = await prisma.hostel.findUnique({
       where: { id },
       include: {
@@ -48,8 +69,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       return (room.totalSeats - (room.students.length || 0))  > 0
     })
     const {rooms , ...result} = hostel
+     
     
-    return NextResponse.json({...result, rooms:filteredRoomResult})
+    return NextResponse.json({...result, rooms:filteredRoomResult,student})
   } catch (error) {
     console.error("[v0] Get hostel error:", error)
     return NextResponse.json({ error: "Failed to fetch hostel" }, { status: 500 })

@@ -11,21 +11,35 @@ export async function POST(request: NextRequest) {
     let firstName = name?.split(" ")[0]
     let lastName = name?.split(" ")[1] || " "
     const hashedPassword = await hashPassword(password)
+
+
+    const student= await prisma.student.findUnique({
+      where:{
+        email:data.email
+      },
+      select:{
+        email:true,
+        phone:true
+      }
+    })
+
+    if(student && (student?.email === data.email || student.phone === data.phone)){
+      return NextResponse.json({ error: "Email is already registered" }, { status: 403 })
+    }
+
     await prisma.student.create({
         data:{
             ...data,
             firstName,
             lastName,
-            password:hashedPassword,
-            fatherName:"",
-            fatherPhone:""
+            password:hashedPassword, 
         },
     }
     )
 
     return NextResponse.json({sucess:true,message:"Student created success"},{status:201})
   } catch (error) {
-    console.error("[v0] Get rooms error:", error)
-    return NextResponse.json({ error: "Failed to fetch rooms" }, { status: 500 })
+    console.error("Student error:", error)
+    return NextResponse.json({ error: "Cann't post student" }, { status: 500 })
   }
 }

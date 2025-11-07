@@ -250,13 +250,7 @@ export default function StudentManagement() {
                         >
                           <Eye className="w-4 h-4 text-foreground/60" />
                         </Link>
-                        <button
-                          onClick={() => setActiveMenu(activeMenu === student.id ? null : student.id)}
-                          className="p-2 hover:bg-secondary rounded-lg transition-colors"
-                          title="More Actions"
-                        >
-                          <MoreVertical className="w-4 h-4 text-foreground/60" />
-                        </button>
+                         
 
                         {/* Action Popup Menu */}
                         {activeMenu === student.id && (

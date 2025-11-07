@@ -204,37 +204,34 @@ export default function AdmitStudent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">City *</label>
+                      <label className="block text-sm font-medium text-foreground mb-2">City </label>
                       <input
                         type="text"
                         name="city"
                         value={formData.city}
                         onChange={handleInputChange}
-                        required
                         className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                         placeholder="City"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">State *</label>
+                      <label className="block text-sm font-medium text-foreground mb-2">State </label>
                       <input
                         type="text"
                         name="state"
                         value={formData.state}
                         onChange={handleInputChange}
-                        required
                         className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                         placeholder="State"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">Postal Code *</label>
+                      <label className="block text-sm font-medium text-foreground mb-2">Postal Code </label>
                       <input
                         type="text"
                         name="postalCode"
                         value={formData.postalCode}
                         onChange={handleInputChange}
-                        required
                         className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                         placeholder="Postal code"
                       />
@@ -280,13 +277,12 @@ export default function AdmitStudent() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">Father Phone *</label>
+                      <label className="block text-sm font-medium text-foreground mb-2">Father Phone </label>
                       <input
                         type="tel"
                         name="fatherPhone"
                         value={formData.fatherPhone}
                         onChange={handleInputChange}
-                        required
                         className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                         placeholder="+92-300-XXXXXXX"
                       />
