@@ -47,7 +47,7 @@ export async function DELETE(request: NextRequest, { params }: any) {
 
     return NextResponse.json({ success: true },{status:201})
   } catch (error) {
-    console.error("[v0] Delete room error:", error)
+    console.error(" Delete room error:", error)
     return NextResponse.json({ error: "Failed to delete room" }, { status: 500 })
   }
 }

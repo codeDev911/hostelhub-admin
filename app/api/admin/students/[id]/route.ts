@@ -3,8 +3,9 @@ import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getSession } from "@/lib/auth";
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: any) {
   try {
+    const {id} = await params
     const session = await getSession()
     
     if (!session) {
@@ -15,7 +16,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       where: { 
         AND:{
           hostelId: session.hostelId!,
-          id: params.id 
+          id: id
         }
       },
       include: {
