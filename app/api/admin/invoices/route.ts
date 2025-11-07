@@ -16,31 +16,81 @@ export async function GET(request: NextRequest) {
 
     const where: any = {}
 
-    if (session.hostelId) where.booking = { room: { hostelId: session.hostelId } }
+    where.hostelId = session.hostelId
     if (status) where.payments = { some: { status } }
     if (search) {
-      where.booking = {
-        ...where.booking,
-        student: {
+        where.student =  {
           OR: [
             { name: { contains: search, mode: "insensitive" } },
             { email: { contains: search, mode: "insensitive" } },
             { phone: { contains: search, mode: "insensitive" } },
           ],
-        },
-      }
+        }
     }
 
     const invoices = await prisma.invoice.findMany({
-      // where,
+      where,
       include: {
-        student: true,
-        payments: true,
+        student: {
+          select:{
+            id:true,
+            firstName:true,
+            lastName:true,
+          }
+        },
       },
+      orderBy:{
+        createdAt:'desc'
+      }
     })
-    console.log(invoices);
+    // console.log(invoices);
     
     return NextResponse.json(invoices)
+  } catch (error) {
+    console.error("[v0] Get invoices error:", error)
+    return NextResponse.json({ error: "Failed to fetch invoices" }, { status: 500 })
+  }
+}
+
+ export function generateInvoiceNumber() {
+  const prefix = "INV";
+  const uniqueNumber = Date.now().toString() + Math.floor(Math.random() * 1000).toString();
+  // take only the first 11 digits from unique number to make total length = 14
+  const finalNumber = uniqueNumber.slice(0, 14);
+  return prefix + finalNumber;
+}
+
+export async function POST(request: NextRequest) {
+  try {
+     const session = await getSession()
+        
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    } 
+
+    const {studentId, ...data} = await request.json()
+    
+    const invoiceNumber  = generateInvoiceNumber()
+
+    const invoice = await prisma.invoice.create({
+      data:{
+        student:{
+          connect:{
+            id:studentId,
+          }
+        },
+        hostel:{
+          connect:{
+            id:session.hostelId!,
+          }
+        },  
+        invoiceNumber,
+        ...data
+      }
+    })
+    console.log(invoice);
+    
+    return NextResponse.json({sucess:true},{status:201})
   } catch (error) {
     console.error("[v0] Get invoices error:", error)
     return NextResponse.json({ error: "Failed to fetch invoices" }, { status: 500 })

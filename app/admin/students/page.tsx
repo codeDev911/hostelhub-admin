@@ -55,7 +55,7 @@ export default function StudentManagement() {
 
   useEffect(() => {
     
-    const filtered = students?.filter((student) => {
+    const filtered = students && students?.length > 0 &&students?.filter((student) => {
       const matchesSearch =
         student.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -65,12 +65,12 @@ export default function StudentManagement() {
       return matchesSearch && matchesGender
     })
 
-    setFilteredStudents(filtered)
+    setFilteredStudents(filtered || [])
   }, [students, searchTerm, filterGender])
 
-  const totalStudents = students && students.length
-  const activeStudents = students && students.filter((s) => s.paymentStatus === "Paid").length
-  const pendingPayments = students && students.filter((s) => s.paymentStatus === "Pending").length
+  const totalStudents = students && students?.length || 0
+  const activeStudents = students && students?.length>0 && students?.filter((s) => s.paymentStatus === "Paid").length
+  const pendingPayments = students && students?.length>0 && students?.filter((s) => s.paymentStatus === "Pending").length
 
   const handleRevokeStudent = async (studentId: number) => {
     try {
@@ -233,12 +233,12 @@ export default function StudentManagement() {
                     <td className="px-6 py-4 text-sm">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          student.paymentStatus === "Paid"
+                          student.paymentStatus === "paid"
                             ? "bg-green-100 text-green-700"
                             : "bg-orange-100 text-orange-700"
                         }`}
                       >
-                        {student?.invoices[0]?.status} || "None"
+                        {student?.invoices[0]?.status || "None"} 
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm">

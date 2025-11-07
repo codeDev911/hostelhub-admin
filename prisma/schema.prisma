@@ -244,7 +244,7 @@ model Payment {
 
   invoiceId String
   invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-
+  
   // Payment Details
   amount        Float
   paymentMethod String // "cash", "bank_transfer", "online", "cheque"

@@ -124,3 +124,26 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #invoice-print-area, #invoice-print-area * {
+    visibility: visible;
+  }
+
+  #invoice-print-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    width: 100%;
+  }
+}
+/* For perfect A4 page */
+@page {
+  margin: 20mm;
+}

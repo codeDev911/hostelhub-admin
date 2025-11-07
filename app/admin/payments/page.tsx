@@ -7,6 +7,7 @@ import { toast } from "sonner"
 
 interface Payment {
   id: number
+  amount:number
   invoice: {
     id: number
     student: { firstName: string; email: string; phone: string }
@@ -59,20 +60,19 @@ export default function PaymentsManagement() {
 
     setFilteredPayments(filtered)
   }, [payments, searchTerm])
-
-  const totalRevenue = payments.filter((p) => p.status === "PAID").reduce((sum, p) => sum + p.invoice.amount, 0)
+  
+  const totalRevenue = payments?.filter((p) => p.status === "paid").reduce((sum, p) => sum + p.amount, 0)
   const pendingPayments = payments
     .filter((p) => p.status === "pending")
-    .reduce((sum, p) => sum + p.invoice.amount, 0)
-  const overdueCount = payments.filter((p) => p.status === "OVERDUE").length
+    .reduce((sum, p) => sum + p?.amount, 0)
+  const overdueCount = payments.filter((p) => p.status === "overdue").length
 
   const handleExport = () => {
     const csv = [
-      ["Student Name", "Email",  "Room", "Amount", "Status", "Date"],
+      ["Student Name", "Email",   "Amount", "Status", "Date"],
       ...filteredPayments.map((p) => [
         p.invoice.student.firstName,
         p.invoice.student.email,
-        // p.invoice.student.room.number,
         p.invoice.amount,
         p.status,
         new Date(p.createdAt).toLocaleDateString(),
@@ -105,13 +105,18 @@ export default function PaymentsManagement() {
           <h1 className="text-4xl font-bold text-primary mb-2">Payments & Invoices</h1>
           <p className="text-foreground/60">Manage and track student payments with automated monthly invoicing</p>
         </div>
-        <button
+          <div className="flex space-x-2 items-center">
+<button
           onClick={handleExport}
           className="flex items-center gap-2 bg-accent text-primary font-semibold px-6 py-3 rounded-lg hover:bg-accent/90 transition-colors"
         >
           <Download className="w-5 h-5" />
-          Export Invoices
+          Export Payments
         </button>
+        <Link 
+          className="flex items-center gap-2 bg-primary text-primary-foreground font-semibold px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors"
+         href={"/admin/invoices"}>See invoices</Link>
+          </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -152,19 +157,6 @@ export default function PaymentsManagement() {
         </div>
       </div>
 
-      {/* Auto-Generation Info */}
-      <div className="bg-accent/10 border border-accent rounded-lg p-6">
-        <div className="flex items-start gap-4">
-          <Receipt className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
-          <div>
-            <h3 className="font-bold text-primary mb-2">Automated Invoice Generation</h3>
-            <p className="text-sm text-foreground">
-              Invoices are automatically generated on the 1st of every month for all active students based on their room
-              type and booking agreement. Overdue invoices are marked after their due date passes.
-            </p>
-          </div>
-        </div>
-      </div>
 
       {/* Filters and Search */}
       <div className="bg-white rounded-lg p-6 shadow-sm border border-border space-y-4">
@@ -196,9 +188,9 @@ export default function PaymentsManagement() {
               className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
             >
               <option value="">All Status</option>
-              <option value="PAID">Paid</option>
-              <option value="PENDING">Pending</option>
-              <option value="OVERDUE">Overdue</option>
+              <option value="paid">Paid</option>
+              <option value="pending">Pending</option>
+              <option value="overdue">Overdue</option>
             </select>
           </div>
         </div>
@@ -211,7 +203,6 @@ export default function PaymentsManagement() {
             <thead className="bg-secondary border-b border-border">
               <tr>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Student Name</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Room</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Amount</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Status</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Date</th>
@@ -225,16 +216,15 @@ export default function PaymentsManagement() {
                     <td className="px-6 py-4 text-sm font-medium text-foreground">
                       {payment.invoice.student.firstName}
                     </td>
-                    <td className="px-6 py-4 text-sm text-foreground/70">Room {payment.invoice.student.email}</td>
                     <td className="px-6 py-4 text-sm font-semibold text-foreground">
                       Rs {payment.invoice.amount.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 text-sm">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          payment.status === "PAID"
+                          payment.status === "paid"
                             ? "bg-green-100 text-green-700"
-                            : payment.status === "PENDING"
+                            : payment.status === "pending"
                               ? "bg-blue-100 text-blue-700"
                               : "bg-red-100 text-red-700"
                         }`}

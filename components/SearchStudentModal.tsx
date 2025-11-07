@@ -33,6 +33,8 @@ const SearchStudentModal = ({ onSend }: ChildProps) => {
         let res = await fetch(`/api/admin/students?searchForHostel=${searchText}`)
         let stu = await res.json()
         setStudent(stu)
+        console.log(stu);
+        
         
 
     } catch (error) {

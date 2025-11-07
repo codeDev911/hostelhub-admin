@@ -6,16 +6,7 @@ import { useState, useEffect } from "react"
 import { ArrowLeft, CheckCircle, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+ 
 import SearchStudentModal from "@/components/SearchStudentModal"
 export default function AdmitStudent() {
   const [formData, setFormData] = useState({
@@ -74,7 +65,6 @@ export default function AdmitStudent() {
         },
         body: JSON.stringify({
           ...formData,
-          dateOfBirth: new Date(formData.dateOfBirth).toISOString(),
           checkInDate: new Date(formData.checkInDate).toISOString(),
         }),
       })
@@ -85,15 +75,17 @@ export default function AdmitStudent() {
         toast.error(data.error || "Failed to admit student")
         return
       }
+      
 
       setSubmitted(true)
-      toast.success("Student admitted successfully!")
+      toast("Student admitted successfully!")
       setTimeout(() => {
         window.location.href = "/admin/students"
       }, 2000)
     } catch (error) {
-      console.error("[v0] Admit error:", error)
-      toast.error("An error occurred")
+      console.log(error);
+      
+      toast("An error occurred")
     } finally {
       setIsLoading(false)
     }
@@ -184,17 +176,7 @@ export default function AdmitStudent() {
                         placeholder="student@email.com"
                       />
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">Date of Birth *</label>
-                      <input
-                        type="date"
-                        name="dateOfBirth"
-                        value={formData.dateOfBirth}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
-                      />
-                    </div>
+                    
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-2">Gender *</label>
                       <select
@@ -205,8 +187,8 @@ export default function AdmitStudent() {
                         className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                       >
                         <option value="">Select Gender</option>
-                        <option value="boy">Boy</option>
-                        <option value="girl">Girl</option>
+                        <option value="male">male</option>
+                        <option value="female">female</option>
                       </select>
                     </div>
                     <div className="md:col-span-2">

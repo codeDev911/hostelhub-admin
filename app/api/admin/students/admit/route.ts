@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
         email: body.email,
         phone: body.phone,
         cnnic: body.cnnic,
-        dateOfBirth: new Date(body.dateOfBirth),
+        dateOfBirth: body.dateOfBirth  ? new Date(body.dateOfBirth ): new Date(),
         gender: body.gender,
         address: body.address,
         city: body.city,

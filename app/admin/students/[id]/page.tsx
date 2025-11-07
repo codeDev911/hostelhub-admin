@@ -7,6 +7,7 @@ import Link from "next/link"
 import { toast } from "react-toastify"
 import ShiftRoomModal from "@/components/ShiftRoomModal"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import InvoiceDialog from "@/components/GenerateInvoiceModal"
 
 export default function StudentDetails() {
   const params = useParams()
@@ -258,14 +259,14 @@ export default function StudentDetails() {
                     </thead>
                     <tbody className="divide-y divide-border">
                       {student.invoices?.map((invoice:any) => (
-                        <tr key={invoice.id} className="hover:bg-secondary/50">
+                        <tr title="click to see invoice details" onClick={()=> location.assign(`/admin/invoices/${invoice.id}`)} key={invoice.id} className="hover:bg-secondary/50 cursor-pointer">
                           <td className="px-4 py-3 text-foreground">{new Date(invoice.invoiceYear, invoice.invoiceMonth - 1, 1).toLocaleString("en-US", {  month: "long",})}</td>
                           <td className="px-4 py-3 font-semibold text-foreground">Rs {invoice.amount}</td>
                           <td className="px-4 py-3 text-foreground/70">{new Date(invoice.issuedDate).toLocaleDateString("en-US",{weekday:"short",day:"2-digit"})}</td>
                           <td className="px-4 py-3">
                             <span
                               className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                invoice.status === "Paid"
+                                invoice.status === "paid"
                                   ? "bg-green-100 text-green-700"
                                   : "bg-orange-100 text-orange-700"
                               }`}
@@ -286,7 +287,7 @@ export default function StudentDetails() {
               <div className="bg-white rounded-lg p-6 shadow-sm border border-border sticky top-4">
                 <h3 className="text-lg font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">Quick Actions</h3>
                 <div className="space-y-3">
-                      <ShiftRoomModal buttonTitle="Shift to another room" currentRoom={student.room} varient={"outline"} student_id={student.id}/>
+                  <ShiftRoomModal buttonTitle="Shift to another room" currentRoom={student.room} varient={"outline"} student_id={student.id}/>
                   <button
                     onClick={() => setShowRevokeModal(true)}
                     className="w-full flex items-center justify-center gap-2 bg-red-600 text-white font-semibold py-2 rounded-lg hover:bg-red-700 transition-colors"
@@ -294,8 +295,8 @@ export default function StudentDetails() {
                     <LogOut className="w-4 h-4" />
                     Revoke {student.firstName} {student.lastName}
                   </button>
+                <InvoiceDialog studentId={student.id} studentName={student.firstName+" "+student.lastName}   />
                 </div>
-
                 
               </div>
             </div>

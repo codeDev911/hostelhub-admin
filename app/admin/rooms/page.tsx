@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import AddMultiplyRoomModal from "@/components/AddMultiplyRoomModal";
 import { getRoomCapacity } from "@/lib/room-capicity";
+import RoomsSearch from "@/components/RoomsSearch";
 
 interface Room {
   id: number;
@@ -20,10 +21,12 @@ interface Room {
 }
 
 export default function RoomManagementPage() {
-  const [rooms, setRooms] = useState<Room[]>([]);
+  const [initialRooms, setInitialRooms] = useState<Room[]>([]);
+  const [rooms,setRooms]= useState([]as any)
   const [loading, setLoading] = useState(true);
   const [isAddingRoom, setIsAddingRoom] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+
   const [formData, setFormData] = useState({
     roomNumber: "",
     floor: "",
@@ -37,7 +40,8 @@ export default function RoomManagementPage() {
       try {
         const response = await fetch(`/api/admin/rooms`);
         const data = await response.json();
-        setRooms(data);
+        setInitialRooms(data);
+        setRooms(data)
       } catch (error) {
         console.error("[v0] Failed to fetch rooms:", error);
         toast.error("Failed to load rooms");
@@ -78,7 +82,7 @@ export default function RoomManagementPage() {
         if (response.ok) {
           const updatedRoom = await response.json();
           setRooms(
-            rooms && rooms?.map((r) => (r.id === editingId ? updatedRoom : r))
+            rooms && rooms?.map((r:any) => (r.id === editingId ? updatedRoom : r))
           );
           toast.success("Room updated successfully");
           setEditingId(null);
@@ -128,7 +132,7 @@ export default function RoomManagementPage() {
       });
 
       if (response.ok) {
-        setRooms(rooms.filter((r) => r.id !== id));
+        setRooms(rooms.filter((r:any) => r.id !== id));
         toast.success("Room deleted successfully");
       }
     } catch (error) {
@@ -167,6 +171,8 @@ export default function RoomManagementPage() {
         <AddMultiplyRoomModal/>
         </div>
       </div>
+
+      <RoomsSearch  rooms={initialRooms} onFilter={setRooms}/>
 
       {/* Add/Edit Room Form */}
       {(isAddingRoom || editingId) && (
@@ -218,7 +224,7 @@ export default function RoomManagementPage() {
                 <option value="4-Seater">4-Seater</option>
                 <option value="6-Seater">6-Seater</option>
               </select>
-            </div>
+            </div>  
             <div>
               <label className="block text-sm font-medium text-primary mb-2">
                 Total Seats

@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
           AND:[
             {...where},
             {invoice:{
-              student:{ hostelId: session.hostelId }
+              hostelId: session.hostelId 
             }}
         ]
       },
@@ -47,8 +47,10 @@ export async function GET(request: NextRequest) {
               },
         },
       },
+      orderBy:{
+        createdAt:'desc'
+      }
     })
-    console.log(payments);
     
 
     return NextResponse.json(payments)
@@ -58,14 +60,39 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
 
-    const payment = await prisma.payment.create({
-      data: {
+ export function generateTransactionId() {
+  const prefix = "TRNX";
+  const uniqueNumber = Date.now().toString() + Math.floor(Math.random() * 1000).toString();
+  // take only the first 11 digits from unique number to make total length = 14
+  const finalNumber = uniqueNumber.slice(0, 12);
+  return prefix + finalNumber;
+}
+
+export async function POST(request: NextRequest) {
+
+  try {
+    const transactionId = generateTransactionId()
+    const {invoiceId,studentId,...body} = await request.json()
+
+    
+
+    const payment = await prisma.$transaction(async(tx)=>{
+       await tx.payment.create({
+         data: {
         ...body,
-        invoiceId: Number.parseInt(body.invoiceId),
+        student:{
+          connect:{
+            id:studentId
+          }
+        },
+        invoice:{
+          connect:{
+            id:invoiceId
+          }
+        },
+        
+        transactionId
       },
       include: {
         invoice: {
@@ -74,6 +101,11 @@ export async function POST(request: NextRequest) {
             },
         },
       },
+      });
+     return await tx.invoice.update({
+        where: { id: invoiceId },
+        data: { status: body.status },
+      })
     })
 
     return NextResponse.json(payment, { status: 201 })
