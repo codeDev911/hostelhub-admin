@@ -3,3 +3,4 @@
 ### fixes some issues with rooms, invoices 
 ### added QR code and new student form regestration method
 ## a small update
+## A huge update
