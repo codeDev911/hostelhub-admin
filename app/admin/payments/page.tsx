@@ -24,7 +24,6 @@ export default function PaymentsManagement() {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterHostel, setFilterHostel] = useState("")
   const [filterPaymentStatus, setFilterPaymentStatus] = useState("")
-  const [activeMenu, setActiveMenu] = useState<number | null>(null)
 
   useEffect(() => {
     const fetchPayments = async () => {
@@ -35,11 +34,9 @@ export default function PaymentsManagement() {
         const response = await fetch(`/api/admin/payments?${params.toString()}`)
         const data = await response.json()
         setPayments(data)
-        console.log(data);
         
       } catch (error) {
-        console.error("[v0] Failed to fetch payments:", error)
-        toast.error("Failed to load payments")
+        toast.error("Failed to load payments, please try again")
       } finally {
         setLoading(false)
       }

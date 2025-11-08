@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { InfoIcon, Loader2, Receipt } from "lucide-react";
-import Link from "next/link";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -126,10 +125,10 @@ export default function InvoicesPage() {
               </div>
             </div>
 
-              <div className="space-y-2 mt-4">
+              {/* <div className="space-y-2 mt-4">
                 <Label>Notes (optional)</Label>
                 <input type="text" value={form.notes} onChange={(e)=>setForm({...form,notes:e.target.value})} placeholder="Invoice of the month Octuber " className="p-2 rounded-md border-border border text-sm w-full"/>
-              </div>
+              </div> */}
               {
                 invoicesGenerationLoading ? <Button className="mt-2 w-full" variant={"outline"} >Submitting</Button>:<Button className="mt-2 w-full"  type="submit">Submit</Button>
               }

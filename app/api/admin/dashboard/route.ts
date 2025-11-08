@@ -28,8 +28,9 @@ export async function GET(request: NextRequest) {
     const totalRevenue = await prisma.payment.aggregate({
 
       _sum: { amount: true },
-      where: { AND:[{status: "paid"},{student:{
-        hostelId:session.hostelId
+      where: { AND:[{status: "paid"},{
+        invoice:{
+        hostelId:session.hostelId!
       }}] },
     })
 

@@ -46,7 +46,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const data = await request.json();
-
+    
     
     await prisma.hostel.update({
         where:{
@@ -54,9 +54,13 @@ export async function PUT(request: NextRequest) {
         },
         data:{
             ...data,
-            pricePerMonth:Number.parseFloat(data.pricePerMonth)
+        },
+        select:{
+          checkInTime:true,
+          checkOutTime:true,
         }
     })
+    
    
 
     return NextResponse.json({"success":"Hostel updated successfully"},{status:201})

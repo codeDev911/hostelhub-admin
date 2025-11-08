@@ -34,7 +34,9 @@ export async function GET(request: NextRequest, { params }: any) {
                 id:true,
                 paymentDate:true,
                 paymentMethod:true,
-                amount:true
+                amount:true,
+                notes:true,
+                receiptNumber:true
               }
             },
             hostel:{

@@ -58,6 +58,25 @@ export async function GET(request: NextRequest, { params }: any) {
             }
           }
         },
+        feedback:{
+          where:{
+            type:"review"
+          },
+          select:{
+            id:true,
+            student:{
+              select:{
+                id:true,
+                firstName:true,
+                lastName:true,
+              }
+            },
+            text:true,
+            priority:true,
+            hostelId:true,
+            createdAt:true
+        }
+        },
         students: true,
       },
     })
@@ -82,7 +101,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   try {
     const { id } = await params
     const body = await request.json()
-
+    console.log({body});
+    
     const hostel = await prisma.hostel.update({
       where: { id },
       data: body,

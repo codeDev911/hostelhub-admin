@@ -31,7 +31,7 @@ export default function InvoiceDialog({studentId,studentName,roomPriceMonthly}:I
   const [loading,setLoading] = useState(false)
   const [form, setForm] = useState({
     studentId: studentId,
-    invoiceMonth: new Date().getMonth(),
+    invoiceMonth: new Date().getMonth() ,
     invoiceYear: new Date().getFullYear(),
     amount: roomPriceMonthly,
     dueDate: new Date(),
@@ -109,7 +109,7 @@ export default function InvoiceDialog({studentId,studentName,roomPriceMonthly}:I
               <Input
                 type="number"
                 placeholder="1 - 12"
-                value={form.invoiceMonth}
+                value={form.invoiceMonth || ""}
                 onChange={(e) => handleUpdate("invoiceMonth", Number(e.target.value))}
               />
             </div>
@@ -172,13 +172,14 @@ export default function InvoiceDialog({studentId,studentName,roomPriceMonthly}:I
           </div>
 
           {/* Notes */}
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <Label>Notes</Label>
             <Input
               placeholder="Optional notes..."
               onChange={(e) => handleUpdate("notes", e.target.value)}
+              value={form.notes}
             />
-          </div>
+          </div> */}
         </div>
 
         <DialogFooter>

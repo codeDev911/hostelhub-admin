@@ -42,7 +42,8 @@ export async function POST(request: NextRequest, { params }: any) {
             invoiceNumber:invcNo,
             invoiceMonth:Number.parseInt(body.invoiceMonth),
             invoiceYear:Number.parseInt(body.invoiceYear),
-            studentId:std.id
+            studentId:std.id,
+            notes:body.notes
         })
     })
 

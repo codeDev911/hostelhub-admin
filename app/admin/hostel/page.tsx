@@ -2,11 +2,14 @@
 
 import type React from "react"
 import { useEffect, useState } from "react"
-import { Card } from "@/components/ui/card"
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Save, Edit2, Plus, X, Phone, Mail, Clock, Utensils, Home, AlertCircle, Loader2, Globe2 } from "lucide-react"
-import { toast } from "@/hooks/use-toast"
+import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import UploadImages from "@/components/UploadImages"
+import MapPicker from "@/components/MapPicker"
+import MealPlanModal from "@/components/MealPlanModal"
 
 export default function HostelDetailsPage() {
 
@@ -24,9 +27,10 @@ export default function HostelDetailsPage() {
   const [formData, setFormData] = useState({} as any)
   const [amenities, setAmenities] = useState([] as any)
   const [rules, setRules] = useState([] as any)
-  const [mealPlan, setMealPlan] = useState([] as any)
   const [hostel, setHostel] = useState<any>(null)
   const [submitLoading,setSubmitLoading] = useState(false)
+   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
+   const [savingMapLoading,setSavingMapLoading] = useState(false)
   const [metaDetails,setMetaDetails] = useState({
     title:"",
     description:"",
@@ -44,10 +48,8 @@ export default function HostelDetailsPage() {
         setMetaDetails(data?.metaDetails)
         setAmenities(data.amenities)
         setRules(data.rules)
-        setMealPlan(data.mealPlan)
-      } catch (error) {
-        console.log("Failed to fetch hostel data",error);
-        toast({title:"Failed to fetch hostel data"})
+      } catch (error) { 
+        toast("Failed to fetch hostel data")
       }finally{
         setLoading(false)
       }
@@ -69,20 +71,16 @@ export default function HostelDetailsPage() {
           'Content-Type': 'application/json',
         },
         
-        body: JSON.stringify({ ...data_, amenities, rules, mealPlan,metaDetails }),
+        body: JSON.stringify({ ...data_, amenities, rules,metaDetails ,pricePerMonth:Number.parseInt(formData.pricePerMonth)}),
       })
-      const data = await response.json()
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to update hostel details')
+        toast.error("Error occured!")
       }
-      toast({
-        title:"Hostel details updated successfully",
-      })
+      toast("Hostel details updated successfully",)
       setIsEditing(false)
       router.refresh()
     } catch (error) {
-      console.log("Failed to update hostel data",error);
-      toast({title:'Failed to update hostel details'})
+      toast('Failed to update hostel details')
     } finally {
       setSubmitLoading(false)
     }
@@ -137,38 +135,27 @@ export default function HostelDetailsPage() {
     setRules(rules.filter((_:any, i:any) => i !== index))
   }
 
-  const handleEditDish = (dayIndex: number, mealIndex: number, dishIndex: number, currentDish: string) => {
-    setEditingMeal({ dayIndex, mealIndex, dishIndex })
-    setEditingDishValue(currentDish)
-  }
-
-  const handleSaveDish = () => {
-    if (editingMeal && editingDishValue.trim()) {
-      const newMealPlan = [...mealPlan]
-      newMealPlan[editingMeal.dayIndex].meals[editingMeal.mealIndex].dishes[editingMeal.dishIndex] = editingDishValue
-      setMealPlan(newMealPlan)
-      setEditingMeal(null)
-      setEditingDishValue("")
-    }
-  }
-
-  const handleAddDish = (dayIndex: number, mealIndex: number) => {
-    const newMealPlan = [...mealPlan]
-    newMealPlan[dayIndex].meals[mealIndex].dishes.push("New Dish")
-    setMealPlan(newMealPlan)
-  }
-
-  const handleRemoveDish = (dayIndex: number, mealIndex: number, dishIndex: number) => {
-    const newMealPlan = [...mealPlan]
-    newMealPlan[dayIndex].meals[mealIndex].dishes.splice(dishIndex, 1)
-    setMealPlan(newMealPlan)
-  }
-
+ 
+  
   const handleSave = () => {
     handleSubmit()
   }
 
-  const selectedDayIndex = mealPlan?.findIndex((d:any) => d.day === selectedDay)
+
+
+  const handleSetLocation = async()=>{
+      try {
+        setSavingMapLoading(true)
+        setTimeout(() => {
+          
+        }, 2000);
+      } catch (error) {
+        toast.error("Error saving map")
+      }finally{
+        setSavingMapLoading(false)
+      }
+
+  }
 
   return (
     <div className="space-y-8">
@@ -331,6 +318,21 @@ export default function HostelDetailsPage() {
         </div>
       </Card>
 
+      <Card>
+        <CardHeader>
+          <CardTitle>Google map</CardTitle>
+          <CardDescription>Setup your business location on Google map, This will be shown to public</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {/* <MapPicker onSelect={(coords:any)=>{
+            setLocation(coords)
+          }}/> */}
+          <br />
+          <h2 className="text-xl font-bold text-center">Commin soon...</h2>
+      {/* {savingMapLoading ?   <Button variant={"outline"} disabled>Saving...</Button> :   <Button onClick={handleSetLocation}>Save map</Button>} */}
+        </CardContent>
+      </Card>
+
       {/* House Rules Section */}
       <Card className="p-8 rounded-lg border-0 bg-white">
         <div className="flex items-center gap-3 mb-6">
@@ -412,83 +414,14 @@ export default function HostelDetailsPage() {
       <Card className="p-8 rounded-lg border-0 bg-white">
         <div className="flex items-center gap-3 mb-6">
           <Utensils className="w-6 h-6 text-accent" />
-          <h2 className="text-2xl font-bold text-primary">7-Day Meal Plan (Complimentary)</h2>
+          <h2 className="text-2xl font-bold text-primary">7-Day Meal Plan</h2>
         </div>
         <div className="mb-8 flex flex-wrap gap-3">
-          {mealPlan?.map((day:any) => (
-            <button
-              key={day.day}
-              onClick={() => setSelectedDay(day.day)}
-              className={`px-5 py-2 rounded-lg font-semibold transition-all ${
-                selectedDay === day.day
-                  ? "bg-accent text-accent-foreground shadow-lg"
-                  : "bg-secondary text-foreground hover:bg-secondary/80"
-              }`}
-            >
-              {day.day}
-            </button>
-          ))}
+          <MealPlanModal/>
         </div>
-        {selectedDayIndex !== -1 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {mealPlan&&mealPlan[selectedDayIndex]?.meals?.map((meal:any, mealIdx:any) => (
-              <div
-                key={mealIdx}
-                className="bg-secondary rounded-lg p-6 border border-border hover:border-accent/50 transition-colors"
-              >
-                <h4 className="font-bold text-primary mb-4 text-center text-lg">{meal.time}</h4>
-                <ul className="space-y-3 mb-4">
-                  {meal?.dishes?.map((dish:any, dishIdx:any) => (
-                    <li key={dishIdx} className="text-sm text-foreground flex items-start gap-2 group">
-                      <span className="text-accent font-bold mt-0.5">•</span>
-                      {editingMeal?.dayIndex === selectedDayIndex &&
-                      editingMeal?.mealIndex === mealIdx &&
-                      editingMeal?.dishIndex === dishIdx ? (
-                        <div className="flex gap-2 flex-1">
-                          <input
-                            type="text"
-                            value={editingDishValue}
-                            onChange={(e) => setEditingDishValue(e.target.value)}
-                            className="flex-1 px-2 py-1 border border-border rounded text-sm focus:outline-none focus:ring-2 focus:ring-accent"
-                            autoFocus
-                          />
-                          <button onClick={handleSaveDish} className="text-green-600 hover:text-green-700 font-bold">
-                            ✓
-                          </button>
-                          <button
-                            onClick={() => setEditingMeal(null)}
-                            className="text-destructive hover:text-destructive/80"
-                          >
-                            ✕
-                          </button>
-                        </div>
-                      ) : (
-                        <span
-                          onClick={() => isEditing && handleEditDish(selectedDayIndex, mealIdx, dishIdx, dish)}
-                          className={isEditing ? "cursor-pointer hover:text-accent flex-1" : "flex-1"}
-                        >
-                          {dish}
-                        </span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-                {isEditing && (
-                  <button
-                    onClick={() => handleAddDish(selectedDayIndex, mealIdx)}
-                    className="w-full text-sm text-accent font-semibold py-2 border border-dashed border-accent rounded-lg hover:bg-accent/10 transition-colors"
-                  >
-                    + Add Dish
-                  </button>
-                )}
-                <div className="pt-4 border-t border-border">
-                  <p className="text-xs text-accent font-bold">FREE - COMPLIMENTARY</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+       
       </Card>
+      <UploadImages images={hostel.images}/>
         </div>
         <div className="space-y-5">
             {/* Contact Information Section */}

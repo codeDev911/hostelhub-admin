@@ -18,6 +18,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
+import InvoiceCard from "@/components/InvoiceCard"
 
 export default function PaymentDetails() {
   const params = useParams()
@@ -280,6 +281,8 @@ ${
               </div>
             </div>
           </div>
+            <InvoiceCard invoice={payment.invoice}/>
+
         </div>
 
         {/* Sidebar - Actions */}

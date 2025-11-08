@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { toast } from "sonner";
+import InvoiceCard from "@/components/InvoiceCard";
 
 export default function InvoiceDetailsPage() {
   const { id } = useParams();
@@ -41,6 +42,7 @@ const [paymentSubmittionLoading,setPaymentSubmittionLoading] = useState(false)
       .then((d) => {
         setInvoice(d);
         setForm({...form,invoiceId:d.id,studentId:d.student.id,amount:d.amount})
+        console.log(d);
         
         setLoading(false);
       });
@@ -186,7 +188,7 @@ ${
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="md:p-6  space-y-6">
       <Button
         variant="outline"
         onClick={() => router.back()}
@@ -196,92 +198,10 @@ ${
       </Button>
 
       <div className="grid md:grid-cols-3 gap-4 grid-cols-1">
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Invoice #{invoice.invoiceNumber}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {/* Invoice summary */}
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">Student Name</p>
-                <p className="font-medium">
-                  {invoice.student?.firstName} {invoice.student?.firstName}
-                </p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">Contact</p>
-                <p className="font-medium">
-                  {invoice.student.phone || invoice.student.email}
-                </p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">Status</p>
-                {getBadge(invoice.status)}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4 pt-2 border-t">
-              <div>
-                <p className="text-sm text-muted-foreground">Month</p>
-                <p className="font-medium">
-                  {invoice.invoiceMonth}/{invoice.invoiceYear}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Issued Date</p>
-                <p className="font-medium">
-                  {new Date(invoice.issuedDate).toLocaleDateString()}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Due Date</p>
-                <p className="font-medium">
-                  {new Date(invoice.dueDate).toLocaleDateString()}
-                </p>
-              </div>
-            </div>
-
-            {/* Amount */}
-            <Card className="bg-muted/50">
-              <CardContent className="p-4">
-                <p className="text-sm text-muted-foreground">Amount</p>
-                <p className="text-2xl font-bold">Rs {invoice.amount}</p>
-              </CardContent>
-            </Card>
-
-            {/* Notes */}
-            {invoice.notes && (
-              <div className="pt-3">
-                <p className="text-sm text-muted-foreground">Notes</p>
-                <p>{invoice.notes}</p>
-              </div>
-            )}
-
-            {/* Payments */}
-            <div className="pt-4 border-t">
-              <p className="text-sm font-semibold mb-2">Payments</p>
-
-              {invoice.payments.length === 0 && (
-                <p className="text-sm text-muted-foreground">
-                  No payments recorded
-                </p>
-              )}
-
-              {invoice.payments.map((p: any) => (
-                <div
-                  key={p.id}
-                  className="flex justify-between border rounded p-2 mb-2"
-                >
-                  <span className="font-medium">{invoice.status} Rs  {p.amount.toLocaleString()} via {p.paymentMethod.toUpperCase()}</span>
-                  <span className="text-sm">
-                    {new Date(p.paymentDate).toLocaleDateString()}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+       
+      <div className="md:col-span-2">
+        <InvoiceCard invoice={invoice}/>
+      </div>
         <div>
           <Card>
             <CardHeader>
@@ -344,7 +264,7 @@ ${
                         </div>
                     </div>
                    {paymentSubmittionLoading? 
-                   <Button className="bg-secondray" disabled>Processing...</Button>: 
+                   <Button variant={"outline"} disabled>Processing...</Button>: 
                    <Button onClick={handlePaymentUpdation} className="bg-green-500 text-white hover:bg-green-600 cursor-pointer">Mark Paid</Button>}
                    </DialogContent>
                  </Dialog>
