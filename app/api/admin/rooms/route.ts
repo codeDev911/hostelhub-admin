@@ -54,6 +54,9 @@ export async function GET(request: NextRequest) {
 
     rooms = await prisma.room.findMany({
       where,
+      orderBy:{
+        createdAt:"desc"
+      },
       include: {
         hostel: true,
         students: {
@@ -91,6 +94,7 @@ export async function POST(request: NextRequest) {
           connect: { id: session.hostelId! },
         },
       },
+      
       include: { hostel: true },
     });
 

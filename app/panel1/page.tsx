@@ -260,7 +260,7 @@ export default function ControlPanelPage() {
                       variant="outline"
                       onClick={() =>
                         copyToClipboard(
-                          `${window.location.origin}/verify-account/${selectedReg.verificationToken.token}`,
+                          `${window.location.origin}/verify-account/${selectedReg?.verificationToken?.token}`,
                         )
                       }
                     >

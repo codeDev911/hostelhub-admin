@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getSession, verifyExternalUser } from "@/lib/auth";
+import { getSession, verifyExternalUser, VerifyPanelRequest } from "@/lib/auth";
 
 const publicRoutes = [
   "/api/hostels/register",
@@ -12,7 +12,7 @@ const publicRoutes = [
   "/api/students/login", 
 ];
 
-const allowedOrigins = ["https://hostelhub-pk.vercel.app", "http://localhost:3001"];
+const allowedOrigins = ["https://hostelhub-pk.vercel.app", "http://localhost:3001","https://hostel-hub-control-panel.vercel.app"];
 
 export async function middleware(request: NextRequest) {
   const origin = request.headers.get("origin") || "";
@@ -47,6 +47,8 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+ 
+
   if(pathname.startsWith('/api/students')){
     let token = request?.headers?.get("authorization")
       
@@ -59,6 +61,20 @@ export async function middleware(request: NextRequest) {
       return NextResponse.json({error:"Unauthorized user"},{status:401})
     }
     response.headers.append("user",JSON.stringify(verify))
+  }
+  
+  // verify incoming request from control panel
+  if(pathname.startsWith("/api/panel")){
+    let token = request.headers.get("Authorization")
+    
+    let isValid = await VerifyPanelRequest(token)
+    if(isValid){
+      return response
+      
+    }else{
+      return NextResponse.json({error:"Unauthorized user"},{status:401})
+    }
+
   }
   
   return response;

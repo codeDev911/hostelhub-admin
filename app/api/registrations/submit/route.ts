@@ -16,11 +16,7 @@ export async function POST(req: NextRequest) {
       city,
       state,
       postalCode,
-      cnnic,
-      bankAccountHolder,
-      bankName,
-      bankAccountNumber,
-      iban,
+      cnnic, 
       description,
     } = body
 

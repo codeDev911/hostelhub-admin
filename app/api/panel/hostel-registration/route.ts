@@ -4,12 +4,14 @@ import { type NextRequest, NextResponse } from "next/server"
 
 export async function GET(req: NextRequest) {
   try {
-    const status = req.nextUrl.searchParams.get("status") || "pending"
+    const status = req.nextUrl.searchParams.get("status")
     const skip = Number.parseInt(req.nextUrl.searchParams.get("skip") || "0")
     const take = Number.parseInt(req.nextUrl.searchParams.get("take") || "10")
 
+    let where : any
+    if(status) where.status = status
     const registrations = await prisma.hostelRegistration.findMany({
-      where: status ? { status } : undefined,
+      where,
       skip,
       take,
       orderBy: { createdAt: "desc" },
@@ -24,18 +26,14 @@ export async function GET(req: NextRequest) {
       },
     })
 
-    const total = await prisma.hostelRegistration.count({
-      where: status ? { status } : undefined,
-    })
+  
 
     return NextResponse.json({
       registrations,
-      total,
-      page: Math.ceil(skip / take) + 1,
-      pages: Math.ceil(total / take),
+      total:registrations.length, 
     })
   } catch (error) {
-    console.error("[v0] Get registrations error:", error)
+    console.error(" Get registrations error:", error)
     return NextResponse.json({ error: "Failed to fetch registrations" }, { status: 500 })
   }
 }

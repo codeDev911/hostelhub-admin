@@ -120,12 +120,11 @@ export function InvoiceHTML ({invoice}:InvoiceCardProps){
 <html>
 <head>
 <meta charset="UTF-8" />
-<title>Invoice</title>
+<title>Invoice - ${invoice.invoiceNumber} </title>
 <style>
   body { font-family: Arial, sans-serif; background:#f7f7f7; margin:0; padding:0; }
   .invoice-wrapper {
-    max-width:650px; margin:auto; background:#fff; border:1px solid #e2e2e2;
-    padding:20px; border-radius:6px;
+    max-width:650px; margin:auto; background:#fff; padding:20px;
   }
   .flex { display:flex; justify-content:space-between; }
   .logo-area { display:flex; gap:10px; align-items:center; }
@@ -144,9 +143,9 @@ export function InvoiceHTML ({invoice}:InvoiceCardProps){
 <div class="invoice-wrapper">
 
   <!-- Header -->
-  <div class="flex" style="border-bottom:1px solid #ddd;padding-bottom:10px;margin-bottom:10px;">
+  <div class="flex" style=" padding-bottom:10px;margin-bottom:10px;">
     <div class="logo-area">
-      <img src="https://your-domain.com/logo.png" width="48" style="border-radius:6px;">
+      <img src="http://localhost:3000/logo.png" width="48" style="border-radius:6px;">
       <div>
         <div style="font-size:20px;font-weight:700;color:#222;">HostelHub</div>
         <div style="font-size:12px;color:#777;">Invoice</div>
@@ -169,7 +168,7 @@ export function InvoiceHTML ({invoice}:InvoiceCardProps){
       ${invoice.student.phone}<br>
       Room: <strong>${invoice.student?.room?.roomNumber}</strong> (${invoice.student?.room?.roomType}), Floor ${invoice.student?.room?.floor}
     </div>
-
+    </br>
     <div style="width:50%;font-size:13px;">
       <strong style="font-size:14px;color:#000;">Bill From:</strong><br>
       <strong>${invoice.hostel.name}</strong><br>
@@ -196,7 +195,7 @@ export function InvoiceHTML ({invoice}:InvoiceCardProps){
   </table>
 
   <!-- Total -->
-  <div class="flex" style="font-size:16px;font-weight:700;margin-top:12px;border-top:1px solid #ddd;padding-top:10px;">
+  <div class="" style="font-size:16px;font-weight:700;margin-top:12px;border-top:1px solid #ddd;padding-top:10px;">
     <span>Total Amount Due:</span>
     <span>Rs ${invoice.amount.toLocaleString()}</span>
   </div>

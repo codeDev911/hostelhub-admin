@@ -1,77 +1,93 @@
-import { cookies } from "next/headers"
-import { SignJWT, jwtVerify } from "jose"
+import { cookies } from "next/headers";
+import { SignJWT, jwtVerify } from "jose";
 
-const secret = new TextEncoder().encode(process.env.JWT_SECRET || "secret-change-in-production")
+const secret = new TextEncoder().encode(
+  process.env.JWT_SECRET || "secret-change-in-production"
+);
 
-import type { JWTPayload } from "jose"
+import type { JWTPayload } from "jose";
 
 export interface SessionData extends JWTPayload {
-  adminId: string
-  email: string
-  hostelOwnerId: string
-  hostelId: string | null
+  adminId: string;
+  email: string;
+  hostelOwnerId: string;
+  hostelId: string | null;
 }
 
-interface ExternalUser extends JWTPayload{
-  userId:string
-email:string
-phone:string
+interface ExternalUser extends JWTPayload {
+  userId: string;
+  email: string;
+  phone: string;
 }
 
 export async function createSession(data: any) {
- const token = await new SignJWT(data)
-  .setProtectedHeader({ alg: "HS256" })
-  .setIssuedAt()
-  .setExpirationTime("7d")
-  .sign(secret)
+  const token = await new SignJWT(data)
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("7d")
+    .sign(secret);
 
-  const cookieStore = await cookies()
+  const cookieStore = await cookies();
   cookieStore.set("session", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 7,
-  })
-  return token
+  });
+  return token;
 }
 
 export async function getSession(): Promise<SessionData | null> {
   try {
-    const cookieStore = await cookies()
-    const token = cookieStore.get("session")?.value
-    if (!token) return null
+    const cookieStore = await cookies();
+    const token = cookieStore.get("session")?.value;
+    if (!token) return null;
 
-    const { payload } = await jwtVerify(token, secret)
-    return payload as SessionData
+    const { payload } = await jwtVerify(token, secret);
+    return payload as SessionData;
   } catch {
-    return null
+    return null;
   }
 }
 
+export async function verifyExternalUser(
+  token: any
+): Promise<ExternalUser | null> {
+  let extractToken = token.split(" ")[1]; // e.g Bearer ryKslkdjlkj82kjhasdkjh => ryKslkdjlkj82kjhasdkjh
+  const { payload } = await jwtVerify(extractToken, secret);
 
-export async function verifyExternalUser(token:any): Promise<ExternalUser | null>{
-  let extractToken = token.split(" ")[1] // e.g Bearer ryKslkdjlkj82kjhasdkjh => ryKslkdjlkj82kjhasdkjh
-  const { payload }  = await jwtVerify(extractToken, secret)
-  
-  return payload as ExternalUser
+  return payload as ExternalUser;
 }
 
 export async function destroySession() {
-  const cookieStore = await cookies()
-  cookieStore.delete("session")
+  const cookieStore = await cookies();
+  cookieStore.delete("session");
 }
 
-
-import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs";
 
 // Hash password
 export async function hashPassword(password: string) {
-  const salt = await bcrypt.genSalt(10)
-  return bcrypt.hash(password, salt)
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(password, salt);
 }
 
 // Verify password
 export async function verifyPassword(password: string, hashed: string) {
-  return bcrypt.compare(password, hashed)
+  return bcrypt.compare(password, hashed);
 }
+
+export const VerifyPanelRequest = async (token: any): Promise<boolean> => {
+  try {
+    let extractToken = token.split(" ")[1]; // e.g Bearer ryKslkdjlkj82kjhasdkjh => ryKslkdjlkj82kjhasdkjh
+    const { payload } = await jwtVerify(extractToken, secret);
+
+    if (payload && payload.email == "admin@hostelhub.pk") {
+      return true;
+    }
+    return false;
+  } catch (err) {
+    return false;
+  }
+};
