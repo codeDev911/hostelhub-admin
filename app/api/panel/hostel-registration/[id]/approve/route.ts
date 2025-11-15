@@ -1,4 +1,6 @@
 export const runtime = "nodejs";
+import { RegistrationApprovedEmail } from "@/components/mails/registration";
+import { sendHtmlEmail } from "@/lib/mailServer";
 import { prisma } from "@/lib/prisma"
 import { generateSecureToken, generateTokenExpiry } from "@/lib/token-utils"
 import { type NextRequest, NextResponse } from "next/server"
@@ -44,6 +46,15 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       include: {
         verificationToken: true,
       },
+    })
+
+    const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-token/${updated.verificationToken?.token}`
+
+    sendHtmlEmail({
+      html:RegistrationApprovedEmail(verificationLink,updated.businessName),
+      sender:"Registration",
+      subject:"Congratulations! your hostel has been approved",
+      to:updated.email
     })
 
     return NextResponse.json({

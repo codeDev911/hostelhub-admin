@@ -1,4 +1,6 @@
 export const runtime = "nodejs";
+import { RegistrationRejectedEmail } from "@/components/mails/registration";
+import { sendHtmlEmail } from "@/lib/mailServer";
 import { prisma } from "@/lib/prisma"
 import { type NextRequest, NextResponse } from "next/server"
 
@@ -21,6 +23,14 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
         rejectionReason,
       },
     })
+
+
+    sendHtmlEmail({
+      html:RegistrationRejectedEmail(updated?.rejectionReason||"Your provided information is not valid",updated.businessName),
+      sender:"Registration",
+      subject:"Your registration status",
+      to:updated.email
+    }).then(res=>res).then(data=>data)
 
     return NextResponse.json({
       success: true,

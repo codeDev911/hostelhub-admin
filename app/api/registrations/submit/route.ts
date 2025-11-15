@@ -1,4 +1,6 @@
 export const runtime = "nodejs";
+import { registrationEmail } from "@/components/mails/registration";
+import { sendHtmlEmail } from "@/lib/mailServer";
 import { prisma } from "@/lib/prisma"
 import { type NextRequest, NextResponse } from "next/server"
 
@@ -53,6 +55,13 @@ export async function POST(req: NextRequest) {
         status: "pending",
       },
     })
+
+    sendHtmlEmail({
+      html:registrationEmail(),
+      sender:"Registration",
+      subject:"Your registration has beed recieved",
+      to:email
+    }).then(res=>res).then(data=>data)
 
     return NextResponse.json(
       {
