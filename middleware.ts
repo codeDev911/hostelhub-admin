@@ -12,7 +12,7 @@ const publicRoutes = [
   "/api/students/login", 
 ];
 
-const allowedOrigins = ["https://hostelhub.pk", "http://localhost:3001","https://hostel-hub-control-panel.vercel.app"];
+const allowedOrigins = ["https://hostelhub.pk","https://www.hostelhub.pk", "http://localhost:3001","https://hostel-hub-control-panel.vercel.app"];
 
 export async function middleware(request: NextRequest) {
   const origin = request.headers.get("origin") || "";
