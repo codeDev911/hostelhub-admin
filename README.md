@@ -7,3 +7,4 @@
 # Attached control panel, added some apis and secutiry for panel request
 #### some changes
 #### added https://hostelhub.pk in CORS
+#### added email sender
