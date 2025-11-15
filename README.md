@@ -4,3 +4,4 @@
 ### added QR code and new student form regestration method
 ## a small update
 ## A huge update
+# Attached control panel, added some apis and secutiry for panel request
