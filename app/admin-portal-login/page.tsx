@@ -138,12 +138,7 @@ export default function AdminPortalLoginPage() {
             </Link>
           </div>
 
-          {/* Demo Credentials */}
-          <div className="mt-6 pt-6 border-t border-border/30">
-            <p className="text-xs text-foreground/40 mb-2 font-semibold">Demo Credentials:</p>
-            <p className="text-xs text-foreground/50">Email: admin@hostel.com</p>
-            <p className="text-xs text-foreground/50">Password: admin123</p>
-          </div>
+          
         </div>
 
         {/* Footer */}
