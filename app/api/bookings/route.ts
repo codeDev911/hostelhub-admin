@@ -1,6 +1,8 @@
 export const runtime = "nodejs";
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { sendHtmlEmail } from "@/lib/mailServer";
+import { bookingEmail } from "@/components/mails/booking";
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,6 +28,16 @@ export async function POST(request: NextRequest) {
         hostel: true,
         room: true,
       },
+    })
+
+    const room = `#${booking.room.roomNumber} - (${booking.room.roomType}), floor ${booking.room.floor} `
+
+    await sendHtmlEmail({
+      html:bookingEmail(booking.hostel.name,booking.hostel.email,booking.hostel.phone,booking.hostel.address,body.studentInformation.phone,body.studentInformation.firstName+" "+body.studentInformation.lastName,body.studentInformation.email,room,booking.pricePerMonth,booking.checkInDate,booking.status),
+      sender:"Booking",
+      subject:"Your booking has been revieved",
+      to:body.studentInformation.email,
+
     })
 
  

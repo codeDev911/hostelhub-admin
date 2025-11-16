@@ -19,6 +19,7 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   if (request.method === "OPTIONS") {
+    
     return new NextResponse(null, {
       status: 200,
       headers: {

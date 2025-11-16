@@ -26,11 +26,8 @@ import { Toaster } from "sonner"
  
 export const metadata: Metadata = {
   title: "Admin panel for hostels",
-  description:
-    "Manage Rooms, Students, Payments and bookings all in one place",
-   icons: {
-      icon:"/logo2.png",
-  },
+  description:"Manage Rooms, Students, Payments and bookings all in one place",
+   
 }
 
 export default function RootLayout({

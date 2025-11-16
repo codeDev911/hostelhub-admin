@@ -11,7 +11,7 @@ interface HostelMeta {
   description: string;
   keywords: string;
   reviews: number;
-  image: string;
+  images: string;
   location: string;
   phone: string;
   pricePerMonth: number;
@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
             city:hostel?.city,
             description:hostel?.metaDetails?.description,
             keywords:hostel?.metaDetails?.keywords,
-            image:JSON.parse(hostel?.images?.[0]).url || "",
+            images:hostel?.images,
             location:hostel?.address,
             phone:hostel?.phone,
             pricePerMonth:hostel.pricePerMonth,

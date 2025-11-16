@@ -32,7 +32,7 @@ export default function RoomManagementPage() {
     roomNumber: "",
     floor: "",
     roomType: "",
-    totalSeats: "", 
+    totalSeats: 0, 
     pricePerMonth: "",
   });
 
@@ -60,7 +60,7 @@ export default function RoomManagementPage() {
       roomNumber: "",
       floor: "",
       roomType: "",
-      totalSeats: "", 
+      totalSeats: 0, 
       pricePerMonth: "",
     });
   };
@@ -69,7 +69,7 @@ export default function RoomManagementPage() {
     try {
       const roomData = {
         ...formData,
-        totalSeats: Number.parseInt(formData.totalSeats), 
+        totalSeats: formData.totalSeats, 
         pricePerMonth: Number.parseFloat(formData.pricePerMonth),
       };
 
@@ -106,7 +106,7 @@ export default function RoomManagementPage() {
         roomNumber: "",
         floor: "",
         roomType: "",
-        totalSeats: "", 
+        totalSeats: 0, 
         pricePerMonth: "",
       });
     } catch (error) {
@@ -121,7 +121,7 @@ export default function RoomManagementPage() {
       roomNumber: room.roomNumber,
       floor: room.floor.toString(),
       roomType: room.roomType,
-      totalSeats: room.totalSeats.toString(), 
+      totalSeats: room.totalSeats, 
       pricePerMonth: room.pricePerMonth.toString(),
     });
   };
@@ -144,7 +144,7 @@ export default function RoomManagementPage() {
       console.error("Delete room error:", error);
       toast.error("Failed to delete room");
     }finally{
-      setDeleteRoomLoading(false)
+      setDeleteRoomLoading(false) 
     }
   };
 
@@ -240,6 +240,7 @@ export default function RoomManagementPage() {
                 type="number"
                 name=""
                 disabled
+                onChange={handleChange}
                 value={getRoomCapacity(formData.roomType)}
                 placeholder="e.g., 2"
                 className="w-full px-4 py-2 border border-border rounded-lg bg-background"

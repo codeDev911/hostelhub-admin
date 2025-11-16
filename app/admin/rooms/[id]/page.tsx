@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
-import { ArrowLeft, Loader2, BedIcon, CheckCheck, HashIcon, Building, BedDouble, PenIcon, MoreVertical } from "lucide-react"
+import { ArrowLeft, Loader2, BedIcon, CheckCheck, HashIcon, Building, BedDouble, PenIcon, MoreVertical, DollarSign } from "lucide-react"
 import Link from "next/link"
 import { toast } from "react-toastify"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -114,7 +114,7 @@ export default function RoomDetails() {
                   <div className="flex items-start gap-4">
                     <Building className="w-5 h-5 text-accent mt-1" />
                     <div>
-                      <p className="text-sm text-foreground/60">On floor</p>
+                      <p className="text-sm text-foreground/60">floor</p>
                       <p className="font-semibold text-foreground">{room.floor}</p>
                     </div>
                   </div>
@@ -123,6 +123,13 @@ export default function RoomDetails() {
                     <div>
                       <p className="text-sm text-foreground/60">Type</p>
                       <p className="font-semibold text-foreground">{room.roomType}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <DollarSign className="w-5 h-5 text-accent mt-1" />
+                    <div>
+                      <p className="text-sm text-foreground/60">Type</p>
+                      <p className="font-semibold text-foreground">{room?.pricePerMonth}</p>
                     </div>
                   </div>
 
@@ -215,17 +222,7 @@ export default function RoomDetails() {
             <div className="lg:col-span-1">
               <div className="bg-white rounded-lg p-6 shadow-sm border border-border sticky top-4">
                 <h3 className="text-lg font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">Quick Actions</h3>
-                <div className="space-y-3">
-                  <button
-                    // onClick={() => setShowShiftModal(true)}
-                    className="w-full flex items-center justify-center gap-2 bg-accent text-primary font-semibold py-2 rounded-lg hover:bg-accent/90 transition-colors"
-                  >
-                    <PenIcon className="w-4 h-4" />
-                    Edit room
-                  </button>
-
-                </div>
-
+                        <p className="text-sm">not availabe right now</p>
 
               </div>
             </div>

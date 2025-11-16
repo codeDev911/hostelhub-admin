@@ -48,13 +48,13 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       },
     })
 
-    const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-token/${updated.verificationToken?.token}`
+    const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-account/${updated.verificationToken?.token}`
 
     await sendHtmlEmail({
       html:RegistrationApprovedEmail(verificationLink,updated.businessName),
       sender:"Registration",
       subject:"Congratulations! your hostel has been approved",
-      to:updated.email
+      to:updated.email,
     })
 
     return NextResponse.json({
