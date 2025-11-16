@@ -1,12 +1,12 @@
 export const runtime = "nodejs";
 import { registrationEmail } from "@/components/mails/registration";
 import { sendHtmlEmail } from "@/lib/mailServer";
-import { prisma } from "@/lib/prisma"
-import { type NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json()
+    const body = await req.json();
 
     const {
       ownerName,
@@ -18,24 +18,39 @@ export async function POST(req: NextRequest) {
       city,
       state,
       postalCode,
-      cnnic, 
+      cnnic,
       description,
-    } = body
+    } = body;
 
     // Validation
     if (!ownerName || !email || !phone || !businessName || !cnnic) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
     // Check if email or CNIC already exists
     const existing = await prisma.hostelRegistration.findFirst({
       where: {
-        OR: [{ email }, { cnnic: cnnic }],
+        AND: [
+          {
+            status: {
+              not: "rejected",
+            },
+          },
+          {
+            OR: [{ email }, { cnnic: cnnic }],
+          },
+        ],
       },
-    })
+    });
 
     if (existing) {
-      return NextResponse.json({ error: "Email or CNIC already registered" }, { status: 409 })
+      return NextResponse.json(
+        { error: "Email or CNIC already registered" },
+        { status: 409 }
+      );
     }
 
     // Create registration
@@ -54,14 +69,14 @@ export async function POST(req: NextRequest) {
         description,
         status: "pending",
       },
-    })
+    });
 
-    sendHtmlEmail({
-      html:registrationEmail(),
-      sender:"Registration",
-      subject:"Your registration has beed recieved",
-      to:email
-    }).then(res=>res).then(data=>data)
+    await sendHtmlEmail({
+      html: registrationEmail(),
+      sender: "Registration",
+      subject: "Your registration has beed recieved",
+      to: email,
+    });
 
     return NextResponse.json(
       {
@@ -69,10 +84,13 @@ export async function POST(req: NextRequest) {
         message: "Registration submitted successfully",
         registrationId: registration.id,
       },
-      { status: 201 },
-    )
+      { status: 201 }
+    );
   } catch (error) {
-    console.error("[v0] Registration submit error:", error)
-    return NextResponse.json({ error: "Failed to submit registration" }, { status: 500 })
+    console.error("[v0] Registration submit error:", error);
+    return NextResponse.json(
+      { error: "Failed to submit registration" },
+      { status: 500 }
+    );
   }
 }

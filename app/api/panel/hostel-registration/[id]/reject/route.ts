@@ -25,12 +25,12 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     })
 
 
-    sendHtmlEmail({
+    await sendHtmlEmail({
       html:RegistrationRejectedEmail(updated?.rejectionReason||"Your provided information is not valid",updated.businessName),
       sender:"Registration",
       subject:"Your registration status",
       to:updated.email
-    }).then(res=>res).then(data=>data)
+    })
 
     return NextResponse.json({
       success: true,

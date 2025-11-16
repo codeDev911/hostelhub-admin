@@ -42,21 +42,14 @@ export async function sendHtmlEmail({ html, sender, subject, to }: EmailProps) {
     },
   });
 
-  transporter.sendMail(
-    {
+  const info = await transporter.sendMail({
       from: `"${sender}" <${getSenderEmail(sender)}>`,
-      to: `${to}`,
-      subject: `${subject}`,
-      html: html,
-    },
-    (err: any, info: any) => {
-      if (err) {
-        return console.log(err);
-      }
-      
-      console.log("Successfully sent");
-    }
-  );
+      to,
+      subject,
+      html,
+    });
+    
+    console.log("Email sent:", info.messageId);
  } catch (error) {
     console.log("email error"+error);
     
