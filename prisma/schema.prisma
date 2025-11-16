@@ -283,9 +283,9 @@ model HostelRegistration {
 
   // Owner Information
   ownerName String
-  email     String @unique
+  email     String 
   phone     String
-  cnnic     String @unique
+  cnnic     String 
 
   // Hostel Information
   businessName String
