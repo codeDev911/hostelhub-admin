@@ -8,3 +8,4 @@
 #### some changes
 #### added https://hostelhub.pk in CORS
 #### added email sender
+#### updated email sending
