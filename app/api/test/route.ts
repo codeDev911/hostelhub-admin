@@ -3,16 +3,17 @@ import { registrationEmail } from "@/components/mails/registration";
 import { sendHtmlEmail } from "@/lib/mailServer";
 import { type NextRequest, NextResponse } from "next/server"
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
-        // let res :any = await sendHtmlEmail({
-        //     html:registrationEmail(),
-        //     sender:"Booking",
-        //     subject:"Your booking has been recieved",
-        //     to:"afnanahhad@gmail.com",
-        // })
+        let res :any = await sendHtmlEmail({
+            html:registrationEmail(),
+            sender:"Registration",
+            subject:"Your registration has been recieved",
+            to:"hostelhubofficial.pk@gmail.com",
+            server:"mailtrap"
+        })
 
-    return NextResponse.json({su:false},{status:200})
+    return NextResponse.json({res},{status:200})
 }catch(err){
     console.log(err);
     return NextResponse.json({error:err},{status:500})
