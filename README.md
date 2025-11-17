@@ -10,3 +10,4 @@
 #### added email sender
 #### updated email sending
 #### removed @unique constraint from hostel registration
+#### added some more emails services
