@@ -10,7 +10,7 @@ import { toast } from "sonner";
 const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 
 export default function MealPlanModal({meals}:any) {
-  let me = meals.map((meal:any)=>JSON.parse(meal))
+  let me = meals && meals?.map((meal:any)=>JSON.parse(meal)) || null
   
   
   

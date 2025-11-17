@@ -18,11 +18,7 @@ export default function HostelDetailsPage() {
 
   const [newAmenity, setNewAmenity] = useState("")
   const [newRule, setNewRule] = useState("")
-  const [selectedDay, setSelectedDay] = useState("Monday")
-  const [editingMeal, setEditingMeal] = useState<{ dayIndex: number; mealIndex: number; dishIndex: number } | null>(
-    null,
-  )
-  const [editingDishValue, setEditingDishValue] = useState("")
+  
   const [loading, setLoading] = useState(true)
   const [formData, setFormData] = useState({} as any)
   const [amenities, setAmenities] = useState([] as any)
@@ -518,7 +514,7 @@ export default function HostelDetailsPage() {
             <h2 className="text-2xl font-bold text-primary">7-Day Meal Plan</h2>
           </div>
           <div className="w-full flex flex-wrap gap-3">
-            <MealPlanModal meals={hostel.mealPlan}/>
+            <MealPlanModal meals={hostel?.mealPlan || null}/>
           </div>
         
         </Card>
