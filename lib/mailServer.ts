@@ -55,7 +55,7 @@ class Server {
         html,
       };
 
-      const res = await fetch("https://api.sender.net/v2/send", {
+      const res = await fetch("https://api.sender.net/v2/message/send", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${process.env.SENDER_API_KEY}`,
@@ -66,7 +66,9 @@ class Server {
       });
 
       if (res.ok) {
-        console.log("Email sent via sender:");
+        let info = await res.json()
+        
+        console.log("Email sent via sender:"+info.emailId );
         return { success: true };
       } else {
         return { success: false };

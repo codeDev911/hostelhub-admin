@@ -7,12 +7,12 @@ export async function GET(req: NextRequest) {
   try {
         let res :any = await sendHtmlEmail({
             html:registrationEmail(),
-            sender:"Registration",
-            subject:"Your registration has been recieved",
-            to:"hostelhubofficial.pk@gmail.com",
-            server:"mailtrap"
+            sender:"No reply",
+            subject:"Welcome to hostelhub",
+            to:"afnanahhad@gmail.com",
+            server:"sender"
         })
-
+        
     return NextResponse.json({res},{status:200})
 }catch(err){
     console.log(err);
