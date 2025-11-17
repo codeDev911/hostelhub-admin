@@ -12,3 +12,4 @@
 #### removed @unique constraint from hostel registration
 #### added some more emails services
 #### added some more mail servers 
+#### a small 🤏 Bug
