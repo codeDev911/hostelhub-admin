@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
       businessName,
       businessType,
       address,
+      gender,area,
       city,
       state,
       postalCode,
@@ -47,6 +48,8 @@ export async function POST(req: NextRequest) {
     });
 
     if (existing) {
+      console.log(existing.status);
+      
       return NextResponse.json(
         { error: "Email or CNIC already registered" },
         { status: 409 }
@@ -62,7 +65,9 @@ export async function POST(req: NextRequest) {
         businessName,
         businessType,
         address,
+        area,
         city,
+        gender,
         state,
         postalCode,
         cnnic,

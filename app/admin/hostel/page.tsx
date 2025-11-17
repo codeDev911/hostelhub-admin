@@ -76,11 +76,11 @@ export default function HostelDetailsPage() {
       if (!response.ok) {
         toast.error("Error occured!")
       }
-      toast("Hostel details updated successfully",)
+      toast.success("Hostel details updated successfully",)
       setIsEditing(false)
       router.refresh()
     } catch (error) {
-      toast('Failed to update hostel details')
+      toast.error('Failed to update hostel details')
     } finally {
       setSubmitLoading(false)
     }
@@ -410,26 +410,16 @@ export default function HostelDetailsPage() {
       </Card>
 
      
-      {/* Meal Plan Section - made meal plan fully editable */}
-      <Card className="p-8 rounded-lg border-0 bg-white">
-        <div className="flex items-center gap-3 mb-6">
-          <Utensils className="w-6 h-6 text-accent" />
-          <h2 className="text-2xl font-bold text-primary">7-Day Meal Plan</h2>
-        </div>
-        <div className="mb-8 flex flex-wrap gap-3">
-          <MealPlanModal/>
-        </div>
-       
-      </Card>
       <UploadImages images={hostel.images}/>
         </div>
         <div className="space-y-5">
             {/* Contact Information Section */}
-      <Card className="p-8 rounded-lg border-0 bg-white">
+      <Card className="md:p-8 p-4 rounded-lg border-0 bg-white">
         <div className="flex items-center gap-3 mb-6">
           <Phone className="w-6 h-6 text-accent" />
           <h2 className="text-2xl font-bold text-primary">Contact Information</h2>
         </div>
+          <p className="text-sm">Note: This details will be show to public</p>
         <div className="space-y-6">
           <div>
             <label className="block text-sm font-semibold text-primary mb-3">Phone Number</label>
@@ -437,6 +427,16 @@ export default function HostelDetailsPage() {
               type="tel"
               name="phone"
               value={formData.phone}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 border border-border rounded-lg bg-background disabled:bg-muted disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-primary mb-3">Email</label>
+            <input
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               disabled={!isEditing}
               className="w-full px-4 py-3 border border-border rounded-lg bg-background disabled:bg-muted disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-accent"
@@ -510,6 +510,18 @@ export default function HostelDetailsPage() {
           </div> 
         </div>
       </Card>
+      
+      {/* Meal Plan Section - made meal plan fully editable */}
+        <Card className="p-8 rounded-lg border-0 bg-white">
+          <div className="flex items-center gap-3">
+            <Utensils className="w-6 h-6 text-accent" />
+            <h2 className="text-2xl font-bold text-primary">7-Day Meal Plan</h2>
+          </div>
+          <div className="w-full flex flex-wrap gap-3">
+            <MealPlanModal meals={hostel.mealPlan}/>
+          </div>
+        
+        </Card>
 
 {/* MEta details  */}
            <Card className="p-8 rounded-lg border-0 bg-white">
@@ -580,7 +592,7 @@ export default function HostelDetailsPage() {
       </div>
 
       {/* Save Button */}
-      {isEditing && 
+      {
       submitLoading ?<Button
           className="w-full bg-accent-foreground hover:bg-accent-foreground/90 py-6 rounded-lg text-lg font-bold shadow-lg hover:shadow-xl transition-all"
         >
@@ -589,7 +601,7 @@ export default function HostelDetailsPage() {
         </Button> :  
         <Button
           onClick={handleSave}
-          className="w-full bg-accent hover:bg-accent/90 py-6 rounded-lg text-lg font-bold shadow-lg hover:shadow-xl transition-all"
+          className="w-full cursor-pointer bg-accent hover:bg-accent/60 py-6 rounded-lg text-lg font-bold shadow-lg hover:shadow-xl transition-all"
         >
           <Save className="w-5 h-5 mr-3" />
           Save All Changes

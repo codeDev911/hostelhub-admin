@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,9 +9,28 @@ import { toast } from "sonner";
 
 const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 
-export default function MealPlanModal() {
-  const [mealPlan, setMealPlan] = useState(
-    days.map((day) => ({
+export default function MealPlanModal({meals}:any) {
+  let me = meals.map((meal:any)=>JSON.parse(meal))
+  
+  
+  
+  
+  const [mealPlan, setMealPlan] : any = useState([]);
+
+
+useEffect(()=>{
+  
+  if(meals && me){
+    setMealPlan( 
+      days.map((day:any,index:any)=>({
+        day,
+        meals:me[index].meals.map((m:any)=>{
+          return {dishes:m?.dishes?.join(",")||""}
+        })
+      })
+    ))
+  }else{
+     days.map((day) => ({
       day,
       meals: [
         { dishes: "" }, // Breakfast
@@ -19,7 +38,8 @@ export default function MealPlanModal() {
         { dishes: "" }, // Dinner
       ],
     }))
-  );
+  }
+},[meals])
 
   const [loading,setLoading] = useState(false)
 
@@ -32,10 +52,10 @@ export default function MealPlanModal() {
   const handleSubmit = async(e: any) => {
     e.preventDefault();
 
-    const formatted = mealPlan.map((d) => (JSON.stringify({
+    const formatted = mealPlan.map((d:any) => (JSON.stringify({
       day: d.day,
-      meals: d.meals.map((m) => ({
-        dishes: m.dishes.split(",").map((x) => x.trim()),
+      meals: d.meals.map((m:any) => ({
+        dishes: m.dishes.split(",").map((x:any) => x.trim()),
       })),
     })));
 
@@ -57,16 +77,15 @@ export default function MealPlanModal() {
 
     }
 
-    console.log("Meal Plan:", formatted);
     // send to backend...
   };
 
   return (
     <Dialog>
         <DialogTrigger asChild>
-            <Button>Add meals</Button>
+            <Button className="w-full">Show mealplan</Button>
         </DialogTrigger>
-        <DialogContent className="h-full overflow-auto">
+        <DialogContent className="h-full  overflow-auto">
             <DialogHeader>
                 <DialogTitle>Add you 7 days meal plan</DialogTitle>
                 <DialogDescription>Here you can add you meals plan of the week. If you didn't have please ignore</DialogDescription>
@@ -75,7 +94,7 @@ export default function MealPlanModal() {
             <form onSubmit={handleSubmit} className="space-y-6 h-full overflow-auto">
 
       <div className="grid gap-6">
-        {mealPlan.map((day, i) => (
+        {mealPlan.map((day:any, i:any) => (
           <div key={i} className="border rounded-lg p-4 space-y-3">
             <h3 className="font-semibold text-lg">{day.day}</h3>
 

@@ -290,7 +290,9 @@ model HostelRegistration {
   // Hostel Information
   businessName String
   businessType String
+  gender       String @default("all")
   address      String
+  area         String?
   city         String
   state        String
   postalCode   String
