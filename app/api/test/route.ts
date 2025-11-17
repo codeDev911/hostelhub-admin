@@ -3,7 +3,7 @@ import { registrationEmail } from "@/components/mails/registration";
 import { sendHtmlEmail } from "@/lib/mailServer";
 import { type NextRequest, NextResponse } from "next/server"
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
         let res :any = await sendHtmlEmail({
             html:registrationEmail(),
