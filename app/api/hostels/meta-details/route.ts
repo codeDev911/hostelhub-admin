@@ -13,9 +13,11 @@ interface HostelMeta {
   reviews: number;
   images: string;
   location: string;
+  amenities: any;
   phone: string;
   pricePerMonth: number;
   city:string
+  province?:string
 }
 
 
@@ -33,6 +35,7 @@ export async function GET(request: NextRequest) {
             address:true,
             city:true,
             images:true,
+            amenities:true,
             phone:true,
             pricePerMonth:true, 
             feedback:{
@@ -61,7 +64,9 @@ export async function GET(request: NextRequest) {
             location:hostel?.address,
             phone:hostel?.phone,
             pricePerMonth:hostel.pricePerMonth,
-            reviews:avgRating
+            reviews:avgRating,
+            amenities:hostel.amenities,
+            province:hostel?.metaDetails?.province ||"",
         }
         return NextResponse.json(details,{status:200})
     }else{
