@@ -5,7 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Menu, X, LayoutDashboard, Building2, DoorOpen, LogOut, Users, Calendar, Receipt, Newspaper, QrCodeIcon, Check, CopyCheck } from "lucide-react"
+import { Menu, X, LayoutDashboard, Building2, DoorOpen, LogOut, Users, Calendar, Receipt, Newspaper, QrCodeIcon, Check, CopyCheck, ReceiptIcon, Banknote } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/hooks/use-auth"
 import { toast } from "sonner"
@@ -13,6 +13,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Spinner } from "@/components/ui/spinner"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Badge } from "@/components/ui/badge"
 
 export default function AdminLayout({
   children,
@@ -90,13 +91,14 @@ export default function AdminLayout({
   }
 
   const menuItems = [
-    { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/admin/hostel", label: "Hostel Details", icon: Building2 },
-    { href: "/admin/rooms", label: "Room Management", icon: DoorOpen },
-    { href: "/admin/students", label: "Students", icon: Users },
-    { href: "/admin/bookings", label: "Bookings", icon: Calendar },
-    { href: "/admin/payments", label: "Payments", icon: Receipt },
-    { href: "/admin/feedbacks", label: "Feedbacks", icon: Newspaper },
+    { href: "/admin", label: "Dashboard", icon: LayoutDashboard,tag:"" },
+    { href: "/admin/hostel", label: "Hostel Details", icon: Building2,tag:"" },
+    { href: "/admin/rooms", label: "Room Management", icon: DoorOpen,tag:"" },
+    { href: "/admin/students", label: "Students", icon: Users,tag:"" },
+    { href: "/admin/bookings", label: "Bookings", icon: Calendar,tag:"" },
+    { href: "/admin/payments", label: "Payments", icon: Banknote,tag:"" },
+    { href: "/admin/feedbacks", label: "Feedbacks", icon: Newspaper,tag:"new" },
+    { href: "/admin/expenses", label: "Expenses", icon: ReceiptIcon,tag:"new" },
   ]
 
   return (
@@ -122,6 +124,7 @@ export default function AdminLayout({
                 >
                   <Icon className="w-5 h-5" />
                   <span>{item.label}</span>
+                  {item.tag && <Badge variant={"secondary"}>{item.tag}</Badge>}
                 </div>
               </Link>
             )

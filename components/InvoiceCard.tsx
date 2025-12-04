@@ -145,7 +145,7 @@ export function InvoiceHTML ({invoice}:InvoiceCardProps){
   <!-- Header -->
   <div class="flex" style=" padding-bottom:10px;margin-bottom:10px;">
     <div class="logo-area">
-      <img src="http://localhost:3000/logo.png" width="48" style="border-radius:6px;">
+      <img src="/logo.png" width="48" style="border-radius:6px;">
       <div>
         <div style="font-size:20px;font-weight:700;color:#222;">HostelHub</div>
         <div style="font-size:12px;color:#777;">Invoice</div>

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import { ArrowLeft, Loader2, BedIcon, CheckCheck, HashIcon, Building, BedDouble, PenIcon, MoreVertical, DollarSign } from "lucide-react"
 import Link from "next/link"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import ShiftRoomModal from "@/components/ShiftRoomModal"
 
@@ -12,6 +12,7 @@ export default function RoomDetails() {
   const params = useParams()
   const roomId = params.id
   const [loading, setLoading] = useState(true)
+  const [revokeLoading,setRevokeLoading] = useState(false)
   const [room, setRoom] = useState<any>(null)
   const [moreModal, setMoreModal] = useState({
     is_active: false,
@@ -39,6 +40,33 @@ export default function RoomDetails() {
     fetchRooms()
   }, [])
 
+
+  const handleRevokeStudent = async (studentId: number) => {
+    const confi = confirm("Are you want to revoke the student?")
+    if(!confi) return 
+    try {
+      
+      setRevokeLoading(true)
+      const response = await fetch(`/api/admin/students/${studentId}`, {
+        method: "DELETE",
+      })
+
+      if (response.ok) {
+        toast.success("Student revoked successfully")
+        const updatedStudents = room?.students?.filter((st:any)=> st.id !== studentId)
+        console.log(updatedStudents);
+        
+        setRoom({...room, students : updatedStudents })
+      } else {
+        toast.error("Failed to revoke student")
+      }
+    } catch (error) {
+      console.error("[v0] Revoke error:", error)
+      toast.error("An error occurred")
+    }finally{
+      setRevokeLoading(false)
+    }
+  }
 
 
 
@@ -128,7 +156,7 @@ export default function RoomDetails() {
                   <div className="flex items-start gap-4">
                     <DollarSign className="w-5 h-5 text-accent mt-1" />
                     <div>
-                      <p className="text-sm text-foreground/60">Type</p>
+                      <p className="text-sm text-foreground/60">Price / month</p>
                       <p className="font-semibold text-foreground">{room?.pricePerMonth}</p>
                     </div>
                   </div>
@@ -192,7 +220,7 @@ export default function RoomDetails() {
                                     <DropdownMenuItem>
                                       <Link href={`/admin/students/${student.id}`}>View details</Link>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem variant="destructive">Revoke </DropdownMenuItem>
+                                    {revokeLoading?<DropdownMenuItem  variant="destructive">Revoking...</DropdownMenuItem>:<DropdownMenuItem onClick={()=> handleRevokeStudent(student.id)} variant="destructive">Revoke </DropdownMenuItem>}
                                 </DropdownMenuContent>
                               </DropdownMenu>
                                

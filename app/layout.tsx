@@ -39,7 +39,7 @@ export default function RootLayout({
     <html lang="en">
        <body className={`font-sans antialiased`}>
         {children}
-        <Toaster position="top-center" closeButton/>
+        <Toaster position="top-center" richColors closeButton/>
         <Analytics />
       </body>
     </html>

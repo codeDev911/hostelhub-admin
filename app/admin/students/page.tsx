@@ -24,7 +24,6 @@ export default function StudentManagement() {
   const [filteredStudents, setFilteredStudents] = useState<Student[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
-  const [filterHostel, setFilterHostel] = useState("")
   const [filterGender, setFilterGender] = useState("")
   const [filterPayment, setFilterPayment] = useState("")
   const [activeMenu, setActiveMenu] = useState<number | null>(null)
@@ -33,7 +32,6 @@ export default function StudentManagement() {
     const fetchStudents = async () => {
       try {
         const params = new URLSearchParams()
-        if (filterHostel) params.append("hostelId", filterHostel)
         if (filterPayment) params.append("paymentStatus", filterPayment)
 
         const response = await fetch(`/api/admin/students?${params.toString()}`)
@@ -51,7 +49,7 @@ export default function StudentManagement() {
     }
 
     fetchStudents()
-  }, [filterHostel, filterPayment])
+  }, [ filterPayment])
 
   useEffect(() => {
     
@@ -74,6 +72,10 @@ export default function StudentManagement() {
 
   const handleRevokeStudent = async (studentId: number) => {
     try {
+
+      const confi = confirm("Are you want to revoke the student?")
+      if(!confi) return 
+
       const response = await fetch(`/api/students/${studentId}/revoke`, {
         method: "POST",
       })

@@ -76,9 +76,10 @@ model Hostel {
   bookings           Booking[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  feedback Feedback[]
+  monthlyExpenses MonthlyExpense[]
 
   @@index([ownerId])
-  feedback Feedback[]
 }
 
 // Review or complaint
@@ -262,6 +263,8 @@ model Payment {
   @@index([invoiceId])
 }
 
+
+
 // Admin model for authentication
 model Admin {
   id            String      @id @default(cuid())
@@ -276,6 +279,10 @@ model Admin {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+
+
+
 
 // Hostel Registration and Verification Token Models
 model HostelRegistration {
@@ -325,5 +332,19 @@ model VerificationToken {
   expiresAt DateTime
   usedAt    DateTime?
 
+  createdAt DateTime @default(now())
+}
+
+
+model MonthlyExpense{
+  id  Int @id @default(autoincrement())
+  title String?
+  description String?
+  items String[] @default([])
+  month Int @default(1)
+  year Int @default(2025)
+  hostelId String
+  hostel Hostel @relation(fields: [hostelId],references: [id],onDelete: Cascade)
+  updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 }
