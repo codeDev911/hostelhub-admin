@@ -8,9 +8,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   try {
     const { id } = await params
     const body = await req.json()
-    const { reviewedBy, rejectionReason } = body
+    const { reviewedBy, rejectionReason } = JSON.parse(body)
 
-    if (!reviewedBy || !rejectionReason) {
+    if (!reviewedBy || !rejectionReason) { 
+      
       return NextResponse.json({ error: "Reviewer and rejection reason are required" }, { status: 400 })
     }
 

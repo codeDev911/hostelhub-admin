@@ -81,13 +81,16 @@ export async function verifyPassword(password: string, hashed: string) {
 export const VerifyPanelRequest = async (token: any): Promise<boolean> => {
   try {
     let extractToken = token.split(" ")[1]; // e.g Bearer ryKslkdjlkj82kjhasdkjh => ryKslkdjlkj82kjhasdkjh
-    const { payload } = await jwtVerify(extractToken, secret);
-
+    const { payload } = await jwtVerify(extractToken, secret,{ clockTolerance: 5 });   
+    
+    
     if (payload && payload.email == "admin@hostelhub.pk") {
       return true;
     }
     return false;
   } catch (err) {
+    console.log(err);
+    
     return false;
   }
 };

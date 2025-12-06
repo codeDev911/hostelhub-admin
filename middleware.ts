@@ -78,7 +78,7 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith("/api/panel")) {
     const token = request.headers.get("Authorization");
     const isValid = await VerifyPanelRequest(token);
-
+    
     if (!isValid) {
       return withCorsHeaders(
         NextResponse.json({ error: "Unauthorized user" }, { status: 401 }),
