@@ -15,3 +15,4 @@
 #### a small 🤏 Bug
 #### fixed sender mail sending
 ### Updatd CORS - 24/11/2025 
+### Added Expense tracker - 5/12/2025
