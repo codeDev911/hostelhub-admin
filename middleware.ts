@@ -12,72 +12,83 @@ const publicRoutes = [
   "/api/students/login", 
 ];
 
-const allowedOrigins = ["https://hostelhub.pk","https://www.hostelhub.pk", "http://localhost:3001","https://hostel-hub-control-panel.vercel.app"];
+const allowedOrigins = [
+  "https://hostelhub.pk",
+  "https://www.hostelhub.pk",
+  "https://hostel-hub-control-panel.vercel.app",
+  "http://localhost:3001"
+];
+
+function withCorsHeaders(response: NextResponse, origin: string) {
+  response.headers.set("Access-Control-Allow-Origin", allowedOrigins.includes(origin) ? origin : "");
+  response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization, x-api-token");
+  response.headers.set("Access-Control-Allow-Credentials", "true");
+  return response;
+}
 
 export async function middleware(request: NextRequest) {
   const origin = request.headers.get("origin") || "";
   const pathname = request.nextUrl.pathname;
 
+  // Handle OPTIONS preflight
   if (request.method === "OPTIONS") {
-    
-    return new NextResponse(null, {
-      status: 200,
-      headers: {
-        "Access-Control-Allow-Origin": allowedOrigins.includes(origin) ? origin : "",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization, x-api-token",
-        "Access-Control-Allow-Credentials": "true",
-      },
-    });
+    return withCorsHeaders(new NextResponse(null, { status: 200 }), origin);
   }
 
-  const response = NextResponse.next();
-
-  if (allowedOrigins.includes(origin)) {
-    response.headers.set("Access-Control-Allow-Origin", origin);
-    response.headers.set("Access-Control-Allow-Credentials", "true");
-  }
+  let response = NextResponse.next();
+  response = withCorsHeaders(response, origin);
 
   const isPublicRoute = publicRoutes.some((route) => pathname == route);
   if (isPublicRoute) return response;
 
+  // Admin session
   if (pathname.startsWith("/admin") && pathname !== "/admin-portal-login") {
     const session = await getSession();
     if (!session) {
-      return NextResponse.redirect(new URL("/admin-portal-login", request.url));
+      const redirectRes = NextResponse.redirect(new URL("/admin-portal-login", request.url));
+      return withCorsHeaders(redirectRes, origin);
     }
   }
 
- 
+  // Students APIs
+  if (pathname.startsWith('/api/students')) {
+    const token = request.headers.get("authorization");
 
-  if(pathname.startsWith('/api/students')){
-    let token = request?.headers?.get("authorization")
-      
-    if(!token){
-      return NextResponse.json({error:"Unauthorized user"},{status:401})
+    if (!token) {
+      return withCorsHeaders(
+        NextResponse.json({ error: "Unauthorized user" }, { status: 401 }),
+        origin
+      );
     }
-    let verify  = await verifyExternalUser(token)
+
+    const verify = await verifyExternalUser(token);
+    if (!verify) {
+      return withCorsHeaders(
+        NextResponse.json({ error: "Unauthorized user" }, { status: 401 }),
+        origin
+      );
+    }
     
-    if(!verify ){
-      return NextResponse.json({error:"Unauthorized user"},{status:401})
-    }
-    response.headers.append("user",JSON.stringify(verify))
+    response.headers.append("user", JSON.stringify(verify));
+    return response;
   }
-  
-  // verify incoming request from control panel
-  if(pathname.startsWith("/api/panel")){
-    let token = request.headers.get("Authorization")
-    
-    let isValid = await VerifyPanelRequest(token)
-    if(isValid){
-      return response
-      
-    }else{
-      return NextResponse.json({error:"Unauthorized user"},{status:401})
+
+  // Panel APIs
+  if (pathname.startsWith("/api/panel")) {
+    const token = request.headers.get("Authorization");
+    const isValid = await VerifyPanelRequest(token);
+
+    if (!isValid) {
+      return withCorsHeaders(
+        NextResponse.json({ error: "Unauthorized user" }, { status: 401 }),
+        origin
+      );
     }
 
+    return response;
   }
-  
+
   return response;
 }
 
