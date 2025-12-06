@@ -18,3 +18,4 @@
 ### Added Expense tracker - 5/12/2025
 ### updated MIddleware to access to CP hostel hub 6/12/2025 
 ### update nextjs  16.0.0 to 16.0.7 to resolve the error 6/12/2025 (2nd attempt)
+### Added Dark theme
