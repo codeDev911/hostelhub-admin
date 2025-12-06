@@ -90,7 +90,7 @@ const ActiveFilters = ({ filters, removeFilter }:any) => {
       {active.map(([key, val]:any) => (
         <div
           key={key}
-          className="flex items-center gap-1 bg-gray-100 text-sm px-3 py-1 rounded-full border"
+          className="flex items-center gap-1 bg-background text-sm px-3 py-1 rounded-full border"
         >
           <span className="capitalize">
             {key}: {Array.isArray(val) ? `${val[0]} - ${val[1]}` : val}

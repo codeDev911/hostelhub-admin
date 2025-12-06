@@ -52,28 +52,28 @@ export default function AdminDashboard() {
       value: stats.totalStudents,
       icon: ({className}:any)=><Users className={className}/>,
       color: "from-blue-500 to-blue-600",
-      bgColor: "bg-blue-50",
+      bgColor: "bg-blue-50 dark:bg-blue-600",
     },
     {
       label: "Available Seats",
       value: stats.availableSeats,
       icon: ({className}:any)=><DoorOpen className={className}/>,
       color: "from-green-500 to-green-600",
-      bgColor: "bg-green-50",
+      bgColor: "bg-green-50 dark:bg-green-600",
     },
     {
       label: "Total Rooms",
       value: stats.totalRooms,
       icon: ({className}:any)=><DoorOpen className={className}/>,
       color: "from-purple-500 to-purple-600",
-      bgColor: "bg-purple-50",
+      bgColor: "bg-purple-50 dark:bg-purple-600",
     },
     {
       label: "Occupancy Rate",
       value: `${stats.occupancyRate}%`,
       icon: ({className}:any)=><TrendingUp className={className}/>,
       color: "from-orange-500 to-orange-600",
-      bgColor: "bg-orange-50",
+      bgColor: "bg-orange-50 dark:bg-orange-600",
     },
   ]
 
@@ -91,7 +91,7 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {dashboardStats.map((stat, index) => {
           return (
-            <Card key={index} className="p-4 rounded-lg hover:shadow-xl transition-all duration-300 border-0 bg-white">
+            <Card key={index} className="p-4 rounded-lg hover:shadow-xl transition-all duration-300 border-0 bg-card">
               <div className="flex items-start justify-between ">
                 <div className={`p-3 rounded-lg ${stat.bgColor}`}>
                   {stat.icon(`w-6 h-6 bg-linear-to-br ${stat.color} bg-clip-text text-transparent`)}
@@ -109,7 +109,7 @@ export default function AdminDashboard() {
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Bookings */}
-        <Card className="lg:col-span-2 p-6 rounded-lg border-0 bg-white">
+        <Card className="lg:col-span-2 p-6 rounded-lg border-0 bg-card">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-primary">Recent Bookings</h2>
             <Calendar className="w-5 h-5 text-muted-foreground" />
@@ -153,7 +153,7 @@ export default function AdminDashboard() {
         </Card>
 
         {/* Revenue Card */}
-        <Card className="p-6 rounded-lg border-0 bg-white">
+        <Card className="p-6 rounded-lg border-0 bg-card">
           <h2 className="text-2xl font-bold text-primary mb-6">Revenue</h2>
           <div className="space-y-6">
             <div className="flex items-center gap-4">

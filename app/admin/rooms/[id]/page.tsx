@@ -113,7 +113,7 @@ export default function RoomDetails() {
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               {/* Room Information */}
-              <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+              <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
                 <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
                   Room Information
                 </h2>
@@ -164,11 +164,11 @@ export default function RoomDetails() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+              <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
                 <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
                   Students ({room.students.length})
                 </h2>
-                <div className="bg-white rounded-lg shadow-sm border border-border overflow-hidden">
+                <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
                   <div className="overflow-x-auto z-0">
                     <table className="w-full z-0">
                       <thead className="bg-secondary border-b border-border">
@@ -217,8 +217,8 @@ export default function RoomDetails() {
                                 <DropdownMenuContent align="end">
                                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                     <ShiftRoomModal varient={"ghost"} buttonTitle="Shift room" currentRoom={room} student_id={student.id}/>
-                                    <DropdownMenuItem>
-                                      <Link href={`/admin/students/${student.id}`}>View details</Link>
+                                    <DropdownMenuItem className="hover:bg-background">
+                                      <Link href={`/admin/students/${student.id}`} >View details</Link>
                                     </DropdownMenuItem>
                                     {revokeLoading?<DropdownMenuItem  variant="destructive">Revoking...</DropdownMenuItem>:<DropdownMenuItem onClick={()=> handleRevokeStudent(student.id)} variant="destructive">Revoke </DropdownMenuItem>}
                                 </DropdownMenuContent>
@@ -248,7 +248,7 @@ export default function RoomDetails() {
 
             {/* Sidebar - Actions */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-lg p-6 shadow-sm border border-border sticky top-4">
+              <div className="bg-card rounded-lg p-6 shadow-sm border border-border sticky top-4">
                 <h3 className="text-lg font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">Quick Actions</h3>
                         <p className="text-sm">not availabe right now</p>
 

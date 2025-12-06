@@ -78,8 +78,8 @@ export default function ShiftRoomModal({
     <Dialog>
        
         <DialogTrigger asChild>
-          <Button variant={varient} 
-            className="w-full flex items-center hover:opacity-75  justify-center gap-2 bg-accent text-black font-semibold py-2 rounded-lg hover:bg-accent transition-colors"
+          <Button 
+            className="w-full text-start hover:bg-accent/80 text-accent-foreground   bg-accent   transition-colors"
           >{buttonTitle}</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-2xl">
@@ -88,7 +88,7 @@ export default function ShiftRoomModal({
             <DialogDescription>
               This action will move the student to a new room.
               <br />
-              <span className="text-sm">The perosn will shift from : <strong className="text-destructive"># {currentRoom.roomNumber} F{currentRoom.floor}, {currentRoom.roomType}</strong></span>
+              <span className="text-sm">The perosn will shift from : <strong className="text-accent"># {currentRoom.roomNumber} F{currentRoom.floor}, {currentRoom.roomType}</strong></span>
             </DialogDescription>
           </DialogHeader>
           {loading ? (

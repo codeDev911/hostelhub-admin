@@ -105,7 +105,7 @@ export default function AdmitStudent() {
           </Link>
 
           {submitted ? (
-            <div className="bg-white rounded-lg p-8 text-center shadow-sm border border-border">
+            <div className="bg-card rounded-lg p-8 text-center shadow-sm border border-border">
               <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
               <h2 className="text-2xl font-bold text-primary mb-2">Student Admitted Successfully</h2>
               <p className="text-foreground/60 mb-6">The student has been added to the hostel system.</p>
@@ -122,7 +122,7 @@ export default function AdmitStudent() {
                 <div className="lg:col-span-2">
                   <form
                 onSubmit={handleSubmit}
-                className="bg-white rounded-lg p-8 shadow-sm border border-border space-y-8"
+                className="bg-card rounded-lg p-8 shadow-sm border border-border space-y-8"
               >
                 <div>
                   <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
@@ -353,7 +353,7 @@ export default function AdmitStudent() {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="flex-1 bg-accent text-primary font-semibold py-3 rounded-lg hover:bg-accent/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="flex-1 bg-accent text-accent-foreground font-semibold py-3 rounded-lg hover:bg-accent/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     {isLoading ? (
                       <>
@@ -376,7 +376,7 @@ export default function AdmitStudent() {
 
                 {/* RIght dev */}
                <div>
-                 <div className="bg-white rounded-lg p-8 shadow-sm border border-border  space-y-4">
+                 <div className="bg-card rounded-lg p-8 shadow-sm border border-border  space-y-4">
                   <h2 className="text-xl font-bold text-primary mb-2 pb-2 border-b-2 border-secondary">
                     Admit directly
                   </h2>

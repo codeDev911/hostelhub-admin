@@ -147,8 +147,8 @@ export default function PaymentDetails() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-primary mb-2">Invoice {payment.invoiceId}</h1>
-          <p className="text-foreground/60">{monthName} Invoice</p>
+          <h1 className="text-4xl font-bold text-primary mb-2">Payment details</h1>
+          <p className="text-foreground/60">Payments & invoice details</p>
         </div>
         <span className={`px-4 py-2 rounded-full text-sm font-semibold ${statusColor}`}>{paymentStatus}</span>
       </div>
@@ -157,7 +157,7 @@ export default function PaymentDetails() {
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Invoice Header */}
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+          <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
             <div className="grid grid-cols-2 gap-8">
               <div>
                 <p className="text-sm text-foreground/60 mb-2">Invoice Date</p>
@@ -171,7 +171,7 @@ export default function PaymentDetails() {
           </div>
 
           {/* Student Information */}
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+          <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
             <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
               Student Information
             </h2>
@@ -228,7 +228,7 @@ export default function PaymentDetails() {
           </div>
 
           {/* Payment History */}
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+          <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
             <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
               Payment Status & History
             </h2>
@@ -259,12 +259,12 @@ export default function PaymentDetails() {
 
         {/* Sidebar - Actions */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-border sticky top-4 space-y-4">
+          <div className="bg-card rounded-lg p-6 shadow-sm border border-border sticky top-4 space-y-4">
             <h3 className="text-lg font-bold text-primary pb-4 border-b-2 border-secondary">Actions</h3>
 
             <button
               onClick={handleDownloadInvoice}
-              className="w-full flex items-center justify-center gap-2 bg-accent text-primary font-semibold py-2 rounded-lg hover:bg-accent/90 transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-accent text-accent-foreground font-semibold py-2 rounded-lg hover:bg-accent/90 transition-colors"
             >
               <Printer className="w-4 h-4" />
               Print Invoice
@@ -304,7 +304,7 @@ export default function PaymentDetails() {
       {/* Mark as Paid Modal */}
       {showMarkPaidModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
+          <div className="bg-card rounded-lg p-6 max-w-md w-full shadow-lg">
             <h3 className="text-lg font-bold text-primary mb-4">Mark Invoice as Paid</h3>
 
             <div className="space-y-4 mb-6">

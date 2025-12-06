@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Search, Filter, CheckCircle, Clock, AlertCircle, Download, Receipt, Loader2, EyeIcon } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 interface Payment {
   id: number
@@ -24,6 +25,8 @@ export default function PaymentsManagement() {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterHostel, setFilterHostel] = useState("")
   const [filterPaymentStatus, setFilterPaymentStatus] = useState("")
+
+  const router = useRouter()
 
   useEffect(() => {
     const fetchPayments = async () => {
@@ -105,7 +108,7 @@ export default function PaymentsManagement() {
           <div className="flex space-x-2 items-center">
 <button
           onClick={handleExport}
-          className="flex items-center gap-2 bg-accent text-primary font-semibold px-6 py-3 rounded-lg hover:bg-accent/90 transition-colors"
+          className="flex items-center gap-2 bg-accent text-accent-foreground font-semibold px-6 py-3 rounded-lg hover:bg-accent/90 transition-colors"
         >
           <Download className="w-5 h-5" />
           Export Payments
@@ -117,7 +120,7 @@ export default function PaymentsManagement() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Total Revenue (Paid)</p>
@@ -129,7 +132,7 @@ export default function PaymentsManagement() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Pending Payments</p>
@@ -141,7 +144,7 @@ export default function PaymentsManagement() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Overdue Invoices</p>
@@ -156,7 +159,7 @@ export default function PaymentsManagement() {
 
 
       {/* Filters and Search */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-border space-y-4">
+      <div className="bg-card rounded-lg p-6 shadow-sm border border-border space-y-4">
         <div className="flex items-center gap-2 mb-4">
           <Filter className="w-5 h-5 text-primary" />
           <h2 className="text-lg font-semibold text-primary">Filters & Search</h2>
@@ -194,7 +197,7 @@ export default function PaymentsManagement() {
       </div>
 
       {/* Payments Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-border overflow-hidden">
+      <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-secondary border-b border-border">
@@ -203,13 +206,12 @@ export default function PaymentsManagement() {
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Amount</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Status</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Date</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">View</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {filteredPayments.length > 0 ? (
                 filteredPayments.map((payment) => (
-                  <tr key={payment.id} className="hover:bg-secondary/50 transition-colors">
+                  <tr key={payment.id} className="hover:bg-secondary/50 cursor-pointer transition-colors" onClick={()=>router.push(`/admin/payments/${payment.id}`)}>
                     <td className="px-6 py-4 text-sm font-medium text-foreground">
                       {payment.invoice.student.firstName}
                     </td>
@@ -232,15 +234,7 @@ export default function PaymentsManagement() {
                     <td className="px-6 py-4 text-sm text-foreground/70">
                       {new Date(payment.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 text-sm">
-                      <Link
-                        href={`/admin/payments/${payment.id}`}
-                        className="p-2 hover:bg-secondary rounded-lg transition-colors inline-block"
-                        title="View Details"
-                      >
-                        <EyeIcon className="w-4 h-4 text-foreground/60" />
-                      </Link>
-                    </td>
+                    
                   </tr>
                 ))
               ) : (

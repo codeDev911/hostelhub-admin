@@ -57,7 +57,7 @@ export default function AdminPortalLoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-accent/5 via-background to-accent/10 flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Card with premium styling */}
-        <div className="backdrop-blur-xl bg-white/80 border border-white/20 rounded-2xl p-8 shadow-2xl">
+        <div className="backdrop-blur-xl bg-card/80 border border-white/20 rounded-2xl p-8 shadow-2xl">
           {/* Header */}
           <div className="mb-8 text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-accent to-accent/70 rounded-xl mb-4">

@@ -24,6 +24,7 @@ import {
   PrinterIcon,
   Loader2,
   MoreVertical,
+  ArrowLeft,
 } from "lucide-react";
 import {
   Select,
@@ -43,7 +44,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { ExpenseReportPDFExportHTML } from "@/components/ExpenseReportPDFExport";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
 import {
   Dialog,
@@ -55,7 +56,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import Router from "next/router";
+import Link from "next/link";
 
 interface Expense {
   title: string;
@@ -143,8 +144,10 @@ export default function ExpensePage() {
     description: "",
     month: 0,
     year: 0,
+    
   });
 
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -194,6 +197,7 @@ export default function ExpensePage() {
     description: "",
     receiptUrl: "",
   });
+  const router = useRouter()
 
   const [filterCategory, setFilterCategory] = useState("");
 
@@ -270,7 +274,7 @@ export default function ExpensePage() {
 
       if (res.ok) {
         toast.success("report deleted success");
-        Router.push("/admin/expenses");
+        router.push("/admin/expenses");
       }
     } catch (error) {
       toast.error("Error occured! Please try again");
@@ -419,6 +423,10 @@ export default function ExpensePage() {
 
   return (
     <div className=" space-y-8">
+      <Link href="/admin/payments" className="flex items-center gap-2 text-accent hover:text-accent/80">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Expenses
+            </Link>
       <div className="flex max-md:flex-wrap space-y-3 items-center justify-between">
         <div>
           <h1 className="text-4xl font-bold text-primary mb-2">
@@ -521,7 +529,7 @@ export default function ExpensePage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">
@@ -540,7 +548,7 @@ export default function ExpensePage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div className="w-full">
               <p className="text-foreground/60 text-sm font-medium">

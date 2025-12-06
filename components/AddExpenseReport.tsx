@@ -40,7 +40,7 @@ export default function AddExpenseReport() {
 
       if(res.ok){
         toast.success("Expenses created success")
-        router.refresh()
+        router.push("/admin/expenses")
       }
       
     } catch (error) {

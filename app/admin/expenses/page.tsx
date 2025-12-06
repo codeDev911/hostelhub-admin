@@ -1,10 +1,8 @@
 "use client"
 import AddExpenseReport from "@/components/AddExpenseReport";
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CheckCircle, Download, Loader2, MoreVertical, PlusSquareIcon } from "lucide-react";
-import Link from "next/link";
+import { CheckCircle, Loader2, PlusSquareIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -17,6 +15,11 @@ const page = () => {
     yearCost:0,
     prevMonthCost:0
   })
+
+  const router = useRouter()
+
+  
+
   useEffect(()=>{
     const fetchData = async()=>{
      try {
@@ -74,7 +77,7 @@ const page = () => {
           </button> */}
          <Dialog>
             <DialogTrigger>
-                 <button className="flex items-center hover:cursor-pointer gap-2 bg-black text-white font-semibold px-6 py-3 rounded-lg hover:bg-black/70 transition-colors">
+                 <button className="flex items-center hover:cursor-pointer gap-2 bg-accent text-accent-foreground  font-semibold px-6 py-3 rounded-lg   transition-colors">
             <PlusSquareIcon className="w-5 h-5" />
             Create Report
           </button>
@@ -93,42 +96,42 @@ const page = () => {
       </div>
       <div className="mt-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Monthly cost (avg)</p>
-              <p className="text-3xl font-bold text-green-600 mt-2">Rs {stats.monthlyCostAvg}</p>
+              <p className="text-3xl font-bold text-green-600 mt-2">Rs {stats.monthlyCostAvg.toLocaleString()}</p>
             </div>
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-              <CheckCircle className="w-6 h-6 text-green-600" />
+            <div className="w-12 h-12 bg-green-100 dark:bg-green-500 rounded-lg flex items-center justify-center">
+              <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-200" />
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Cost this year</p>
-              <p className="text-3xl font-bold text-yellow-600 mt-2">Rs {stats.yearCost}</p>
+              <p className="text-3xl font-bold text-yellow-600 mt-2">Rs {stats.yearCost.toLocaleString()}</p>
             </div>
-            <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-              <CheckCircle className="w-6 h-6 text-yellow-600" />
+            <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-500 rounded-lg flex items-center justify-center">
+              <CheckCircle className="w-6 h-6 text-yellow-600 dark:text-yellow-200" />
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Cost previous month</p>
-              <p className="text-3xl font-bold text-gray-600 mt-2">Rs {stats.prevMonthCost}</p>
+              <p className="text-3xl font-bold text-gray-600 mt-2">Rs {stats.prevMonthCost.toLocaleString()}</p>
             </div>
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-              <CheckCircle className="w-6 h-6 text-gray-600" />
+            <div className="w-12 h-12 bg-gray-100 dark:bg-gray-500 rounded-lg flex items-center justify-center">
+              <CheckCircle className="w-6 h-6 text-gray-600 dark:text-gray-200" />
             </div>
           </div>
         </div>
         </div>
       </div>
-       <div className="bg-white mt-5 rounded-lg shadow-sm border border-border overflow-hidden">
+       <div className="bg-card mt-5 rounded-lg shadow-sm border border-border overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-secondary border-b border-border">
@@ -136,14 +139,12 @@ const page = () => {
                       <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Title</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Month / Year</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Total cost</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Created At</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Actions</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Created At</th> 
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                   
                        {data?.map((item:any,ind:any)=>(
-                         <tr key={ind}  className="hover:bg-secondary/50 transition-colors">
+                         <tr key={ind} onClick={()=> router.push(`/admin/expenses/${item.id}`) }  className="cursor-pointer hover:bg-secondary/50 transition-colors">
                           <td className="px-6 py-4 text-sm font-medium text-foreground">
                             {item?.title}
                           </td>
@@ -160,18 +161,7 @@ const page = () => {
                              year:"numeric"
                            })}
                           </td>
-                          <td className="px-6 py-4 text-sm font-semibold text-foreground">
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <Button variant={"outline"}>
-                              <MoreVertical className="w-4"/>
-                            </Button> 
-                              </PopoverTrigger>
-                              <PopoverContent className="max-w-[200px]">
-                                <Link href={`/admin/expenses/${item.id}`} className="flex  w-full flex-1 text-sm p-2 rounded-md hover:bg-accent/20">View details</Link>
-                              </PopoverContent>
-                            </Popover>
-                          </td>
+                         
                         </tr> 
                        ))}
                   </tbody>

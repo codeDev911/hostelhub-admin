@@ -102,7 +102,7 @@ const [markAsReadLoading,setMarkAsReadLoading] = useState(false)
       <FeedbackStatsCard stats={feedBack} />
 
       {/* Filters and Search */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-border space-y-4">
+      <div className="bg-card rounded-lg p-6 shadow-sm border border-border space-y-4">
         <div className="flex items-center gap-2 mb-4">
           <Filter className="w-5 h-5 text-primary" />
           <h2 className="text-lg font-semibold text-primary">
@@ -157,7 +157,7 @@ const [markAsReadLoading,setMarkAsReadLoading] = useState(false)
       </div>
 
       {/* feedbacks Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-border overflow-hidden">
+      <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-secondary border-b border-border">
@@ -206,13 +206,13 @@ const [markAsReadLoading,setMarkAsReadLoading] = useState(false)
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold ${
                           feedback.status === "resolved"
-                            ? "bg-green-100 text-green-700"
+                            ? "bg-green-100 dark:bg-green-600 text-green-700 dark:text-green-200"
                             : feedback.status === "pending"
-                            ? "bg-yellow-100 text-yellow-700"
+                            ? "bg-yellow-100 dark:bg-yellow-600 text-yellow-700 dark:text-yellow-200"
                             :feedback.status == "rejected"
-                            ? "bg-red-100 text-red-700"
+                            ? "bg-red-100 dark:bg-red-600 text-red-700 dark:text-red-200"
                             :feedback.status == "reviewed"
-                            ? "bg-blue-100 text-blue-700":""
+                            ? "bg-blue-100 dark:bg-blue-600 text-blue-700 dark:text-blue-200":""
                         }`}
                       >
                         {feedback.status}

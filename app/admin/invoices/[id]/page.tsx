@@ -268,7 +268,7 @@ ${
                 <h2 className="text-base font-bold">Other actions</h2>
                 <button
                   onClick={handleDownloadInvoice}
-                  className="w-full flex items-center cursor-pointer justify-center gap-2 bg-accent text-primary font-semibold py-2 rounded-lg hover:bg-accent/90 transition-colors"
+                  className="w-full flex items-center cursor-pointer justify-center gap-2 bg-accent text-accent-foreground font-semibold py-2 rounded-lg hover:bg-accent/90 transition-colors"
                 >
                   <Download className="w-4 h-4" />
                   Download Invoice

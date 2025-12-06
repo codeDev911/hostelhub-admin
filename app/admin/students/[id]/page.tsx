@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { ArrowLeft, FileText, Phone, MapPin, User, Home, LogOut, Move, Loader2, AlertCircleIcon } from "lucide-react"
 import Link from "next/link"
 import { toast } from "react-toastify"
@@ -39,6 +39,7 @@ export default function StudentDetails() {
   const [showShiftModal, setShowShiftModal] = useState(false)
   const [selectedRoom, setSelectedRoom] = useState("")
   const [LoadingSwitching ,setLoadingSwitching] = useState(false)
+  const router = useRouter()
 
   // Handle switching room
   const handleSwitching = async (fromRoomId: string) => {
@@ -138,7 +139,7 @@ export default function StudentDetails() {
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               {/* Personal Information */}
-              <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+              <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
                 <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
                   Personal Information
                 </h2>
@@ -177,7 +178,7 @@ export default function StudentDetails() {
               </div>
 
               {/* CNIC Information */}
-              <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+              <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
                 <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">Identification</h2>
                 <div className="space-y-4">
                   <div>
@@ -188,7 +189,7 @@ export default function StudentDetails() {
               </div>
 
               {/* Father Information */}
-              <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+              <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
                 <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
                   Father Information
                 </h2>
@@ -211,7 +212,7 @@ export default function StudentDetails() {
               </div>
 
               {/* Room Information */}
-              <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+              <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
                 <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
                   Current Room Assignment
                 </h2>
@@ -244,7 +245,7 @@ export default function StudentDetails() {
               </div>
 
               {/* Payment Invoices */}
-              <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+              <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
                 <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary flex items-center gap-2">
                   <FileText className="w-5 h-5" />
                   Payment Invoices
@@ -261,7 +262,7 @@ export default function StudentDetails() {
                     </thead>
                     <tbody className="divide-y divide-border">
                       {student.invoices?.map((invoice:any) => (
-                        <tr title="click to see invoice details" onClick={()=> location.assign(`/admin/invoices/${invoice.id}`)} key={invoice.id} className="hover:bg-secondary/50 cursor-pointer">
+                        <tr title="click to see invoice details" onClick={()=> router.push(`/admin/invoices/${invoice.id}`)} key={invoice.id} className="hover:bg-secondary/50 cursor-pointer">
                           <td className="px-4 py-3 text-foreground">{new Date(invoice.invoiceYear, invoice.invoiceMonth - 1, 1).toLocaleString("en-US", {  month: "long",})}</td>
                           <td className="px-4 py-3 font-semibold text-foreground">Rs {invoice.amount}</td>
                           <td className="px-4 py-3 text-foreground/70">{new Date(invoice.issuedDate).toLocaleDateString("en-US",{weekday:"short",day:"2-digit"})}</td>
@@ -286,7 +287,7 @@ export default function StudentDetails() {
 
             {/* Sidebar - Actions */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-lg p-6 shadow-sm border border-border sticky top-4">
+              <div className="bg-card rounded-lg p-6 shadow-sm border border-border sticky top-4">
                 <h3 className="text-lg font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">Quick Actions</h3>
                 <div className="space-y-3">
                   <ShiftRoomModal buttonTitle="Shift to another room" currentRoom={student.room} varient={"outline"} student_id={student.id}/>
@@ -309,7 +310,7 @@ export default function StudentDetails() {
       {/* Shift Room Modal */}
       {showShiftModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
+          <div className="bg-card rounded-lg p-6 max-w-md w-full shadow-lg">
             <h3 className="text-lg font-bold text-primary mb-4">Shift to Another Room</h3>
             <select
               value={selectedRoom}
@@ -327,7 +328,7 @@ export default function StudentDetails() {
              { LoadingSwitching ? (
               <button
                 disabled
-                className="flex-1 bg-accent text-white font-semibold py-2 rounded-lg flex items-center justify-center gap-2"
+                className="flex-1 bg-accent text-accent-foreground font-semibold py-2 rounded-lg flex items-center justify-center gap-2"
               >
                 <Loader2 className="w-5 h-5 animate-spin" />
                 Processing...
@@ -337,7 +338,7 @@ export default function StudentDetails() {
                 onClick={() => {
                   handleSwitching(selectedRoom)
                 }}
-                className="flex-1 bg-accent text-primary font-semibold py-2 rounded-lg hover:bg-accent/90"
+                className="flex-1 bg-accent text-accent-foreground font-semibold py-2 rounded-lg hover:bg-accent/90"
               >
                 Confirm Shift
               </button>
@@ -357,7 +358,7 @@ export default function StudentDetails() {
       {/* Revoke Modal */}
       {showRevokeModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
+          <div className="bg-card rounded-lg p-6 max-w-md w-full shadow-lg">
             <h3 className="text-lg font-bold text-red-600 mb-4">Revoke Student</h3>
             <p className="text-foreground/70 mb-6">
               Are you sure you want to revoke {student.firstName}  {student.lastName} from the hostel? This action cannot be undone.

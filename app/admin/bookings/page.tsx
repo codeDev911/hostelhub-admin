@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Search, Filter, Eye, CheckCircle, Clock, Download, Loader2, XIcon } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 interface Booking {
   id: number
@@ -22,7 +23,7 @@ export default function BookingsManagement() {
   const [filterHostel, setFilterHostel] = useState("")
   const [filterStatus, setFilterStatus] = useState("")
   const [activeMenu, setActiveMenu] = useState<number | null>(null)
-
+  const router = useRouter()
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -104,7 +105,7 @@ export default function BookingsManagement() {
         </div>
         <button
           onClick={handleExport}
-          className="flex items-center gap-2 bg-accent text-primary font-semibold px-6 py-3 rounded-lg hover:bg-accent/90 transition-colors"
+          className="flex items-center gap-2 bg-accent text-accent-foreground font-semibold px-6 py-3 rounded-lg hover:bg-accent/90 transition-colors"
         >
           <Download className="w-5 h-5" />
           Export to CSV
@@ -113,19 +114,19 @@ export default function BookingsManagement() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Total Bookings</p>
               <p className="text-3xl font-bold text-primary mt-2">{totalBookings}</p>
             </div>
-            <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-accent/10  rounded-lg flex items-center justify-center">
               <span className="text-2xl">📋</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Confirmed</p>
@@ -137,7 +138,7 @@ export default function BookingsManagement() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Pending</p>
@@ -148,7 +149,7 @@ export default function BookingsManagement() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Cancelled</p>
@@ -162,7 +163,7 @@ export default function BookingsManagement() {
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-border space-y-4">
+      <div className="bg-card rounded-lg p-6 shadow-sm border border-border space-y-4">
         <div className="flex items-center gap-2 mb-4">
           <Filter className="w-5 h-5 text-primary" />
           <h2 className="text-lg font-semibold text-primary">Filters & Search</h2>
@@ -200,7 +201,7 @@ export default function BookingsManagement() {
       </div>
 
       {/* Bookings Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-border overflow-hidden">
+      <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-secondary border-b border-border">
@@ -209,25 +210,24 @@ export default function BookingsManagement() {
                 <th className="px-6 py-2 text-left text-sm font-semibold text-foreground">Seats</th>
                 <th className="px-6 py-2 text-left text-sm font-semibold text-foreground">Room</th>
                 <th className="px-6 py-2 text-left text-sm font-semibold text-foreground">Status</th>
-                <th className="px-6 py-2 text-left text-sm font-semibold text-foreground">Date</th>
-                <th className="px-6 py-2 text-left text-sm font-semibold text-foreground">Actions</th>
+                <th className="px-6 py-2 text-left text-sm font-semibold text-foreground">Date</th> 
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {filteredBookings.length > 0 ? (
                 filteredBookings.map((booking:any) => (
-                  <tr key={booking.id} className="hover:bg-secondary/50 transition-colors">
-                    <td className="px-6 py-2 text-sm font-medium text-foreground">
+                  <tr key={booking.id} onClick={()=>router.push(`/admin/bookings/${booking.id}`)} className="hover:bg-secondary/50 transition-colors cursor-pointer">
+                    <td className="px-6 py-4 text-sm font-medium text-foreground">
                       <Link href={`/admin/bookings/${booking.id}`} className="text-primary hover:underline">
                         {booking.studentInformation.firstName}{" "}
                         {booking.studentInformation.lastName}
                       </Link>
                     </td>
-                    <td className="px-6 py-2 text-sm text-foreground/70">{booking.numberOfSeats}</td>
-                    <td className="px-6 py-2 text-sm text-foreground/70">#{booking.room.roomNumber} F{booking.room.floor}, {booking.room.roomType}</td>
-                    <td className="px-6 py-2 text-sm">
+                    <td className="px-6 py-4 text-sm text-foreground/70">{booking.numberOfSeats}</td>
+                    <td className="px-6 py-4 text-sm text-foreground/70">#{booking.room.roomNumber} F{booking.room.floor}, {booking.room.roomType}</td>
+                    <td className="px-6 py-4 text-sm">
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        className={`px-3 py-2 rounded-full text-xs font-semibold ${
                           booking.status === "confirmed"
                             ? "bg-green-100 text-green-700"
                             : booking.status === "pending"
@@ -238,18 +238,10 @@ export default function BookingsManagement() {
                         {booking.status}
                       </span>
                     </td>
-                    <td className="px-6 py-2 text-sm text-foreground/70">
+                    <td className="px-6 py-4 text-sm text-foreground/70">
                       {new Date(booking.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-2 text-sm">
-                      <Link
-                        href={`/admin/bookings/${booking.id}`}
-                        className="p-2 hover:bg-secondary rounded-lg transition-colors inline-block"
-                        title="View Details"
-                      >
-                        <Eye className="w-4 h-4 text-foreground/60" />
-                      </Link>
-                    </td>
+                    
                   </tr>
                 ))
               ) : (

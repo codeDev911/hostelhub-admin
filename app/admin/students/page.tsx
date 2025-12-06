@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Search, Filter, Eye, CheckCircle, Clock, Plus, MoreVertical, Move, LogOut, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 interface Student {
   id: number
@@ -26,7 +27,6 @@ export default function StudentManagement() {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterGender, setFilterGender] = useState("")
   const [filterPayment, setFilterPayment] = useState("")
-  const [activeMenu, setActiveMenu] = useState<number | null>(null)
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -70,27 +70,8 @@ export default function StudentManagement() {
   const activeStudents = students && students?.length>0 && students?.filter((s) => s.paymentStatus === "Paid").length
   const pendingPayments = students && students?.length>0 && students?.filter((s) => s.paymentStatus === "Pending").length
 
-  const handleRevokeStudent = async (studentId: number) => {
-    try {
-
-      const confi = confirm("Are you want to revoke the student?")
-      if(!confi) return 
-
-      const response = await fetch(`/api/students/${studentId}/revoke`, {
-        method: "POST",
-      })
-
-      if (response.ok) {
-        toast.success("Student revoked successfully")
-        setStudents(students.filter((s) => s.id !== studentId))
-      } else {
-        toast.error("Failed to revoke student")
-      }
-    } catch (error) {
-      console.error("[v0] Revoke error:", error)
-      toast.error("An error occurred")
-    }
-  }
+  const router = useRouter()
+ 
 
   if (loading) {
     return (
@@ -110,7 +91,7 @@ export default function StudentManagement() {
         </div>
         <Link
           href="/admin/admit-student"
-          className="flex items-center gap-2 bg-accent text-primary font-semibold px-6 py-3 rounded-lg hover:bg-accent/90 transition-colors"
+          className="flex items-center gap-2 bg-accent text-accent-foreground font-semibold px-6 py-3 rounded-lg hover:bg-accent/90 transition-colors"
         >
           <Plus className="w-5 h-5" />
           Admit Student
@@ -119,7 +100,7 @@ export default function StudentManagement() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Total Students</p>
@@ -131,7 +112,7 @@ export default function StudentManagement() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Active Students</p>
@@ -143,7 +124,7 @@ export default function StudentManagement() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Pending Payments</p>
@@ -157,7 +138,7 @@ export default function StudentManagement() {
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-border space-y-4">
+      <div className="bg-card rounded-lg p-6 shadow-sm border border-border space-y-4">
         <div className="flex items-center gap-2 mb-4">
           <Filter className="w-5 h-5 text-primary" />
           <h2 className="text-lg font-semibold text-primary">Filters & Search</h2>
@@ -207,7 +188,7 @@ export default function StudentManagement() {
       </div>
 
       {/* Students Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-border overflow-hidden">
+      <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-secondary border-b border-border">
@@ -217,13 +198,12 @@ export default function StudentManagement() {
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Phone</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Check-in</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Payment</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {filteredStudents.length > 0 ? (
                 filteredStudents.map((student) => (
-                  <tr key={student.id} className="hover:bg-secondary/50 transition-colors">
+                  <tr onClick={()=>router.push(`/admin/students/${student.id}`)} key={student.id} className="hover:bg-secondary/50 cursor-pointer transition-colors">
                     <td className="px-6 py-4 text-sm font-medium text-foreground">{student.firstName}</td>
                     <td className="px-6 py-4 text-sm text-foreground/70">{student.email}</td>
                     <td className="px-6 py-4 text-sm text-foreground/70">{student.phone}</td>
@@ -243,38 +223,7 @@ export default function StudentManagement() {
                         {student?.invoices[0]?.status || "None"} 
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm">
-                      <div className="relative flex items-center gap-2">
-                        <Link
-                          href={`/admin/students/${student.id}`}
-                          className="p-2 hover:bg-secondary rounded-lg transition-colors"
-                          title="View Details"
-                        >
-                          <Eye className="w-4 h-4 text-foreground/60" />
-                        </Link>
-                         
-
-                        {/* Action Popup Menu */}
-                        {activeMenu === student.id && (
-                          <div className="absolute right-0 top-full mt-2 bg-white border border-border rounded-lg shadow-lg z-10 w-48">
-                            <button className="w-full flex items-center gap-2 px-4 py-2 hover:bg-secondary text-left text-sm text-foreground first:rounded-t-lg">
-                              <Move className="w-4 h-4 text-accent" />
-                              Shift Room
-                            </button>
-                            <button
-                              onClick={() => {
-                                handleRevokeStudent(student.id)
-                                setActiveMenu(null)
-                              }}
-                              className="w-full flex items-center gap-2 px-4 py-2 hover:bg-red-50 text-left text-sm text-red-600 last:rounded-b-lg"
-                            >
-                              <LogOut className="w-4 h-4" />
-                              Revoke Student
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </td>
+                     
                   </tr>
                 ))
               ) : (

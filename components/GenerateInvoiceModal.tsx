@@ -42,6 +42,9 @@ export default function InvoiceDialog({studentId,studentName,roomPriceMonthly}:I
   const handleUpdate = (key:any, val:any) => setForm((p) => ({ ...p, [key]: val }));
 
   const submit = async() => {
+
+    if(!form.amount && !form.status && !form.invoiceMonth && !form.invoiceYear) return;
+
     try {
         setLoading(true)
         let res = await fetch("/api/admin/invoices",{

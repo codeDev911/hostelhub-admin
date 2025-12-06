@@ -165,12 +165,15 @@ export default function RoomManagementPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold text-primary">Room Management</h1>
+      <div className="flex max-md:flex-wrap space-y-2.5 items-center justify-between mb-8">
+        <div>
+          <h1 className="text-4xl font-bold text-primary mb-2">Room Management</h1>
+          <p className="text-foreground/60">Manage rooms across your hostel / appartment</p>
+        </div>
         <div className="flex space-x-3">
           <Button
           onClick={handleAddRoom}
-          className="bg-accent hover:bg-accent/90"
+          className="bg-accent text-accent-foreground hover:bg-accent/90"
         >
           <Plus className="w-4 h-4 mr-2" />
           Add Room
@@ -264,7 +267,7 @@ export default function RoomManagementPage() {
           <div className="flex gap-3">
             <Button
               onClick={handleSaveRoom}
-              className="bg-accent hover:bg-accent/90"
+              className="bg-accent text-accent-foreground hover:bg-accent/90"
             >
               Save Room
             </Button>

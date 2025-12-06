@@ -335,7 +335,7 @@ export function ExpenseReportPDFExportHTML(items:any,data:any){
 
     <!-- Footer Text / Claim -->
     <p class="footer-text">
-      This report is an official record of all expenses for ${data.hostel.name.toUpperCase()} of the month <i>${new Date(new Date().setMonth(data.month)).toLocaleString("en-US",{
+      This report is an official record of all expenses for ${data.hostel.name.toUpperCase()} of the month <i>${new Date(new Date().setMonth(Number(data.month)-1)).toLocaleString("en-US",{
         "month":"long"
       })}</i> & year <i>${data.year}</i>.
       All listed details are accurate and serve as proof of the expenditures incurred.

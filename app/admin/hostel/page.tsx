@@ -164,7 +164,7 @@ export default function HostelDetailsPage() {
         <Button
           onClick={() => setIsEditing(!isEditing)}
           className={`rounded-lg px-6 py-3 font-semibold transition-all ${
-            isEditing ? "bg-destructive hover:bg-destructive/90" : "bg-accent hover:bg-accent/90"
+            isEditing ? "bg-destructive hover:bg-destructive/90" : "bg-accent text-accent-foreground hover:bg-accent/90"
           }`}
         >
           {isEditing ? (
@@ -182,7 +182,7 @@ export default function HostelDetailsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3  gap-5  ">
         <div className="lg:col-span-2 col-span-1 space-y-5">
           {/* Basic Information Section */}
-      <Card className="p-8 rounded-lg border-0 bg-white">
+      <Card className="p-8 rounded-lg border-0 bg-card">
         <div className="flex items-center gap-3 mb-6">
           <Home className="w-6 h-6 text-accent" />
           <h2 className="text-2xl font-bold text-primary">Basic Information</h2>
@@ -270,7 +270,7 @@ export default function HostelDetailsPage() {
     
 
       {/* Amenities Section */}
-      <Card className="p-8 rounded-lg border-0 bg-white">
+      <Card className="p-8 rounded-lg border-0 bg-card">
         <div className="flex items-center gap-3 mb-6">
           <Home className="w-6 h-6 text-accent" />
           <h2 className="text-2xl font-bold text-primary">Amenities</h2>
@@ -288,7 +288,7 @@ export default function HostelDetailsPage() {
             <Button
               onClick={handleAddAmenity}
               disabled={!isEditing}
-              className="bg-accent hover:bg-accent/90 rounded-lg px-6"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg px-6"
             >
               <Plus className="w-4 h-4" />
             </Button>
@@ -330,7 +330,7 @@ export default function HostelDetailsPage() {
       </Card>
 
       {/* House Rules Section */}
-      <Card className="p-8 rounded-lg border-0 bg-white">
+      <Card className="p-8 rounded-lg border-0 bg-card">
         <div className="flex items-center gap-3 mb-6">
           <AlertCircle className="w-6 h-6 text-accent" />
           <h2 className="text-2xl font-bold text-primary">Rules & Polices</h2>
@@ -379,7 +379,7 @@ export default function HostelDetailsPage() {
             <Button
               onClick={handleAddRule}
               disabled={!isEditing}
-              className="bg-accent hover:bg-accent/90 rounded-lg px-6"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg px-6"
             >
               <Plus className="w-4 h-4" />
             </Button>
@@ -410,7 +410,7 @@ export default function HostelDetailsPage() {
         </div>
         <div className="space-y-5">
             {/* Contact Information Section */}
-      <Card className="md:p-8 p-4 rounded-lg border-0 bg-white">
+      <Card className="md:p-8 p-4 rounded-lg border-0 bg-card">
         <div className="flex items-center gap-3 mb-6">
           <Phone className="w-6 h-6 text-accent" />
           <h2 className="text-2xl font-bold text-primary">Contact Information</h2>
@@ -453,7 +453,7 @@ export default function HostelDetailsPage() {
       </Card>
 
       {/* Check-in/Check-out Times Section */}
-      <Card className="p-8 rounded-lg border-0 bg-white">
+      <Card className="p-8 rounded-lg border-0 bg-card">
         <div className="flex items-center gap-3 mb-6">
           <Clock className="w-6 h-6 text-accent" />
           <h2 className="text-2xl font-bold text-primary">Check-in & Check-out Times</h2>
@@ -484,7 +484,7 @@ export default function HostelDetailsPage() {
         </div>
       </Card>
        {/* Pricing Section */}
-      <Card className="p-8 rounded-lg border-0 bg-white">
+      <Card className="p-8 rounded-lg border-0 bg-card">
         <div className="flex items-center gap-3 mb-6">
           <Mail className="w-6 h-6 text-accent" />
           <h2 className="text-2xl font-bold text-primary">Pricing</h2>
@@ -508,7 +508,7 @@ export default function HostelDetailsPage() {
       </Card>
       
       {/* Meal Plan Section - made meal plan fully editable */}
-        <Card className="p-8 rounded-lg border-0 bg-white">
+        <Card className="p-8 rounded-lg border-0 bg-card">
           <div className="flex items-center gap-3">
             <Utensils className="w-6 h-6 text-accent" />
             <h2 className="text-2xl font-bold text-primary">7-Day Meal Plan</h2>
@@ -520,7 +520,7 @@ export default function HostelDetailsPage() {
         </Card>
 
 {/* MEta details  */}
-           <Card className="p-8 rounded-lg border-0 bg-white">
+           <Card className="p-8 rounded-lg border-0 bg-card">
           <div className="flex items-start gap-3">
             <div>
               <h2 className="text-xl font-bold text-primary">Meta Details </h2>
@@ -568,7 +568,7 @@ export default function HostelDetailsPage() {
             <div className="mt-6">
               <h2 className="text-xl font-bold text-primary">SE preview </h2>
               <p className="text-foreground text-sm">How will it looks like in Search Engines </p>
-              <div className="bg-white border rounded-lg p-4 shadow-sm mt-3">
+              <div className="bg-card border rounded-lg p-4 shadow-sm mt-3">
                 <p id="preview-url" className="text-sm text-green-700 mb-1">
                   {"https://orhan.hostelhub.pk"}
                 </p>
@@ -597,7 +597,7 @@ export default function HostelDetailsPage() {
         </Button> :  
         <Button
           onClick={handleSave}
-          className="w-full cursor-pointer bg-accent hover:bg-accent/60 py-6 rounded-lg text-lg font-bold shadow-lg hover:shadow-xl transition-all"
+          className="w-full cursor-pointer bg-accent text-accent-foreground hover:bg-accent/60 py-6 rounded-lg text-lg font-bold shadow-lg hover:shadow-xl transition-all"
         >
           <Save className="w-5 h-5 mr-3" />
           Save All Changes

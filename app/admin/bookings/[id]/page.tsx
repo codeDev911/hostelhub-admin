@@ -154,7 +154,7 @@ export default function BookingDetails() {
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Student Information */}
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+          <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
             <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
               Student Information
             </h2>
@@ -199,7 +199,7 @@ export default function BookingDetails() {
  
 
           {/* Booking Details */}
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+          <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
             <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">Booking Details</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex items-start gap-4">
@@ -236,7 +236,7 @@ export default function BookingDetails() {
           </div>
 
           {/* Duration & Pricing */}
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
+          <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
             <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">Duration & Pricing</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="flex items-start gap-4">
@@ -281,7 +281,7 @@ export default function BookingDetails() {
 
         {/* Sidebar - Actions */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-border sticky top-4 space-y-4">
+          <div className="bg-card rounded-lg p-6 shadow-sm border border-border sticky top-4 space-y-4">
             <h3 className="text-lg font-bold text-primary pb-4 border-b-2 border-secondary">Actions</h3>
             {booking.status == "pending" ?
             <>
@@ -349,7 +349,7 @@ export default function BookingDetails() {
       {/* Cancel Booking Modal */}
       {showCancelModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
+          <div className="bg-card rounded-lg p-6 max-w-md w-full shadow-lg">
             <h3 className="text-lg font-bold text-red-600 mb-4">Cancel Booking</h3>
             <p className="text-foreground/70 mb-6">
               Are you sure you want to cancel this booking for <strong>{booking.studentInformation.firstName} {" "} {booking.studentInformation.lastName}</strong>? This action cannot be undone.
@@ -384,7 +384,7 @@ export default function BookingDetails() {
       {/* Delete booking modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
+          <div className="bg-card rounded-lg p-6 max-w-md w-full shadow-lg">
             <h3 className="text-lg font-bold text-red-600 mb-4">Delete Booking</h3>
             <p className="text-foreground/70 mb-2">
               Are you sure you want to <strong>Delete</strong> this booking for <strong>{booking.studentInformation.firstName} {" "} {booking.studentInformation.lastName}</strong>? This action cannot be undone.
