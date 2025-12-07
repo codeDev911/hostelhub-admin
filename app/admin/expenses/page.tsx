@@ -1,7 +1,8 @@
 "use client"
 import AddExpenseReport from "@/components/AddExpenseReport";
+import CompareDialog from "@/components/CompareDialog";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { CheckCircle, Loader2, PlusSquareIcon } from "lucide-react";
+import { AxeIcon, CheckCircle, Loader2, PlusSquareIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -71,10 +72,7 @@ const page = () => {
           </p>
         </div>
         <div className="flex max-md:flex-wrap space-x-2 items-center">
-          {/* <button className="flex items-center hover:cursor-pointer gap-2 bg-accent text-primary font-semibold px-6 py-3 rounded-lg hover:bg-accent/70 transition-colors">
-            <Download className="w-5 h-5" />
-            Export Reports
-          </button> */}
+          <CompareDialog expenses={data}/>
          <Dialog>
             <DialogTrigger>
                  <button className="flex items-center hover:cursor-pointer gap-2 bg-accent text-accent-foreground  font-semibold px-6 py-3 rounded-lg   transition-colors">
@@ -96,7 +94,7 @@ const page = () => {
       </div>
       <div className="mt-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6  ">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Monthly cost (avg)</p>
@@ -107,7 +105,7 @@ const page = () => {
             </div>
           </div>
         </div>
-        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6  ">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Cost this year</p>
@@ -118,7 +116,7 @@ const page = () => {
             </div>
           </div>
         </div>
-        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6  ">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Cost previous month</p>
@@ -131,7 +129,7 @@ const page = () => {
         </div>
         </div>
       </div>
-       <div className="bg-card mt-5 rounded-lg shadow-sm border border-border overflow-hidden">
+       <div className="bg-card mt-5 rounded-lg   overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-secondary border-b border-border">

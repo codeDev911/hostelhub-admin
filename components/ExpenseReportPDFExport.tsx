@@ -327,6 +327,8 @@ export function ExpenseReportPDFExportHTML(items:any,data:any){
       </tbody>
     </table>
 
+
+    
     <!-- Total -->
     <div class="total">
       <span>Total Amount:</span>

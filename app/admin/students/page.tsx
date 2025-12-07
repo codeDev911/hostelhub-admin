@@ -100,7 +100,7 @@ export default function StudentManagement() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6  ">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Total Students</p>
@@ -112,7 +112,7 @@ export default function StudentManagement() {
           </div>
         </div>
 
-        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6  ">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Active Students</p>
@@ -124,7 +124,7 @@ export default function StudentManagement() {
           </div>
         </div>
 
-        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6  ">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">Pending Payments</p>
@@ -138,7 +138,7 @@ export default function StudentManagement() {
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-card rounded-lg p-6 shadow-sm border border-border space-y-4">
+      <div className="bg-card rounded-lg p-6   space-y-4">
         <div className="flex items-center gap-2 mb-4">
           <Filter className="w-5 h-5 text-primary" />
           <h2 className="text-lg font-semibold text-primary">Filters & Search</h2>
@@ -154,7 +154,7 @@ export default function StudentManagement() {
                 placeholder="Name, email, or phone..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2  rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
               />
             </div>
           </div>
@@ -164,7 +164,7 @@ export default function StudentManagement() {
             <select
               value={filterGender}
               onChange={(e) => setFilterGender(e.target.value)}
-              className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+              className="w-full px-4 py-2  rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
             >
               <option value="">All Genders</option>
               <option value="male">Male</option>
@@ -177,7 +177,7 @@ export default function StudentManagement() {
             <select
               value={filterPayment}
               onChange={(e) => setFilterPayment(e.target.value)}
-              className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+              className="w-full px-4 py-2  rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
             >
               <option value="">All Status</option>
               <option value="Paid">Paid</option>
@@ -188,12 +188,13 @@ export default function StudentManagement() {
       </div>
 
       {/* Students Table */}
-      <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
+      <div className="bg-card rounded-lg   overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-secondary border-b border-border">
               <tr>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Name</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Room</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Email</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Phone</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Check-in</th>
@@ -205,6 +206,7 @@ export default function StudentManagement() {
                 filteredStudents.map((student) => (
                   <tr onClick={()=>router.push(`/admin/students/${student.id}`)} key={student.id} className="hover:bg-secondary/50 cursor-pointer transition-colors">
                     <td className="px-6 py-4 text-sm font-medium text-foreground">{student.firstName}</td>
+                    <td className="px-6 py-4 text-sm text-foreground/70">#{student.room.roomNumber}- F{student.room.floor} ({student.room.roomType})</td>
                     <td className="px-6 py-4 text-sm text-foreground/70">{student.email}</td>
                     <td className="px-6 py-4 text-sm text-foreground/70">{student.phone}</td>
                     <td className="px-6 py-4 text-sm text-foreground/70">{

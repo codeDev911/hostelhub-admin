@@ -568,7 +568,7 @@ export default function HostelDetailsPage() {
             <div className="mt-6">
               <h2 className="text-xl font-bold text-primary">SE preview </h2>
               <p className="text-foreground text-sm">How will it looks like in Search Engines </p>
-              <div className="bg-card border rounded-lg p-4 shadow-sm mt-3">
+              <div className="bg-card border rounded-lg p-4  mt-3">
                 <p id="preview-url" className="text-sm text-green-700 mb-1">
                   {"https://orhan.hostelhub.pk"}
                 </p>

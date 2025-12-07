@@ -75,9 +75,9 @@ export default function PaymentDetails() {
 
   
 
-  const invoiceDate = new Date(payment.invoice.invoiceYear, payment.invoice.invoiceMonth, 1)
-  const dueDate = new Date(payment.invoice.invoiceYear, payment.invoice.invoiceMonth + 1, 1)
-  const monthName = invoiceDate.toLocaleString("default", { month: "long", year: "numeric" })
+  const paymentDate = new Date(payment.createdAt)
+  const dueDate = new Date(payment.invoice.dueDate)
+  const monthName = new Date(payment.invoice.createdAt).toLocaleString("default", { month: "long", year: "numeric" })
 
   const currentDate = new Date()
   let paymentStatus = payment.status
@@ -157,11 +157,11 @@ export default function PaymentDetails() {
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Invoice Header */}
-          <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+          <div className="bg-card rounded-lg p-6  ">
             <div className="grid grid-cols-2 gap-8">
               <div>
-                <p className="text-sm text-foreground/60 mb-2">Invoice Date</p>
-                <p className="font-semibold text-foreground text-lg">{invoiceDate.toLocaleDateString("en-PK")}</p>
+                <p className="text-sm text-foreground/60 mb-2">Payment Date</p>
+                <p className="font-semibold text-foreground text-lg">{paymentDate.toLocaleDateString("en-PK")}</p>
               </div>
               <div>
                 <p className="text-sm text-foreground/60 mb-2">Due Date</p>
@@ -171,7 +171,7 @@ export default function PaymentDetails() {
           </div>
 
           {/* Student Information */}
-          <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+          <div className="bg-card rounded-lg p-6  ">
             <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
               Student Information
             </h2>
@@ -228,7 +228,7 @@ export default function PaymentDetails() {
           </div>
 
           {/* Payment History */}
-          <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+          <div className="bg-card rounded-lg p-6  ">
             <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
               Payment Status & History
             </h2>
@@ -259,7 +259,7 @@ export default function PaymentDetails() {
 
         {/* Sidebar - Actions */}
         <div className="lg:col-span-1">
-          <div className="bg-card rounded-lg p-6 shadow-sm border border-border sticky top-4 space-y-4">
+          <div className="bg-card rounded-lg p-6   sticky top-4 space-y-4">
             <h3 className="text-lg font-bold text-primary pb-4 border-b-2 border-secondary">Actions</h3>
 
             <button
@@ -311,7 +311,7 @@ export default function PaymentDetails() {
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">Amount to be refunded</label>
                 <input value={amountToRefund} onChange={(e)=>setAmountToRefund(Number.parseInt(e.target.value))} type="number" 
-                  className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                  className="w-full px-4 py-2  rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                  />
               </div>
 
@@ -340,7 +340,7 @@ export default function PaymentDetails() {
               }
               <button
                 onClick={() => setShowMarkPaidModal(false)}
-                className="flex-1 border border-border font-semibold py-2 rounded-lg hover:bg-secondary"
+                className="flex-1  font-semibold py-2 rounded-lg hover:bg-secondary"
               >
                 Cancel
               </button>

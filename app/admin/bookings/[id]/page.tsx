@@ -154,7 +154,7 @@ export default function BookingDetails() {
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Student Information */}
-          <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+          <div className="bg-card rounded-lg p-6  ">
             <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
               Student Information
             </h2>
@@ -199,7 +199,7 @@ export default function BookingDetails() {
  
 
           {/* Booking Details */}
-          <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+          <div className="bg-card rounded-lg p-6  ">
             <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">Booking Details</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex items-start gap-4">
@@ -236,7 +236,7 @@ export default function BookingDetails() {
           </div>
 
           {/* Duration & Pricing */}
-          <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+          <div className="bg-card rounded-lg p-6  ">
             <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">Duration & Pricing</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="flex items-start gap-4">
@@ -281,16 +281,16 @@ export default function BookingDetails() {
 
         {/* Sidebar - Actions */}
         <div className="lg:col-span-1">
-          <div className="bg-card rounded-lg p-6 shadow-sm border border-border sticky top-4 space-y-4">
+          <div className="bg-card rounded-lg p-6   sticky top-4 space-y-4">
             <h3 className="text-lg font-bold text-primary pb-4 border-b-2 border-secondary">Actions</h3>
             {booking.status == "pending" ?
             <>
             {cancelBookingLoading ?<button  
-            className="w-full flex items-center justify-center gap-2 border border-border font-semibold py-2 rounded-lg hover:bg-secondary transition-colors">
+            className="w-full flex items-center justify-center gap-2  font-semibold py-2 rounded-lg hover:bg-secondary transition-colors">
               <RotateCw className="w-4 h-4" />
               Processing...
             </button>:<button 
-              onClick={(()=>handleBookingStatus("confirmed"))} className="w-full flex items-center justify-center gap-2 border border-border font-semibold py-2 rounded-lg hover:bg-secondary transition-colors">
+              onClick={(()=>handleBookingStatus("confirmed"))} className="w-full flex items-center justify-center gap-2  font-semibold py-2 rounded-lg hover:bg-secondary transition-colors">
               <CheckCircle className="w-4 h-4" />
               Confirm booking
             </button>}
@@ -372,7 +372,7 @@ export default function BookingDetails() {
               }
               <button
                 onClick={() => setShowCancelModal(false)}
-                className="flex-1 border border-border font-semibold py-2 rounded-lg hover:bg-secondary"
+                className="flex-1  font-semibold py-2 rounded-lg hover:bg-secondary"
               >
                 Keep Booking
               </button>
@@ -413,7 +413,7 @@ export default function BookingDetails() {
               }
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="flex-1 border border-border font-semibold py-2 rounded-lg hover:bg-secondary"
+                className="flex-1  font-semibold py-2 rounded-lg hover:bg-secondary"
               >
                 Keep it
               </button>

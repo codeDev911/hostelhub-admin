@@ -186,7 +186,7 @@ export default function RoomManagementPage() {
 
       {/* Add/Edit Room Form */}
       {(isAddingRoom || editingId) && (
-        <Card className="p-6 mb-8">
+        <div className="p-6 mb-8 bg-card rounded-lg">
           <h2 className="text-xl font-bold text-primary mb-4">
             {editingId ? "Edit Room" : "Add New Room"}
           </h2>
@@ -281,14 +281,14 @@ export default function RoomManagementPage() {
               Cancel
             </Button>
           </div>
-        </Card>
+        </div>
       )}
 
       {/* Rooms List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {rooms &&
           rooms?.map((room: any) => (
-            <Card key={room.id} className="p-4">
+            <div key={room.id} className="p-4 bg-card rounded-lg hover:shadow-xl transition-all">
               <div className="flex justify-between items-start">
                 <div>
                 <h3 className="font-bold text-primary">
@@ -363,7 +363,7 @@ export default function RoomManagementPage() {
                   </span>
                 </div>
               </div>
-            </Card>
+            </div>
           ))}
       </div>
     </div>

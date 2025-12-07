@@ -5,14 +5,12 @@ import { TrendingUp, AlertTriangle, Star, Sparkles } from "lucide-react";
 
 export default function FeedbackStatsCard({ stats }: any) {
   return (
-    <Card className="w-full  rounded-2xl shadow-md">
-      <CardHeader>
-        <CardTitle className="text-xl font-bold flex items-center gap-2">
+    <div className="w-full  rounded-lg bg-card p-4">
+        <div className="text-xl font-bold flex items-center gap-2">
           <TrendingUp size={20} /> Breakdown
-        </CardTitle>
-      </CardHeader>
+        </div>
 
-      <CardContent className="space-y-4">
+      <div className="space-y-4">
         {/* Ratings */}
         <div className="p-4 rounded-xl bg-secondray flex flex-col gap-1">
           <div className="flex justify-between text-sm">
@@ -31,15 +29,15 @@ export default function FeedbackStatsCard({ stats }: any) {
 
         {/* Counts */}
         <div className="grid md:grid-cols-3 grid-cols-2 gap-2">
-          <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-900">
+          <div className="p-3 rounded-xl bg-secondary">
             <p className="text-sm text-muted-foreground">Total Reviews</p>
             <p className="font-bold text-lg">{stats.totalReviews}</p>
           </div>
-          <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-900">
+          <div className="p-3 rounded-xl bg-secondary">
             <p className="text-sm text-muted-foreground">Total Complaints</p>
             <p className="font-bold text-lg">{stats.totalComplaints}</p>
           </div>
-          <div className="space-y-2 p-3 max-md:col-span-2 rounded-xl bg-gray-50 dark:bg-gray-900">
+          <div className="space-y-2 p-3 max-md:col-span-2 rounded-xl bg-secondary">
             <p className="font-medium text-sm flex items-center gap-1">
               <AlertTriangle size={14} /> Complaint Status
             </p>
@@ -56,7 +54,7 @@ export default function FeedbackStatsCard({ stats }: any) {
             </div>
           </div>
           {/* Urgency */}{" "}
-          <div className="space-y-2 p-3 max-md:col-span-2 rounded-xl bg-gray-50 dark:bg-gray-900">
+          <div className="space-y-2 p-3 max-md:col-span-2 rounded-xl bg-secondary">
             <p className="font-medium text-sm">Priority Breakdown</p>
             <div className="flex flex-wrap gap-2">
               {stats.complaintPriorities.map((item: any) => (
@@ -80,7 +78,7 @@ export default function FeedbackStatsCard({ stats }: any) {
           </div>
           {stats.summaryMessage}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

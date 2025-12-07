@@ -110,16 +110,18 @@ const ActiveFilters = ({ filters, removeFilter }:any) => {
 
 
   return (
-    <Card className="w-full space-y-4 mb-4">
-        <CardHeader>
-            <CardTitle className="flex items-center space-x-1">
-                <Sparkles className="w-4"/>
-                <p>Smart search</p>
-            </CardTitle>
-            <CardDescription>Use our smartest and intelligence search and filters to optimize your rooms across your hostel</CardDescription>
-            <ActiveFilters filters={filters} removeFilter={removeFilter} />
-        </CardHeader>
-      <CardContent className="grid -mt-7 md:grid-cols-6 gap-4">
+    <div className="w-full space-y-4 mb-4 bg-card p-4 rounded-lg">
+      <div>
+        <div className="flex space-x-1">
+          <Sparkles className="w-4"/>
+          <h2 className="text-base font-semibold text-primary">Smart search</h2>
+          
+        </div>
+        <p className="text-muted-foreground text-sm">With our smart search you can optimize your search experience across all rooms</p>
+      </div>
+      <br />
+        <ActiveFilters filters={filters} removeFilter={removeFilter} />
+      <div className="grid -mt-7 md:grid-cols-6 gap-4">
         {/* Room Number */}
         <div className="space-y-2 ">
           <Label className="">Room Number</Label>
@@ -185,7 +187,7 @@ const ActiveFilters = ({ filters, removeFilter }:any) => {
           </div>
         </div>
  
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

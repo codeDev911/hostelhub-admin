@@ -97,16 +97,16 @@ const categories = [
   "Other",
 ];
 
-function ExpensePieChart({ items }: ExpensePieChartProps) {
+export function ExpensePieChart({ items }: ExpensePieChartProps) {
   const data = Object?.entries(
     items?.reduce((acc, item) => {
-      acc[item.category] = (acc[item.category] || 0) + item.amount;
+      acc[item.category] = (acc[item.category] || 0) + Number(item.amount);
       return acc;
     }, {} as Record<string, number>)
   ).map(([name, value]) => ({ name, value }));
 
   return (
-    <div className="w-full ">
+    <div className="w-full h-72">
       <ResponsiveContainer>
         <PieChart>
           <Pie
@@ -125,8 +125,8 @@ function ExpensePieChart({ items }: ExpensePieChartProps) {
               />
             ))}
           </Pie>
-          <Tooltip />
-          <Legend />
+          <Tooltip  />
+          <Legend  />
         </PieChart>
       </ResponsiveContainer>
     </div>
@@ -423,7 +423,7 @@ export default function ExpensePage() {
 
   return (
     <div className=" space-y-8">
-      <Link href="/admin/payments" className="flex items-center gap-2 text-accent hover:text-accent/80">
+      <Link href="/admin/expenses" className="flex items-center gap-2 text-accent hover:text-accent/80">
               <ArrowLeft className="w-4 h-4" />
               Back to Expenses
             </Link>
@@ -529,7 +529,7 @@ export default function ExpensePage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6  ">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-foreground/60 text-sm font-medium">
@@ -548,7 +548,7 @@ export default function ExpensePage() {
           </div>
         </div>
 
-        <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+        <div className="bg-card rounded-lg p-6  ">
           <div className="flex items-center justify-between">
             <div className="w-full">
               <p className="text-foreground/60 text-sm font-medium">

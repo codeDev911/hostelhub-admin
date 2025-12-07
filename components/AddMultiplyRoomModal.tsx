@@ -75,13 +75,13 @@ const AddMultiplyRoomModal = ({numberOfRooms}:any) => {
             <DialogTitle>Add multiple rooms </DialogTitle>
             <DialogDescription>You can add multiple rooms at once</DialogDescription>
         </DialogHeader>
-        <Alert variant={"default"}>
+        <Alert variant={"default"} className='bg-secondary border-0'>
             <AlertTitle className='flex space-x-2  items-center text-primary test-sm'>
                 <SparklesIcon className='w-4 h-4'/>
                 <h2 className="font-bold">Smarter</h2>
             </AlertTitle>
             <AlertDescription>
-                <p className='text-muted-foreground text-sm'>
+                <p className='text-primary text-sm'>
                     This Action will create <strong>{formData.numberOfrooms || "x"} room(s) </strong>   of  <strong>  {formData.roomType || "x"} </strong>  in <strong> Floor {formData.floor || "x"} </strong>  with the price of <strong>  Rs.{formData.pricePerMonth | 0} </strong> / month.
                 </p>
             </AlertDescription>

@@ -83,9 +83,9 @@ export default function FeedbackDetailPage() {
 
  
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-6">
+    <div className="max-w-7xl mx-auto space-y-6">
         <div className="">
-           <Link href="/admin/feedbacks" className="hover:text-accent flex items-center space-x-1"> 
+           <Link href="/admin/feedbacks" className="text-accent flex items-center space-x-1"> 
            <ArrowLeft className="w-4"/>
             <p className="text-sm font-bold">Back to feedbacks</p></Link>
         </div>
@@ -95,8 +95,8 @@ export default function FeedbackDetailPage() {
         </div>
       <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
         {/* Header */}
-      <Card className="shadow-lg rounded-2xl">
-        <CardHeader className="flex flex-row items-center justify-between">
+      <div className="bg-card p-4 rounded-lg">
+        <div className="flex flex-row items-center justify-between">
           <div className="flex items-center gap-3">
             <Avatar>
               <AvatarFallback>
@@ -114,8 +114,8 @@ export default function FeedbackDetailPage() {
           <Badge variant={isComplaint ? "destructive" : "secondary"} className="text-xs">
             {feedback.type.toUpperCase()}
           </Badge>
-        </CardHeader>
-        <CardContent className="text-sm space-y-4">
+        </div>
+        <div className="text-sm space-y-4">
           <div className="flex items-center gap-2 text-muted-foreground text-xs">
             <Clock size={14} />
             {new Date(feedback.createdAt).toLocaleDateString()}
@@ -145,14 +145,14 @@ export default function FeedbackDetailPage() {
               Status: <Badge variant="outline">{feedback.status}</Badge>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
     <div className="space-y-4">
         {/* Actions */}
-         <Card className="shadow-md rounded-2xl p-4">
+         <div className="bg-card rounded-lg p-4">
         <h3 className="text-lg font-semibold ">Action</h3>
-        <Separator className="" />
+        <Separator className="my-2" />
        {isComplaint &&   feedback.status =="pending" || feedback.status =="reviewed"?
        !updateStatusLoading? <div className="grid grid-cols-2 gap-4 text-sm">
            {feedback.status !== "reviewed" && <Button onClick={()=>handleStatusUpdate("reviewed")} variant={"outline"} className="text-blue-500">Mark as reviewed</Button>}
@@ -162,23 +162,23 @@ export default function FeedbackDetailPage() {
       :"No action can ber performed yet."
       
     }
-      </Card>
+      </div>
       {/* Room Details */}
-      <Card className="shadow-md rounded-2xl p-4">
+      <div className="bg-card rounded-lg p-4">
         <h3 className="text-lg font-semibold ">Room Details</h3>
-        <Separator className="" />
+        <Separator className="my-2" />
         <div className="grid grid-cols-2 gap-4 text-sm">
           <p><span className="font-semibold">Room ID:</span> {room.id}</p>
           <p><span className="font-semibold">Room Type:</span> {room.roomType}</p>
           <p><span className="font-semibold">Number:</span> {room.roomNumber}</p>
           <p><span className="font-semibold">Floor:</span> {room.floor}</p>
         </div>
-      </Card>
+      </div>
     </div>
 
       </div>
       {/* Student Contact */}
-      <Card className="shadow-md rounded-2xl p-4">
+      <div className="p-4 rounded-lg bg-card">
         <h3 className="text-lg font-semibold mb-3">Student Contact</h3>
         <Separator className="mb-3" />
         <div className="space-y-2 text-sm">
@@ -186,7 +186,7 @@ export default function FeedbackDetailPage() {
           <p><span className="font-semibold">Email:</span> {student.email}</p>
           <p><span className="font-semibold">Student ID:</span> {student.id}</p>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

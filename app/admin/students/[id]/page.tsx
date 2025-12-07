@@ -139,7 +139,7 @@ export default function StudentDetails() {
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               {/* Personal Information */}
-              <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+              <div className="bg-card rounded-lg p-6 ">
                 <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
                   Personal Information
                 </h2>
@@ -178,7 +178,7 @@ export default function StudentDetails() {
               </div>
 
               {/* CNIC Information */}
-              <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+              <div className="bg-card rounded-lg p-6 ">
                 <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">Identification</h2>
                 <div className="space-y-4">
                   <div>
@@ -189,7 +189,7 @@ export default function StudentDetails() {
               </div>
 
               {/* Father Information */}
-              <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+              <div className="bg-card rounded-lg p-6 ">
                 <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
                   Father Information
                 </h2>
@@ -212,7 +212,7 @@ export default function StudentDetails() {
               </div>
 
               {/* Room Information */}
-              <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+              <div className="bg-card rounded-lg p-6 ">
                 <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">
                   Current Room Assignment
                 </h2>
@@ -245,7 +245,7 @@ export default function StudentDetails() {
               </div>
 
               {/* Payment Invoices */}
-              <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+              <div className="bg-card rounded-lg p-6 ">
                 <h2 className="text-xl font-bold text-primary mb-6 pb-4 border-b-2 border-secondary flex items-center gap-2">
                   <FileText className="w-5 h-5" />
                   Payment Invoices
@@ -287,7 +287,7 @@ export default function StudentDetails() {
 
             {/* Sidebar - Actions */}
             <div className="lg:col-span-1">
-              <div className="bg-card rounded-lg p-6 shadow-sm border border-border sticky top-4">
+              <div className="bg-card rounded-lg p-6  sticky top-4">
                 <h3 className="text-lg font-bold text-primary mb-6 pb-4 border-b-2 border-secondary">Quick Actions</h3>
                 <div className="space-y-3">
                   <ShiftRoomModal buttonTitle="Shift to another room" currentRoom={student.room} varient={"outline"} student_id={student.id}/>
@@ -315,7 +315,7 @@ export default function StudentDetails() {
             <select
               value={selectedRoom}
               onChange={(e) => setSelectedRoom(e.target.value)}
-              className="w-full px-4 py-2 border border-border rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full px-4 py-2 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-accent"
             >
               <option value="">Select Room</option>
               {availableRooms.map((room:any) => (
@@ -345,7 +345,7 @@ export default function StudentDetails() {
              )}
               <button
                 onClick={() => setShowShiftModal(false)}
-                className="flex-1 border border-border font-semibold py-2 rounded-lg hover:bg-secondary"
+                className="flex-1 font-semibold py-2 rounded-lg hover:bg-secondary"
               >
                 Cancel
               </button>
@@ -392,7 +392,7 @@ export default function StudentDetails() {
               </button>}
               <button
                 onClick={() => setShowRevokeModal(false)}
-                className="flex-1 border border-border font-semibold py-2 rounded-lg hover:bg-secondary"
+                className="flex-1 font-semibold py-2 rounded-lg hover:bg-secondary"
               >
                 Cancel
               </button>

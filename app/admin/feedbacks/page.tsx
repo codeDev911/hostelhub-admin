@@ -102,7 +102,7 @@ const [markAsReadLoading,setMarkAsReadLoading] = useState(false)
       <FeedbackStatsCard stats={feedBack} />
 
       {/* Filters and Search */}
-      <div className="bg-card rounded-lg p-6 shadow-sm border border-border space-y-4">
+      <div className="bg-card rounded-lg p-6   space-y-4">
         <div className="flex items-center gap-2 mb-4">
           <Filter className="w-5 h-5 text-primary" />
           <h2 className="text-lg font-semibold text-primary">
@@ -122,7 +122,7 @@ const [markAsReadLoading,setMarkAsReadLoading] = useState(false)
                 placeholder="Student name, email, feedback ID"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2  rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
               />
             </div>
           </div>
@@ -134,7 +134,7 @@ const [markAsReadLoading,setMarkAsReadLoading] = useState(false)
             <select
               value={filterfeedbackStatus}
               onChange={(e) => setFilterfeedbackStatus(e.target.value)}
-              className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+              className="w-full px-4 py-2  rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
             >
               <option value="">All Status</option>
               <option value="rejected">Rejected</option>
@@ -147,7 +147,7 @@ const [markAsReadLoading,setMarkAsReadLoading] = useState(false)
             <label className="block text-sm font-medium text-foreground mb-2">
               FeedBack Type
             </label>
-            <select className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent">
+            <select className="w-full px-4 py-2  rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent">
               <option value="">All types</option>
               <option value="complaint">Complaints</option>
               <option value="Review">Reviews</option>
@@ -157,7 +157,7 @@ const [markAsReadLoading,setMarkAsReadLoading] = useState(false)
       </div>
 
       {/* feedbacks Table */}
-      <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
+      <div className="bg-card rounded-lg   overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-secondary border-b border-border">
