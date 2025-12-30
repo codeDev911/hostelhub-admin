@@ -1,6 +1,4 @@
 export const runtime = "nodejs";
-export const revalidate = 0
-export const dynamic = "force-dynamic"
 
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
@@ -20,6 +18,7 @@ interface HostelMeta {
   province?:string
 }
 
+export const revalidate = 120; // 2 minutes
 
 export async function GET(request: NextRequest) {
 

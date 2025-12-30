@@ -2,6 +2,8 @@ export const runtime = "nodejs";
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 
+export const revalidate = 60; // 1 minute
+
 export async function GET(request: NextRequest, { params }: any) {
 
   try {
