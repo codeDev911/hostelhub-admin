@@ -17,8 +17,7 @@ interface HostelMeta {
   city:string
   province?:string
 }
-
-export const revalidate = 120; // 2 minutes
+ 
 
 export async function GET(request: NextRequest) {
 
@@ -67,7 +66,11 @@ export async function GET(request: NextRequest) {
             amenities:hostel.amenities,
             province:hostel?.metaDetails?.province ||"",
         }
-        return NextResponse.json(details,{status:200})
+        return NextResponse.json(details,{status:200,
+             headers: {
+      'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=86400',
+    },
+        })
     }else{
         return NextResponse.json({ error: "No hostel founded" }, { status: 400 })
     }
