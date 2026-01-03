@@ -94,3 +94,33 @@ export const VerifyPanelRequest = async (token: any): Promise<boolean> => {
     return false;
   }
 };
+
+
+// THis is for sending verification link (e.g., email verification, password reset)
+
+export async function createVerificationLink(email:any,purpose:any) {
+  const token = await new SignJWT({
+    email,
+    purpose
+  })
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("5m")            // expires in 5 minutes
+    .setIssuedAt()
+    .sign(secret);
+
+  return `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/verify-link?token=${token}`;
+}
+
+export async function verifyEmailToken(token:any) {
+ try {
+   const { payload } = await jwtVerify(token, secret);
+
+  if (!payload) {
+    throw new Error("Invalid token purpose");
+  }
+
+  return payload; // 🎉 verified email
+ } catch (error) {
+  return null
+ }
+}

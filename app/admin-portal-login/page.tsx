@@ -57,7 +57,7 @@ export default function AdminPortalLoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-accent/5 via-background to-accent/10 flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Card with premium styling */}
-        <div className="backdrop-blur-xl bg-card/80 border border-white/20 rounded-2xl p-8 shadow-2xl">
+        <div className="backdrop-blur-xl bg-card  rounded-2xl p-8 ">
           {/* Header */}
           <div className="mb-8 text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-accent to-accent/70 rounded-xl mb-4">
@@ -101,6 +101,12 @@ export default function AdminPortalLoginPage() {
                   placeholder="Enter your password"
                 />
               </div>
+              <Link
+              href="/reset-password"
+              className="text-sm text-accent hover:underline float-right"
+            >
+              Reset password
+            </Link>
             </div>
 
             {/* Submit Button */}
@@ -131,7 +137,7 @@ export default function AdminPortalLoginPage() {
           <div className="space-y-3 text-sm text-center">
             <p className="text-foreground/60">Register as a hostel owner to get started</p>
             <Link
-              href="/hostel-registration"
+              href={`${process.env.NEXT_PUBLIC_MARKETING_BASE_URL}/hostel-registration`}
               className="inline-block w-full bg-background/50 border border-border/50 hover:bg-background text-primary font-semibold py-2 rounded-lg transition-colors"
             >
               Register Hostel
