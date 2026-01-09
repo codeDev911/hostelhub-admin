@@ -22,3 +22,4 @@
 ### Updated UI/UX 7/12/2025
 ## Added cache (revalidate) to some routes 30/12/2025 
 ## Added reset password 3/1/2026 
+### Killed some bugs
