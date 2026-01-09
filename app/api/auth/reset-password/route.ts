@@ -21,9 +21,26 @@ export async function POST(request: NextRequest) {
     }
 
     const hashedPassword = await hashPassword(password);
-    await prisma.student.update({
-        where: {  email: (isValid as { email: string }).email ,phone:""},
-        data: { password: hashedPassword }
+    await prisma.$transaction(async(tx)=>{
+
+      const user  = await tx.student.findFirst({
+         where: {  email: (isValid as { email: string }).email},
+         select:{
+          phone:true
+         }
+      })
+
+      if(user){
+        await tx.student.update({
+          where:{
+            phone : user?.phone || ""
+          },
+          data:{
+            password:hashedPassword
+          }
+        })
+      }
+
     })
 
     return NextResponse.json({ success: true, message: "Password reset successfully" })
