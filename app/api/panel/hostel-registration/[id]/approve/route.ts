@@ -9,11 +9,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   try {
     const { id } = await params
     const body = await req.json()
-    const { reviewedBy } = body
-
-    if (!reviewedBy) {
-      return NextResponse.json({ error: "Reviewer email is required" }, { status: 400 })
-    }
+    const reviewedBy = "admin@hostelhub.pk" 
 
     // Get registration
     const registration = await prisma.hostelRegistration.findUnique({
