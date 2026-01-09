@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     const hashedPassword = await hashPassword(password);
     await prisma.student.update({
-        where: { email: (isValid as { email: string }).email },
+        where: {  email: (isValid as { email: string }).email ,phone:""},
         data: { password: hashedPassword }
     })
 
