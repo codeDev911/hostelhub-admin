@@ -5,11 +5,11 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "postinstall": "prisma db push --accept-data-loss",
+    "postinstall": "prisma db push ",
     "lint": "eslint .",
-    "prisma:generate": "prisma generate --accept-data-loss",
+    "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:push": "prisma db push --accept-data-loss",
+    "prisma:push": "prisma db push ",
     "prisma:studio": "prisma studio",
     "start": "next start"
   },
