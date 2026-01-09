@@ -9,13 +9,17 @@ export async function POST(request: NextRequest) {
   try {
     const {email,password} = await request.json() 
 
-    const student = await prisma.student.findUnique({
+    const student = await prisma.student.findFirst({
         where:{
-            email
+            OR:[
+                {email:email},
+                {phone:email}
+            ]
         }
     })
-
+        
     if(!student){
+      
         return NextResponse.json({error:"No user founded! Either user is not registered or provided credentials in wrong"},{status:400})
     }
 
@@ -28,15 +32,17 @@ export async function POST(request: NextRequest) {
 
     let token = await createSession({
       userId:student.id,
-      email:student.email,
+      email:student?.email,
       phone:student.phone,
       })
+
+      
   
 
     return NextResponse.json({sucess:true,message:"User logged in",token:token},{status:201})
 
   } catch (error) {
-    console.error("[v0] Get rooms error:", error)
-    return NextResponse.json({ error: "Failed to fetch rooms" }, { status: 500 })
+    console.error("Student login error : ", error)
+    return NextResponse.json({ error: "Server error occured" }, { status: 500 })
   }
 }

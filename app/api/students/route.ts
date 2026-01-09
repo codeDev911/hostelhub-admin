@@ -13,9 +13,12 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await hashPassword(password)
 
 
-    const student= await prisma.student.findUnique({
+    const student= await prisma.student.findFirst({
       where:{
-        email:data.email
+        OR:[
+          {email:data.email},
+          {phone:data.phone.trim()}
+        ]
       },
       select:{
         email:true,
@@ -24,7 +27,7 @@ export async function POST(request: NextRequest) {
     })
 
     if(student && (student?.email === data.email || student.phone === data.phone)){
-      return NextResponse.json({ error: "Email is already registered" }, { status: 403 })
+      return NextResponse.json({ error: "Email or phone is already registered" }, { status: 400 })
     }
 
     await prisma.student.create({
@@ -40,6 +43,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({sucess:true,message:"Student created success"},{status:201})
   } catch (error) {
     console.error("Student error:", error)
-    return NextResponse.json({ error: "Cann't post student" }, { status: 500 })
+    return NextResponse.json({ error: "Server error occured, please try again" }, { status: 500 })
   }
 }

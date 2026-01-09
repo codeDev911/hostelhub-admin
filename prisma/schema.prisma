@@ -133,9 +133,9 @@ model Student {
   firstName   String
   lastName    String
   password    String?
-  email       String?   @unique
-  phone       String?
-  cnnic       String?   @unique
+  email       String?   
+  phone       String?   @unique
+  cnnic       String?   
   dateOfBirth DateTime?
   gender      String?
   bloodGroup  String?
