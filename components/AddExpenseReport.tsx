@@ -39,8 +39,9 @@ export default function AddExpenseReport() {
       })
 
       if(res.ok){
+        let {id} = await res.json()
         toast.success("Expenses created success")
-        router.push("/admin/expenses")
+        router.push(`/admin/expenses/${id}`)
       }
       
     } catch (error) {

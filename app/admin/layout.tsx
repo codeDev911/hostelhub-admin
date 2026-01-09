@@ -99,8 +99,8 @@ export default function AdminLayout({
   const menuItems = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard,tag:"",isActive:(path:any)=>path === "/admin"},
     { href: "/admin/hostel", label: "Hostel Details", icon: Building2,tag:"",isActive:(path:any)=>path.includes("/admin/hostel") },
-    { href: "/admin/rooms", label: "Room Management", icon: DoorOpen,tag:"",isActive:(path:any)=>path.includes("/admin/rooms") },
     { href: "/admin/students", label: "Students", icon: Users,tag:"",isActive:(path:any)=>path.includes("/admin/students") },
+    { href: "/admin/rooms", label: "Room Management", icon: DoorOpen,tag:"",isActive:(path:any)=>path.includes("/admin/rooms") },
     { href: "/admin/bookings", label: "Bookings", icon: Calendar,tag:"",isActive:(path:any)=>path.includes("/admin/bookings") },
     { href: "/admin/payments", label: "Payment & invoices", icon: Banknote,tag:"",isActive:(path:any)=>path.includes("/admin/payments") || path.includes("/admin/invoices") },
     { href: "/admin/feedbacks", label: "Feedbacks", icon: Newspaper,tag:"new",isActive:(path:any)=>path.includes("/admin/feedbacks") },
@@ -180,6 +180,8 @@ export default function AdminLayout({
         {/* Page Content */}
         <div className="flex-1 overflow-auto">
           <div className="p-4 sm:p-6 lg:p-8">{children}</div>
+
+          {/* QR-Code dialog */}
               {/* <Dialog>
                 <DialogTrigger asChild>
                     <Button onClick={()=>{

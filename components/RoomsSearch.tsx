@@ -85,7 +85,7 @@ const ActiveFilters = ({ filters, removeFilter }:any) => {
   if (!active.length) return null;
 
   return (
-    <div className="flex flex-wrap gap-2 my-2 items-center">
+    <div className="flex flex-wrap gap-2 mb-2 items-center">
         <h2 className="text-sm font-semibold">Filters</h2>
       {active.map(([key, val]:any) => (
         <div
@@ -119,9 +119,8 @@ const ActiveFilters = ({ filters, removeFilter }:any) => {
         </div>
         <p className="text-muted-foreground text-sm">With our smart search you can optimize your search experience across all rooms</p>
       </div>
-      <br />
-        <ActiveFilters filters={filters} removeFilter={removeFilter} />
-      <div className="grid -mt-7 md:grid-cols-6 gap-4">
+      <ActiveFilters filters={filters} removeFilter={removeFilter} />
+      <div className="grid   md:grid-cols-6 gap-4">
         {/* Room Number */}
         <div className="space-y-2 ">
           <Label className="">Room Number</Label>

@@ -207,7 +207,7 @@ export default function ExpensePage() {
   const [newItem, setNewItem] = useState({
     title: "",
     category: "",
-    amount: 0,
+    amount: Number,
     description: "",
     receiptUrl: "",
   });
@@ -350,7 +350,7 @@ export default function ExpensePage() {
         setNewItem({
           title: "",
           category: "",
-          amount: 0,
+          amount: Number,
           description: "",
           receiptUrl: "",
         });
@@ -611,7 +611,7 @@ export default function ExpensePage() {
               <Input
                 type="number"
                 placeholder="Amount"
-                value={newItem.amount}
+                value={Number(newItem?.amount)}
                 onChange={(e) =>
                   setNewItem({ ...newItem, amount: Number(e.target.value) })
                 }

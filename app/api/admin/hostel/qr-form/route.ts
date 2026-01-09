@@ -27,7 +27,7 @@ export async function GET(req:Request){
         }
     })
 
-    if(!url?.formFillUrl){
+    if(!url?.formFillUrl){        
         return NextResponse.json({ message:"no qr code founded"},{status:400});
     }
     

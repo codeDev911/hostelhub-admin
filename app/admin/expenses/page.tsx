@@ -72,7 +72,7 @@ const page = () => {
           </p>
         </div>
         <div className="flex max-md:flex-wrap space-x-2 items-center">
-          <CompareDialog expenses={data}/>
+          {/* <CompareDialog expenses={data}/> */}
          <Dialog>
             <DialogTrigger>
                  <button className="flex items-center hover:cursor-pointer gap-2 bg-accent text-accent-foreground  font-semibold px-6 py-3 rounded-lg   transition-colors">

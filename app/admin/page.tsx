@@ -147,7 +147,8 @@ export default function AdminDashboard() {
             This chart compare finincial activities such as{" "}
             <strong>Revenue, Cost & Profit</strong> of last 12 months{" "}
           </p>
-          <FinanceLineChart data={chartData} />
+          {/* <FinanceLineChart data={chartData} /> */}
+          <h3 className="text-xl font-bold text-muted-foreground text-center my-[15%]">No data available yet</h3>
         </div>
         <div className="space-y-4">
           <div className="p-4  rounded-lg bg-card">

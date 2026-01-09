@@ -103,7 +103,7 @@ export default function AdminPortalLoginPage() {
               </div>
               <Link
               href="/reset-password"
-              className="text-sm text-accent hover:underline float-right"
+              className="text-sm text-accent my-2 hover:underline float-right"
             >
               Reset password
             </Link>

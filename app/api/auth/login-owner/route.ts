@@ -3,7 +3,7 @@ export const runtime = "nodejs";
 import { prisma } from "@/lib/prisma"
 import { createSession, verifyPassword } from "@/lib/auth"
 import { type NextRequest, NextResponse } from "next/server"
-import { hashPassword } from "@/lib/auth";
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     // Verify password
     const hashedPassword = await verifyPassword(password,admin.password)
     if (!hashedPassword) {
-      console.log("no email valid");
+      console.log("no password valid");
 
       return NextResponse.json({ error: "Invalid email or password" }, { status: 401 })
     }

@@ -2,9 +2,8 @@
 
 import type React from "react";
 import { useEffect, useState } from "react";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit2, Trash2, Loader2, EyeIcon } from "lucide-react";
+import { Plus, Edit2, Trash2, Loader2, EyeIcon, Loader } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 import AddMultiplyRoomModal from "@/components/AddMultiplyRoomModal";
@@ -26,6 +25,7 @@ export default function RoomManagementPage() {
   const [rooms,setRooms]= useState([]as any)
   const [loading, setLoading] = useState(true);
   const [isAddingRoom, setIsAddingRoom] = useState(false);
+  const [isSavingRoomsLoading, setSavingRoomsLoading] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [deleteRoomLoading,setDeleteRoomLoading] = useState(false)
   const [formData, setFormData] = useState({
@@ -67,13 +67,15 @@ export default function RoomManagementPage() {
 
   const handleSaveRoom = async () => {
     try {
+      setSavingRoomsLoading(true)
       const roomData = {
         ...formData,
-        totalSeats: formData.totalSeats, 
+        totalSeats: getRoomCapacity(formData.roomType), 
         pricePerMonth: Number.parseFloat(formData.pricePerMonth),
       };
 
       if (editingId) {
+        
         const response = await fetch("/api/admin/rooms", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -110,8 +112,10 @@ export default function RoomManagementPage() {
         pricePerMonth: "",
       });
     } catch (error) {
-      console.error("[v0] Save room error:", error);
       toast.error("Failed to save room");
+    }
+    finally{
+      setSavingRoomsLoading(false)
     }
   };
 
@@ -241,7 +245,7 @@ export default function RoomManagementPage() {
               </label>
               <input
                 type="number"
-                name=""
+                name="totalSeats"
                 disabled
                 onChange={handleChange}
                 value={getRoomCapacity(formData.roomType)}
@@ -265,12 +269,20 @@ export default function RoomManagementPage() {
             </div>
           </div>
           <div className="flex gap-3">
+            {
+              isSavingRoomsLoading?
+            <Button
+              className="bg-accent text-accent-foreground hover:bg-accent/90"
+            >
+              <Loader className="w-5 h-5 animate-spin"/>
+            </Button>:
             <Button
               onClick={handleSaveRoom}
               className="bg-accent text-accent-foreground hover:bg-accent/90"
             >
               Save Room
             </Button>
+            }
             <Button
               onClick={() => {
                 setIsAddingRoom(false);
