@@ -12,12 +12,9 @@ export async function GET(request: NextRequest, { params }: any) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     } 
     
-    const student = await prisma.student.findFirst({
+    const student = await prisma.student.findUnique({
       where: { 
-        AND:{
-          hostelId: session.hostelId!,
-          id: id
-        }
+        id: id
       },
       include: {
         hostel: {

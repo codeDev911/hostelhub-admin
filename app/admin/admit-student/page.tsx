@@ -245,13 +245,12 @@ export default function AdmitStudent() {
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">CNIC Number *</label>
+                      <label className="block text-sm font-medium text-foreground mb-2">CNIC Number</label>
                       <input
                         type="text"
                         name="cnnic"
                         value={formData.cnnic}
                         onChange={handleInputChange}
-                        required
                         className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                         placeholder="XXXXX-XXXXXXX-X"
                       />

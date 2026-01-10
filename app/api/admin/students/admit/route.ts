@@ -16,6 +16,9 @@ export async function POST(request: NextRequest) {
     }
     const body = await request.json()
 
+
+    
+
     const student = await prisma.student.upsert({
       where: { phone: body.phone },
       update: {
