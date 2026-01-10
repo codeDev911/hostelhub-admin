@@ -2,7 +2,6 @@ export const runtime = "nodejs";
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getSession } from "@/lib/auth";
-import { se } from "date-fns/locale";
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,7 +17,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
 
     const student = await prisma.student.upsert({
-      where: { cnnic: body.cnnic },
+      where: { phone: body.phone },
       update: {
         firstName: body.firstName,
         lastName: body.lastName,
