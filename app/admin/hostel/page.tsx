@@ -514,7 +514,7 @@ export default function HostelDetailsPage() {
             <h2 className="text-2xl font-bold text-primary">7-Day Meal Plan</h2>
           </div>
           <div className="w-full flex flex-wrap gap-3">
-            <MealPlanModal meals={hostel?.mealPlan || null}/>
+            <MealPlanModal meals={hostel?.mealPlan || []}/>
           </div>
         
         </Card>
