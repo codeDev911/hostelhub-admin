@@ -24,3 +24,4 @@
 ## Added reset password 3/1/2026 
 ### Killed some bugs
 ### make some changes in student login/registrations   
+### some bugs with student phone 
