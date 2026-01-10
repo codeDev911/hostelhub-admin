@@ -19,7 +19,7 @@
 ### updated MIddleware to access to CP hostel hub 6/12/2025 
 ### update nextjs  16.0.0 to 16.0.7 to resolve the error 6/12/2025 (2nd attempt)
 ### Added Dark theme
-### Updated UI/UX 7/12/2025
+### Updated UI/UX 7/12/2025 
 ## Added cache (revalidate) to some routes 30/12/2025 
 ## Added reset password 3/1/2026 
 ### Killed some bugs
