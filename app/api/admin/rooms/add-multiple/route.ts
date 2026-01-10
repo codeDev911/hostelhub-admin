@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
         hostelId:session.hostelId!,
         pricePerMonth:pricePerMonth,
         roomType:roomType,
-        roomNumber : `${Number.parseInt(startingNumber+1)+i}`,
+        roomNumber : `${Number.parseInt(startingNumber)+Number(i)}`,
         floor:floor,
         totalSeats:getRoomCapacity(roomType),
     }));
