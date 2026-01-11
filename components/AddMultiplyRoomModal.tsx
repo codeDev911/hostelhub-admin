@@ -150,7 +150,7 @@ const AddMultiplyRoomModal = ({numberOfRooms}:any) => {
                         <TooltipContent>It will automatically add the rooms number by one. Enter the last room number. (e.g) {numberOfRooms}</TooltipContent>
                     </Tooltip>
                     </div>
-                    <Input required type="number" min={0} value={formData.startingNumber}  onChange={handleChange} placeholder='(e.g) 2' name='startingNumber'/>
+                    <Input required type="text"   value={formData.startingNumber}  onChange={handleChange} placeholder='(e.g) 2 or G2' name='startingNumber'/>
                 </div>
 
                 <DialogFooter className=''>

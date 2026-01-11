@@ -16,7 +16,7 @@ function filterRooms(rooms:any, filters:any) {
 
     const matchType = filters.roomType ? room.roomType === filters.roomType : true;
 
-    const matchFloor = filters.floor ? String(room.floor) === String(filters.floor) : true;
+    const matchFloor = filters.floor ? String(room.floor.toLowerCase()).match( String(filters.floor.toLowerCase())) : true;
 
     const requiredSeats = filters.availableSeats ? Number(filters.availableSeats) : 0;
     const availableSeats = (room.totalSeats || 0) - (room?.students?.length || 0);

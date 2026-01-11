@@ -51,16 +51,7 @@ export const registrationEmail = () =>{
                 </tr>
               </table>
 
-              <!-- Optional CTA (view dashboard) -->
-              <table cellspacing="0" cellpadding="0" border="0" align="left" style="margin-top:20px;">
-                <tr>
-                  <td align="center" bgcolor="#E2B646" style="border-radius:6px;padding:12px 22px;">
-                    <a href="#" style="display:inline-block;font-family:Inter, Arial, sans-serif;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;">
-                      View Your Dashboard
-                    </a>
-                  </td>
-                </tr>
-              </table>
+              
 
               <!-- Support note -->
               <p style="font-size:14px;line-height:20px;margin:20px 0 0 0;color:#555555;">

@@ -182,7 +182,7 @@ export default function RoomManagementPage() {
           <Plus className="w-4 h-4 mr-2" />
           Add Room
         </Button>
-        <AddMultiplyRoomModal numberOfRooms={rooms?.length||0}/>
+        <AddMultiplyRoomModal numberOfRooms={rooms?.length+1||1}/>
         </div>
       </div>
 

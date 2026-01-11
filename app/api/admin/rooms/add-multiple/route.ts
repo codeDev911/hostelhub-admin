@@ -4,12 +4,22 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { getRoomCapacity } from "@/lib/room-capicity";
 
+function parseStartingNumber(value: any) {
+  const match = value.toString().match(/^([A-Za-z]*)(\d+)$/);
 
+  if (!match) return null;
+
+  return {
+    letter: match[1] || null,
+    number: parseInt(match[2], 10),
+  };
+}
 
 export async function POST(request: NextRequest) {
   try {
     const session = await getSession();
-    let {floor,numberOfrooms,pricePerMonth,roomType,startingNumber} = await request.json()
+    let { floor, numberOfrooms, pricePerMonth, roomType, startingNumber } =
+      await request.json();
 
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -23,24 +33,26 @@ export async function POST(request: NextRequest) {
     }
 
     // We are getting this as string eg '14000' , converted to number as 14000
-    pricePerMonth = Number.parseInt(pricePerMonth)
+    pricePerMonth = Number.parseInt(pricePerMonth);
+    const startingRoom = parseStartingNumber(startingNumber)
 
     const rooms = Array.from({ length: numberOfrooms }, (_, i) => ({
-        hostelId:session.hostelId!,
-        pricePerMonth:pricePerMonth,
-        roomType:roomType,
-        roomNumber : `${Number.parseInt(startingNumber)+Number(i)}`,
-        floor:floor,
-        totalSeats:getRoomCapacity(roomType),
+      hostelId: session.hostelId!,
+      pricePerMonth: pricePerMonth,
+      roomType: roomType,
+      roomNumber: `${startingRoom?.letter ? startingRoom.letter :""}${Number(startingRoom?.number)+i}`,
+      floor: floor,
+      totalSeats: getRoomCapacity(roomType),
     }));
 
-    
-
     await prisma.room.createMany({
-        data:rooms
-    })
+      data: rooms,
+    });
 
-    return NextResponse.json({ success:true,message:"Multiple rooms created" }, { status: 201 });
+    return NextResponse.json(
+      { success: true, message: "Multiple rooms created" },
+      { status: 201 }
+    );
   } catch (e) {
     console.log(e);
 

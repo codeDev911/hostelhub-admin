@@ -20,13 +20,14 @@ export default function SendEmail() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Something went wrong");
+        throw new Error(data.error || "Something went wrong");
       }
 
       toast("Email sent! Check your inbox for further instructions.");
       setEmail("");
     } catch (error: any) {
-      toast("Sending email failed");
+      
+      toast(error?.message);
     } finally {
       setLoading(false);
     }
