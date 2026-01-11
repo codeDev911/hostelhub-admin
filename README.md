@@ -6,7 +6,7 @@
 ## A huge update
 # Attached control panel, added some apis and secutiry for panel request
 #### some changes
-#### added https://hostelhub.pk in CORS
+#### added https://hostelhub.pk in CORS 
 #### added email sender
 #### updated email sending
 #### removed @unique constraint from hostel registration
