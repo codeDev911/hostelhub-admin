@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getSession } from "@/lib/auth";
+import { redis } from "@/lib/redis";
 
 export async function DELETE(request: NextRequest, { params }: any) {
   try {
@@ -45,10 +46,14 @@ export async function DELETE(request: NextRequest, { params }: any) {
       }
     })
 
+
+    // Decrement room usage by 1 in redis
+    await redis.hincrby(`usg:${session.hostelId}`,"rm",-1)
+
     return NextResponse.json({ success: true },{status:201})
   } catch (error) {
     console.error(" Delete room error:", error)
-    return NextResponse.json({ error: "Failed to delete room" }, { status: 500 })
+    return NextResponse.json({ error}, { status: 500 })
   }
 }
 

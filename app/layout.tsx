@@ -37,14 +37,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ThemeProvider attribute={"class"} defaultTheme="dark">
-      <html lang="en">
+    <html lang="en">
+        <ThemeProvider  attribute={"class"} defaultTheme="dark">
        <body className={`font-sans antialiased`}>
         {children}
         <Toaster position="top-center" theme="system"  richColors closeButton/>
         <Analytics />
       </body>
+     </ThemeProvider>
     </html>
-    </ThemeProvider>
   )
 }

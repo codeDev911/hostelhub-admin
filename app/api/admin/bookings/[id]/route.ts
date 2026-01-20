@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getSession } from "@/lib/auth";
+import { redis } from "@/lib/redis";
 
 export async function GET(request: NextRequest, { params }: any) {
   try {
@@ -89,6 +90,8 @@ export async function DELETE(request: NextRequest, { params }: any) {
       },
     })
 
+    // Decrease booking by 1 from redis for hostel usage
+    await redis.hincrby(`usg:${session.hostelId}`,"bk",-1)
     return NextResponse.json({ messag: "Booking deleted" },{status:201})
   } catch (error) {
     console.error("Delete booking error:", error)

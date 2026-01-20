@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast'
 import { Alert, AlertDescription, AlertTitle } from './ui/alert'
 import { useRouter } from 'next/navigation'
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip'
+import { toast } from 'sonner'
 
 const AddMultiplyRoomModal = ({numberOfRooms}:any) => {
     const router= useRouter()
@@ -32,13 +33,16 @@ const AddMultiplyRoomModal = ({numberOfRooms}:any) => {
                 body:JSON.stringify(formData)
             })
             if (res.ok){
-                console.log("room created success");
+                toast.success("room created success");
+                openChanged()
+                setIsOpen(false)
+                location.assign("/admin/rooms")
+            }else{
+                let ress = await res.json()
+                toast.error(ress.error)
             }
-            openChanged()
-            setIsOpen(false)
-            location.assign("/admin/rooms")
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }finally{
             setLoading(false)
         }

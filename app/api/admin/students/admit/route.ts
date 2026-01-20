@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getSession } from "@/lib/auth";
+import { redis } from "@/lib/redis";
 
 export async function POST(request: NextRequest) {
   try {
@@ -70,13 +71,8 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    if (body.roomId) {
-      const room = await prisma.room.findUnique({
-        where: { id: body.roomId },
-      })
-
-    }
-
+  // Increment users from usage in redis
+    await redis.hincrby(`usg:${session.hostelId}`,"us",1)
     return NextResponse.json(student, { status: 201 })
   } catch (error) {
     console.error("[v0] Admit student error:", error)

@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getSession } from "@/lib/auth";
 import { generateTransactionId } from "../payments/route";
+import { redis } from "@/lib/redis";
 
 export async function GET(request: NextRequest) {
   try {
@@ -116,8 +117,9 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    
-    
+    // increate invoice by 1 in redis for hostel usage
+    await redis.hincrby(`usg:${session.hostelId}`,"in",1)
+
     return NextResponse.json({sucess:true},{status:201})
   } catch (error) {
     console.error("Get invoices error:", error)

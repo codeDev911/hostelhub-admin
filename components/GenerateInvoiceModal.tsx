@@ -52,17 +52,16 @@ export default function InvoiceDialog({studentId,studentName,roomPriceMonthly}:I
             body:JSON.stringify(form)
         })
         if(res.ok){
-            toast("Invoice generate success",{
+            toast.success("Invoice generate success",{
                 icon:<CheckCircle className="w-4"/>
             })
             setOpen(false);
         }else{
-            toast("Unknown error occured",{
-                icon:<XIcon className="w-4"/>
-            })
+          let ress = await res.json()
+            toast.error(ress.error)
         }
     } catch (error) {
-        toast("Error occured!",{
+        toast.error("Unknown Error occured!",{
                 icon:<XIcon className="w-4"/>
         })
     }finally{

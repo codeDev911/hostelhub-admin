@@ -1,6 +1,8 @@
+export const runtime = 'nodejs';
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getSession, verifyExternalUser, VerifyPanelRequest } from "@/lib/auth";
+import { centralPlanGuard } from "./lib/planGuard";
 
 const publicRoutes = [
   "/api/hostels/register",
@@ -50,6 +52,25 @@ export async function middleware(request: NextRequest) {
       return withCorsHeaders(redirectRes, origin);
     }
   }
+
+  // admin api post request plan guard
+  if (pathname.startsWith("/api/admin") && request.method =="POST") {
+    const session = await getSession();
+    if (!session) {
+      const redirectRes = NextResponse.redirect(new URL("/admin-portal-login", request.url));
+      return withCorsHeaders(redirectRes, origin);
+    }
+     try {
+      await centralPlanGuard(request,session!,request.json())
+    } catch (error:any) { 
+       return withCorsHeaders(
+        NextResponse.json({error:error.message} , { status: 400 ,statusText:"ROOM_LIMIT_EXCEEDED"}),
+        origin
+      );
+    } 
+  }
+
+
 
   // Students APIs
   if (pathname.startsWith('/api/students')) {

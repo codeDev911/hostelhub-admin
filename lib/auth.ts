@@ -12,6 +12,7 @@ export interface SessionData extends JWTPayload {
   email: string;
   hostelOwnerId: string;
   hostelId: string | null;
+  planId?: string | null;
 }
 
 interface ExternalUser extends JWTPayload {
@@ -20,7 +21,7 @@ interface ExternalUser extends JWTPayload {
   phone: string;
 }
 
-export async function createSession(data: any) {
+export async function createSession(data: SessionData) {
   const token = await new SignJWT(data)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -45,6 +46,7 @@ export async function getSession(): Promise<SessionData | null> {
     if (!token) return null;
 
     const { payload } = await jwtVerify(token, secret);
+    
     return payload as SessionData;
   } catch {
     return null;
@@ -89,7 +91,6 @@ export const VerifyPanelRequest = async (token: any): Promise<boolean> => {
     }
     return false;
   } catch (err) {
-    console.log(err);
     
     return false;
   }

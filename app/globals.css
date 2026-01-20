@@ -2,6 +2,22 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@layer base {
+  :root {
+    /* Tighten the whole app slightly for that premium feel */
+    --font-sans-letter-spacing: -0.02em;
+  }
+
+  html {
+    letter-spacing: var(--font-sans-letter-spacing);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Force all numbers to use monospaced widths */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
 
 :root {
   --background: oklch(97.399% 0.00408 285.924);

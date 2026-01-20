@@ -42,7 +42,6 @@ const [paymentSubmittionLoading,setPaymentSubmittionLoading] = useState(false)
       .then((d) => {
         setInvoice(d);
         setForm({...form,invoiceId:d.id,studentId:d.student.id,amount:d.amount})
-        console.log(d);
         
         setLoading(false);
       });
@@ -165,13 +164,14 @@ ${
             body:JSON.stringify(form)
         })
         if(res.ok){
-            toast("Invoice has beed update and payment created")
+            toast.success("Invoice has beed update and payment created")
             location.reload()
         }else{
-            toast("Unknown error occured!")
+          let ress= await res.json()
+            toast.error(ress?.error||"Unknown error occured")
         }
     } catch (error) {
-        toast("Unknown error occured!")
+        toast.error("Unknown error occured!")
     }finally{
         setPaymentSubmittionLoading(false)
     }
@@ -228,7 +228,7 @@ ${
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <Label className="font-semibold">Amount</Label>
-                            <Input required type="text" value={invoice.amount}  onChange={(value)=>setForm({...form,amount:Number.parseInt(value.currentTarget.value)})} />
+                            <Input required type="number" value={form.amount}  onChange={(value)=>setForm({...form,amount:Number.parseInt(value.currentTarget.value)})} />
                         </div>
                         <div className="space-y-2">
                             <Label className="font-semibold">Payment method</Label>

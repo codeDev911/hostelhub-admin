@@ -1,8 +1,9 @@
-// app/api/upload/route.ts
+export const runtime = "nodejs";
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { redis } from "@/lib/redis";
  
 const folder="hostelhub-content"
 function generateSignature(timestamp: number) {
@@ -11,6 +12,7 @@ function generateSignature(timestamp: number) {
 }
 
 export async function POST(req: Request) {
+    
   try {
     const session = await getSession()
         
@@ -22,6 +24,7 @@ export async function POST(req: Request) {
     const files = formData.getAll("files") as File[];
 
     if (!files.length || files.length > 5) {
+      
       return NextResponse.json({ error: "Upload 1-5 images only" }, { status: 400 });
     }
 
@@ -44,6 +47,7 @@ export async function POST(req: Request) {
         method: "POST",
         body: params,
       });
+      
       
       const result = await res.json();
       uploaded.push(result);
@@ -80,8 +84,12 @@ export async function POST(req: Request) {
         }
     })
 
+    // increate images by 1 in redis for hostel usage
+    await redis.hincrby(`usg:${session.hostelId}`,"im",1)
     return NextResponse.json(urls);
   } catch (e: any) {
+    console.log({e});
+    
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }

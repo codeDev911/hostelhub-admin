@@ -42,6 +42,9 @@ export default function AddExpenseReport() {
         let {id} = await res.json()
         toast.success("Expenses created success")
         router.push(`/admin/expenses/${id}`)
+      }else{
+        let ress = await res.json()
+        toast.error(ress?.error||"Unknown error occured")
       }
       
     } catch (error) {

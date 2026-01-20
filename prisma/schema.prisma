@@ -1,4 +1,3 @@
-
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
@@ -22,10 +21,10 @@ model HostelOwner {
   state             String?
   postalCode        String?
   cnnic             String   @unique
-  bankAccountHolder String? @default("")
-  bankName          String? @default("")
-  bankAccountNumber String? @default("")
-  iban              String? @default("")
+  bankAccountHolder String?  @default("")
+  bankName          String?  @default("")
+  bankAccountNumber String?  @default("")
+  iban              String?  @default("")
   registrationDate  DateTime @default(now())
   isVerified        Boolean  @default(false)
   isActive          Boolean  @default(true)
@@ -39,7 +38,7 @@ model HostelOwner {
 
 // Hostel Model
 model Hostel {
-  id                 String      @id @default(cuid())
+  id                 String   @id @default(cuid())
   name               String
   address            String
   city               String
@@ -50,69 +49,68 @@ model Hostel {
   phone              String
   email              String
   description        String?
-  gender             String?    @default("boys")
+  gender             String?  @default("boys")
   short_description  String?
   amenities          String[] // Array of amenities
-  checkInTime        String      @default("14:00")
-  checkOutTime       String      @default("11:00")
-  rating             Float       @default(0)
-  totalReviews       Int         @default(0)
+  checkInTime        String   @default("14:00")
+  checkOutTime       String   @default("11:00")
+  rating             Float    @default(0)
+  totalReviews       Int      @default(0)
   images             String[]
   rules              String[] @default(["No loud music after 10 PM", "No smoking inside the premises"])
-  pricePerMonth      Float @default(0)
+  pricePerMonth      Float    @default(0)
   mealPlan           String[] @default([])
-  guestPolicy        String? @default("Guests are allowed with prior permission from the management.")
-  cancellationPolicy String? @default("Cancellations must be made 24 hours in advance for a full refund.")
-  status             String      @default("active") // "active", "inactive", "suspended"
+  guestPolicy        String?  @default("Guests are allowed with prior permission from the management.")
+  cancellationPolicy String?  @default("Cancellations must be made 24 hours in advance for a full refund.")
+  status             String   @default("active") // "active", "inactive", "suspended"
   formFillUrl        String?
 
-
   // Relations
-  ownerId            String      @unique
-  owner              HostelOwner @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  rooms              Room[]
-  students           Student[]
-  invoices           Invoice[]
-  bookings           Booking[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  feedback Feedback[]
+  ownerId         String           @unique
+  owner           HostelOwner      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  rooms           Room[]
+  students        Student[]
+  invoices        Invoice[]
+  bookings        Booking[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  feedback        Feedback[]
   monthlyExpenses MonthlyExpense[]
 
   @@index([ownerId])
 }
 
 // Review or complaint
-model Feedback{
-  id  Int @id @default(autoincrement())
-  type String @default("review") // revire or complaint
+model Feedback {
+  id       Int     @id @default(autoincrement())
+  type     String  @default("review") // revire or complaint
   priority String? // ratings for reviews & high, urgent, medium for complaints
-  text String? @default("")
+  text     String? @default("")
 
   // static data -> Can't be changed, No directly relations
   roomDetails Json?
-  
-  hostelId    String?
-  hostel      Hostel?  @relation(fields: [hostelId], references: [id])
-  status      String? @default("pending") // for complaints only. pending/resolve/rejected/reviewed
+
+  hostelId String?
+  hostel   Hostel? @relation(fields: [hostelId], references: [id])
+  status   String? @default("pending") // for complaints only. pending/resolve/rejected/reviewed
 
   studentId String
-  student Student @relation(fields: [studentId],references: [id], onDelete: Cascade)
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 }
 
 // Room Model
 model Room {
-  id             String   @id @default(cuid())
-  roomNumber     String
-  roomType       String // "single", "double", "dorm", "triple"
-  floor          String   @default("1")
-  totalSeats     Int     @default(0)
-  pricePerMonth  Float
-  amenities      String[]
-  images         String[]
-  isActive       Boolean  @default(true)
+  id            String   @id @default(cuid())
+  roomNumber    String
+  roomType      String // "single", "double", "dorm", "triple"
+  floor         String   @default("1")
+  totalSeats    Int      @default(0)
+  pricePerMonth Float
+  amenities     String[]
+  images        String[]
+  isActive      Boolean  @default(true)
 
   // Relations
   hostelId String
@@ -129,13 +127,13 @@ model Room {
 
 // Student Model
 model Student {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   firstName   String
   lastName    String
   password    String?
-  email       String?   
+  email       String?
   phone       String?   @unique
-  cnnic       String?   
+  cnnic       String?
   dateOfBirth DateTime?
   gender      String?
   bloodGroup  String?
@@ -164,9 +162,9 @@ model Student {
   invoices Invoice[]
   payments Payment[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  feedback Feedback[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  feedback  Feedback[]
 
   @@index([hostelId])
   @@index([roomId])
@@ -245,7 +243,7 @@ model Payment {
 
   invoiceId String
   invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-  
+
   // Payment Details
   amount        Float
   paymentMethod String // "cash", "bank_transfer", "online", "cheque"
@@ -263,26 +261,20 @@ model Payment {
   @@index([invoiceId])
 }
 
-
-
 // Admin model for authentication
 model Admin {
   id            String      @id @default(cuid())
   hostelOwnerId String      @unique
   hostelOwner   HostelOwner @relation(fields: [hostelOwnerId], references: [id], onDelete: Cascade)
   email         String      @unique
-  password      String       // Will be hashed
+  password      String // Will be hashed
   role          String      @default("admin") // "admin", "super_admin"
   isActive      Boolean     @default(true)
   lastLogin     DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  plan          Plan?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
-
-
-
-
 
 // Hostel Registration and Verification Token Models
 model HostelRegistration {
@@ -290,21 +282,20 @@ model HostelRegistration {
 
   // Owner Information
   ownerName String
-  email     String 
+  email     String
   phone     String
-  cnnic     String 
+  cnnic     String
 
   // Hostel Information
   businessName String
   businessType String
-  gender       String @default("all")
+  gender       String  @default("all")
   address      String
   area         String?
   city         String
   state        String
   postalCode   String
   description  String?
-
 
   // Registration Status
   status          String  @default("pending") // "pending", "approved", "rejected"
@@ -335,16 +326,39 @@ model VerificationToken {
   createdAt DateTime @default(now())
 }
 
-
-model MonthlyExpense{
-  id  Int @id @default(autoincrement())
-  title String?
+model MonthlyExpense {
+  id          Int      @id @default(autoincrement())
+  title       String?
   description String?
-  items String[] @default([])
-  month Int @default(1)
-  year Int @default(2025)
-  hostelId String
-  hostel Hostel @relation(fields: [hostelId],references: [id],onDelete: Cascade)
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
+  items       String[] @default([])
+  month       Int      @default(1)
+  year        Int      @default(2025)
+  hostelId    String
+  hostel      Hostel   @relation(fields: [hostelId], references: [id], onDelete: Cascade)
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+}
+
+model Plan {
+  id        Int       @id @default(autoincrement())
+  adminId   String    @unique
+  admin     Admin     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  planType  PlanType? @default(STARTER)
+  status    Status?   @default(INACTIVE)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  paymentDetails Json?
+}
+
+enum PlanType {
+  STARTER
+  PRO
+  PREMIUM
+}
+
+enum Status {
+  INACTIVE
+  ACTIVE
+  PAST_DUE
+  CANCELED
 }

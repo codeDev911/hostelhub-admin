@@ -3,6 +3,7 @@ export const runtime = "nodejs";
 import { prisma } from "@/lib/prisma"
 import { createSession, verifyPassword } from "@/lib/auth"
 import { type NextRequest, NextResponse } from "next/server"
+import { PLANSID } from "@/lib/plansData";
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,7 +18,13 @@ export async function POST(req: NextRequest) {
     // Find admin by email
     const admin = await prisma.admin.findUnique({
       where: { email },
+
       include: {
+        plan:{
+          select:{
+            planType:true
+          }
+        },
         hostelOwner: {
           include:{
             hostel:{
@@ -54,10 +61,13 @@ export async function POST(req: NextRequest) {
       data: { lastLogin: new Date() },
     })
     
+    const planId = admin?.plan?.planType?.toLowerCase()
+
     // Create session
     await createSession({
         adminId: admin.id,
         email: admin.email,
+        planId:PLANSID[planId ||""],
         hostelOwnerId: admin.hostelOwnerId,
         hostelId: admin.hostelOwner.hostel?.id || null,
       })

@@ -102,15 +102,21 @@ export default function RoomManagementPage() {
           setRooms([...rooms, newRoom]);
           toast.success("Room created successfully");
           setIsAddingRoom(false);
-        }
+          setFormData({
+          roomNumber: "",
+          floor: "",
+          roomType: "",
+          totalSeats: 0, 
+          pricePerMonth: "",
+        });
+          }
+          else{
+            let res  =  await response?.json()
+            
+            toast.error(res.error)
+          }
       }
-      setFormData({
-        roomNumber: "",
-        floor: "",
-        roomType: "",
-        totalSeats: 0, 
-        pricePerMonth: "",
-      });
+      
     } catch (error) {
       toast.error("Failed to save room");
     }
@@ -194,6 +200,10 @@ export default function RoomManagementPage() {
           <h2 className="text-xl font-bold text-primary mb-4">
             {editingId ? "Edit Room" : "Add New Room"}
           </h2>
+          <form onSubmit={(e)=>{
+            e.preventDefault()
+            handleSaveRoom()
+          }}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
               <label className="block text-sm font-medium text-primary mb-2">
@@ -203,6 +213,7 @@ export default function RoomManagementPage() {
                 type="text"
                 name="roomNumber"
                 value={formData.roomNumber}
+                required
                 onChange={handleChange}
                 placeholder="e.g., 43"
                 className="w-full px-4 py-2 border border-border rounded-lg bg-background"
@@ -216,6 +227,7 @@ export default function RoomManagementPage() {
                 type="text"
                 name="floor"
                 value={formData.floor}
+                required
                 onChange={handleChange}
                 placeholder="e.g., 2"
                 className="w-full px-4 py-2 border border-border rounded-lg bg-background"
@@ -228,6 +240,7 @@ export default function RoomManagementPage() {
               <select
                 name="roomType"
                 value={formData.roomType}
+                required
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-border rounded-lg bg-background"
               >
@@ -248,6 +261,7 @@ export default function RoomManagementPage() {
                 name="totalSeats"
                 disabled
                 onChange={handleChange}
+                required
                 value={getRoomCapacity(formData.roomType)}
                 placeholder="e.g., 2"
                 className="w-full px-4 py-2 border border-border rounded-lg bg-background"
@@ -263,6 +277,7 @@ export default function RoomManagementPage() {
                 name="pricePerMonth"
                 value={formData.pricePerMonth}
                 onChange={handleChange}
+                required
                 placeholder="e.g., 8000"
                 className="w-full px-4 py-2 border border-border rounded-lg bg-background"
               />
@@ -277,13 +292,14 @@ export default function RoomManagementPage() {
               <Loader className="w-5 h-5 animate-spin"/>
             </Button>:
             <Button
-              onClick={handleSaveRoom}
+              type="submit"
               className="bg-accent text-accent-foreground hover:bg-accent/90"
             >
               Save Room
             </Button>
             }
             <Button
+            type="reset"
               onClick={() => {
                 setIsAddingRoom(false);
                 setEditingId(null);
@@ -293,6 +309,7 @@ export default function RoomManagementPage() {
               Cancel
             </Button>
           </div>
+          </form>
         </div>
       )}
 

@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { getRoomCapacity } from "@/lib/room-capicity";
+import { redis } from "@/lib/redis";
 
 function parseStartingNumber(value: any) {
   const match = value.toString().match(/^([A-Za-z]*)(\d+)$/);
@@ -49,6 +50,7 @@ export async function POST(request: NextRequest) {
       data: rooms,
     });
 
+    await redis.hincrby(`usg:${session.hostelId}`,"rm",rooms.length)
     return NextResponse.json(
       { success: true, message: "Multiple rooms created" },
       { status: 201 }

@@ -3,6 +3,8 @@ import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { generateInvoiceNumber } from "../route";
+import { centralPlanGuard } from "@/lib/planGuard";
+import { redis } from "@/lib/redis";
 
 export async function POST(request: NextRequest, { params }: any) {
   try {
@@ -31,6 +33,8 @@ export async function POST(request: NextRequest, { params }: any) {
         }
     })
 
+    
+
      
     const data :any =  []
     students.map((std)=>{
@@ -53,7 +57,8 @@ export async function POST(request: NextRequest, { params }: any) {
         data
     })
     
-
+    // increate invoice by data.length in redis for hostel usage
+    await redis.hincrby(`usg:${session.hostelId}`,"in",data?.length)
     return NextResponse.json({success:true},{status:201})
 
   } catch (err) {

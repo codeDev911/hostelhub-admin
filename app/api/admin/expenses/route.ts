@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
+import { redis } from "@/lib/redis";
 
 export async function GET(request: NextRequest) {
   try {
@@ -46,6 +47,9 @@ export async function POST(request: NextRequest) {
         },
       },
     });
+
+    // Decrement users from usage in redis
+    await redis.hincrby(`usg:${session.hostelId}`,"ex",1)
 
     return NextResponse.json(expense, { status: 200 });
   } catch (e) {

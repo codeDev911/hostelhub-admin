@@ -130,7 +130,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                <p className="text-3xl font-bold text-primary">{stat.value}</p>
+                <p className="text-3xl   tracking-tighter tabular-nums text-primary">{stat.value}</p>
               </div>
             </div>
           );
@@ -155,7 +155,7 @@ export default function AdminDashboard() {
             <h2 className="text-lg font-bold text-primary mb-2">Revenue</h2>
             <div className="space-y-6">
               <div className="flex items-center gap-4">
-                <div className="text-4xl font-bold text-accent">
+                <div className="text-4xl tracking-tighter tabular-nums text-accent">
                   Rs {stats?.totalRevenue?.toLocaleString()}
                 </div>
                 <div className="flex flex-col gap-2">

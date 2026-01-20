@@ -570,7 +570,7 @@ export default function HostelDetailsPage() {
               <p className="text-foreground text-sm">How will it looks like in Search Engines </p>
               <div className="bg-card border rounded-lg p-4  mt-3">
                 <p id="preview-url" className="text-sm text-green-700 mb-1">
-                  {"https://orhan.hostelhub.pk"}
+                  {"https://hostelhub.pk"}
                 </p>
 
                 <h3 id="preview-title" className="text-blue-700 cursor-alias text-lg hover:underline">

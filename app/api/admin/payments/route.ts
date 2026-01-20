@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getSession } from "@/lib/auth";
+import { redis } from "@/lib/redis";
 
 export async function GET(request: NextRequest) {
   try {
@@ -72,6 +73,11 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
 
   try {
+    const session = await getSession()
+    
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    } 
     const transactionId = generateTransactionId()
     const {invoiceId,studentId,...body} = await request.json()
 
@@ -108,9 +114,12 @@ export async function POST(request: NextRequest) {
       })
     })
 
+    // increate payment by 1 in redis for hostel usage
+    await redis.hincrby(`usg:${session.hostelId}`,"py",1)
+
     return NextResponse.json(payment, { status: 201 })
   } catch (error) {
-    console.error("[v0] Create payment error:", error)
+    console.error(" Create payment error:", error)
     return NextResponse.json({ error: "Failed to create payment" }, { status: 500 })
   }
 }

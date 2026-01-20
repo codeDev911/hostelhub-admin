@@ -1,16 +1,15 @@
 export const runtime = "nodejs";
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { getSession } from "@/lib/auth";
-
+import { getSession } from "@/lib/auth"; 
 export async function GET(request: NextRequest) {
   try {
 
     const session = await getSession()
-            
-      if (!session) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-      } 
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    } 
+     
     
 
     // Get stats for dashboard
@@ -65,6 +64,7 @@ export async function GET(request: NextRequest) {
     const occupiedSeats = rooms.reduce((sum, room) => sum + ((room?.students?.length||0)), 0)
     const occupancyRate = totalSeats > 0 ? Math.round((occupiedSeats / totalSeats) * 100) : 0
 
+    
     return NextResponse.json({
       totalStudents,
       availableSeats,
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
       recentBookings,
     })
   } catch (error) {
-    console.error("[v0] Dashboard error:", error)
-    return NextResponse.json({ error: "Failed to fetch dashboard data" }, { status: 500 })
+    console.error("Dashboard error:", error)
+    return NextResponse.json({ error}, { status: 500 })
   }
 }

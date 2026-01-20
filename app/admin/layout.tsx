@@ -102,9 +102,10 @@ export default function AdminLayout({
     { href: "/admin/students", label: "Students", icon: Users,tag:"",isActive:(path:any)=>path.includes("/admin/students") },
     { href: "/admin/rooms", label: "Room Management", icon: DoorOpen,tag:"",isActive:(path:any)=>path.includes("/admin/rooms") },
     { href: "/admin/bookings", label: "Bookings", icon: Calendar,tag:"",isActive:(path:any)=>path.includes("/admin/bookings") },
-    { href: "/admin/payments", label: "Payment & invoices", icon: Banknote,tag:"",isActive:(path:any)=>path.includes("/admin/payments") || path.includes("/admin/invoices") },
+    { href: "/admin/payments", label: "Payment & Invoices", icon: Banknote,tag:"",isActive:(path:any)=>path.includes("/admin/payments") || path.includes("/admin/invoices") },
     { href: "/admin/feedbacks", label: "Feedbacks", icon: Newspaper,tag:"new",isActive:(path:any)=>path.includes("/admin/feedbacks") },
     { href: "/admin/expenses", label: "Expenses", icon: ReceiptIcon,tag:"new",isActive:(path:any)=>path.includes("/admin/expenses") },
+    { href: "/admin/plan-usage", label: "Plan & Usage", icon: LayoutDashboard,tag:"new",isActive:(path:any)=>path.includes("/admin/plan-usage") },
   ]
 
   return (

@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
+import { redis } from "@/lib/redis";
 
 export async function GET(request: NextRequest) {
   try {
@@ -98,7 +99,8 @@ export async function POST(request: NextRequest) {
       include: { hostel: true },
     });
 
-    
+    // increment room usage in redis
+    await redis.hincrby(`usg:${session.hostelId}`,"rm",1)
 
     return NextResponse.json(room, { status: 201 });
   } catch (error) {

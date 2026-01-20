@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getSession } from "@/lib/auth";
+import { redis } from "@/lib/redis";
 
 export async function GET(request: NextRequest, { params }: any) {
   try {
@@ -69,7 +70,9 @@ export async function DELETE(request: NextRequest, { params }: any) {
     if (!student) {
       return NextResponse.json({ error: "Student not found" }, { status: 404 })
     }
-
+  // Decrement users from usage in redis
+    await redis.hincrby(`usg:${session.hostelId}`,"us",-1)
+  
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("[v0] Delete student error:", error)

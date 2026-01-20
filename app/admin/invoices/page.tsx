@@ -79,12 +79,8 @@ export default function InvoicesPage() {
         toast("Invoices generated success");
         location.reload();
       } else {
-        toast("Error occured pleaes try again", {
-          action: {
-            label: "try again",
-            onClick: () => handleGenerateInvoices(),
-          },
-        });
+        let ress = await res.json()
+        toast(ress.error);
       }
     } catch (error) {
       toast("Error occured pleaes try again", {

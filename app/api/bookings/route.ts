@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { sendHtmlEmail } from "@/lib/mailServer";
 import { bookingEmail } from "@/components/mails/booking";
+import { redis } from "@/lib/redis";
 
 export async function POST(request: NextRequest) {
   try {
@@ -42,7 +43,9 @@ export async function POST(request: NextRequest) {
 
  
 
-     
+     // increment booking by 1 in redis for hostel usage
+    await redis.hincrby(`usg:${body.hostelId}`,"bk",1)
+
     return NextResponse.json(booking, { status: 201 })
   } catch (error) {
     console.error("[v0] Create booking error:", error)

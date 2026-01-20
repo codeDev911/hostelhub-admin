@@ -4,5 +4,13 @@
       "runtime": "vercel-nodejs@4.0.0",
       "includeFiles": "node_modules/.prisma/client/libquery_engine-rhel-openssl-3.0.x.so.node"
     }
-  }
+  },
+  
+  "crons": [
+    {
+      "path": "/api/reset-monthly-usage",
+      "schedule": "0 0 1 * *"
+    }
+  ]
+
 }

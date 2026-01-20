@@ -31,6 +31,18 @@ export async function POST(request: NextRequest) {
         email,
         password, // In production, hash this!
         role: "admin",
+        plan:{
+          create:{
+            planType:"STARTER",
+            status:"ACTIVE",
+            paymentDetails:{
+              "py_type":"initial_payment",
+              "amount":"0.00",
+              "paid":"0.00",
+              "currency":"PKR"
+            }
+          }
+        }
       },
       include: {
         hostelOwner: true,
