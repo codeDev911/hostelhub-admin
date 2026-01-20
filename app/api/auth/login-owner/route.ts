@@ -62,7 +62,6 @@ export async function POST(req: NextRequest) {
     })
     
     const planId = admin?.plan?.planType?.toLowerCase()
-    console.log({planId});
     
     // Create session
     await createSession({
