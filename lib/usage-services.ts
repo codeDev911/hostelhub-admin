@@ -4,7 +4,7 @@ import { PLANS } from "./plansData";
 
 export async function getUsageDisplayData(hostelId: string, planId: string) {
   const rawData = await redis.hgetall(`usg:${hostelId}`);
-  const limits = PLANS[planId] || PLANS["free"];
+  const limits = PLANS[planId] || PLANS["starter"];
 
   const features = [
     { name: "Rooms", key: "rm", limit: limits?.maxRooms },
