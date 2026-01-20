@@ -20,7 +20,7 @@ export default async function PlanPage() {
                     <div className="space-y-4">
                         <h1 className="text-4xl font-bold tracking-tighter">Plan.</h1>
                         <p className="text-muted-foreground text-base max-w-md leading-relaxed">
-                            Monitoring your <span className="text-foreground underline underline-offset-4">{PLANS[session?.planId!].name}</span> environment metrics in real-time.
+                            Monitoring your <span className="text-foreground underline underline-offset-4">{PLANS[session?.planId!]?.name}</span> environment metrics in real-time.
                         </p>
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent text-[10px] font-bold uppercase tracking-widest text-accent-foreground">
                             <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
@@ -34,8 +34,8 @@ export default async function PlanPage() {
                     {/* 1. Main Resource (Wide) */}
                     <UsageCard
                         title="Live Capacity"
-                        used={usageData[0].used}
-                        limit={usageData[0].limit}
+                        used={usageData[0]?.used}
+                        limit={usageData[0]?.limit}
                         description="Active room occupancy across all hostel wings."
                         isWide={true}
                     />
@@ -43,16 +43,16 @@ export default async function PlanPage() {
                     {/* 2. Secondary Resource (Single) */}
                     <UsageCard
                         title="Revenue flow"
-                        used={usageData[3].used} // py (payments)
-                        limit={usageData[3].limit}
+                        used={usageData[3]?.used} // py (payments)
+                        limit={usageData[3]?.limit}
                         description="Invoiced vs processed payments."
                     />
 
                     {/* 3. New Row - More Metrics */}
                     <UsageCard
                         title="Student Base"
-                        used={usageData[1].used} // us (users)
-                        limit={usageData[1].limit}
+                        used={usageData[1]?.used} // us (users)
+                        limit={usageData[1]?.limit}
                         description="Verified student profiles in the system."
                     />
 
@@ -72,7 +72,7 @@ export default async function PlanPage() {
                 <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
                     {usageData.slice(3).map((item) => (
                         <div
-                            key={item.name}
+                            key={item?.name}
                             className="group relative bg-card backdrop-blur-sm p-6 rounded-2xl overflow-hidden transition-all duration-500 hover:bg-card hover:ring-1 hover:ring-white/10"
                         >
                             {/* Subtle Hover Gradient Mask */}
@@ -81,9 +81,9 @@ export default async function PlanPage() {
                             <div className="relative z-10">
                                 <div className="flex justify-between items-center mb-10">
                                     <div className="flex items-center gap-2">
-                                        <div className={`w-1.5 h-1.5 rounded-full ${item.percentage > 90 ? 'bg-red-500 animate-pulse' : 'bg-primary/40'}`} />
+                                        <div className={`w-1.5 h-1.5 rounded-full ${item?.percentage > 90 ? 'bg-red-500 animate-pulse' : 'bg-primary/40'}`} />
                                         <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.25em]">
-                                            {item.name}
+                                            {item?.name}
                                         </span>
                                     </div>
                                     <span className="text-[9px] font-medium text-muted-foreground/0 group-hover:text-muted-foreground/100 transition-all transform translate-x-2 group-hover:translate-x-0">
@@ -94,29 +94,29 @@ export default async function PlanPage() {
                                 <div className="flex flex-col gap-1">
                                     <div className="flex items-baseline gap-2">
                                         <span className="text-4xl font-medium tracking-tighter tabular-nums">
-                                            {item.used}
+                                            {item?.used}
                                         </span>
                                         <span className="text-muted-foreground/70 text-lg font-light tracking-tighter">
-                                            / {item.limit}
+                                            / {item?.limit}
                                         </span>
                                     </div>
 
                                     <div className="flex justify-between items-center mt-4">
                                         <span className="text-xs text-muted-foreground/60 font-medium tracking-widest uppercase">
-                                            {item.percentage}% Load
+                                            {item?.percentage}% Load
                                         </span>
                                     </div>
 
                                     {/* New UI: Segmented Micro-Bar */}
                                     <div className="mt-3 flex gap-1 h-[3px] w-full">
-                                        {[...Array(12)].map((_, i) => {
+                                        {[...Array(12)]?.map((_, i) => {
                                             const segmentValue = (i + 1) * (100 / 12);
-                                            const isActive = item.percentage >= segmentValue;
+                                            const isActive = item?.percentage >= segmentValue;
                                             return (
                                                 <div
                                                     key={i}
                                                     className={`flex-1 rounded-full transition-all duration-700 delay-[${i * 50}ms] ${isActive
-                                                        ? (item.percentage > 90 ? 'bg-red-500' : 'bg-foreground')
+                                                        ? (item?.percentage > 90 ? 'bg-red-500' : 'bg-foreground')
                                                         : 'bg-accent/40'
                                                         }`}
                                                 />

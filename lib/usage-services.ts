@@ -4,6 +4,9 @@ import { PLANS } from "./plansData";
 
 export async function getUsageDisplayData(hostelId: string, planId: string) {
   const rawData = await redis.hgetall(`usg:${hostelId}`);
+  console.log({rawData});
+  console.log({planId});
+  
   const limits = PLANS[planId] || PLANS["starter"];
 
   const features = [
@@ -18,10 +21,10 @@ export async function getUsageDisplayData(hostelId: string, planId: string) {
   return features.map(f => {
     const used = parseInt(rawData[f.key] || "0");
     return {
-      name: f.name,
+      name: f?.name,
       used,
-      limit: f.limit,
-      percentage: Math.min(Math.round((used / f.limit) * 100), 100),
+      limit: f?.limit,
+      percentage: Math.min(Math.round((used / f?.limit) * 100), 100),
     };
   });
 }

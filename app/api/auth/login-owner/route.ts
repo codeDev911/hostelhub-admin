@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma"
 import { createSession, verifyPassword } from "@/lib/auth"
 import { type NextRequest, NextResponse } from "next/server"
 import { PLANSID } from "@/lib/plansData";
-import { initializeHostelUsage } from "@/lib/redis";
 
 export async function POST(req: NextRequest) {
   try {
@@ -64,8 +63,6 @@ export async function POST(req: NextRequest) {
     
     const planId = admin?.plan?.planType?.toLowerCase()
 
-    // initialize hostel for now
-    await  initializeHostelUsage(admin.hostelOwner.hostel?.id || "")
 
     // Create session
     await createSession({
