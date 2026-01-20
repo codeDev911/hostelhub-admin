@@ -1,7 +1,6 @@
 import { getUsageDisplayData } from "@/lib/usage-services";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import UsageVisuals from "@/components/UsageCharts";
 import UsageCard from "@/components/UsageCharts";
 import { PLANS } from "@/lib/plansData";
 

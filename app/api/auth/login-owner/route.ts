@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
     await createSession({
         adminId: admin.id,
         email: admin.email,
-        planId:PLANSID[planId ||""],
+        planId:PLANSID[planId?.toLowerCase() ||""],
         hostelOwnerId: admin.hostelOwnerId,
         hostelId: admin.hostelOwner.hostel?.id || null,
       })

@@ -7,12 +7,12 @@ export async function getUsageDisplayData(hostelId: string, planId: string) {
   const limits = PLANS[planId] || PLANS["free"];
 
   const features = [
-    { name: "Rooms", key: "rm", limit: limits.maxRooms },
-    { name: "Users", key: "us", limit: limits.maxUsers },
-    { name: "Invoices", key: "in", limit: limits.maxInvoices },
-    { name: "Payments", key: "py", limit: limits.maxPayments },
-    { name: "Expenses", key: "ex", limit: limits.maxExpenses },
-    { name: "Bookings", key: "bk", limit: limits.maxBookings },
+    { name: "Rooms", key: "rm", limit: limits?.maxRooms },
+    { name: "Users", key: "us", limit: limits?.maxUsers },
+    { name: "Invoices", key: "in", limit: limits?.maxInvoices },
+    { name: "Payments", key: "py", limit: limits?.maxPayments },
+    { name: "Expenses", key: "ex", limit: limits?.maxExpenses },
+    { name: "Bookings", key: "bk", limit: limits?.maxBookings },
   ];
 
   return features.map(f => {
