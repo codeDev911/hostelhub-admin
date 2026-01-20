@@ -9,6 +9,8 @@ export default async function PlanPage() {
     if (!session) {
         return redirect("/admin")
     }
+    console.log(session);
+    
     const usageData = await getUsageDisplayData(session.hostelId!, session.planId!);
 
     return (
