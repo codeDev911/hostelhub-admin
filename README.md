@@ -23,7 +23,7 @@
 ## Added cache (revalidate) to some routes 30/12/2025  
 ## Added reset password 3/1/2026 
 ### Killed some bugs
-### make some changes in student login/registrations   
+### make some changes in student login/registrations    
 ### some bugs with student phone  
 ### fixs some adding rooms issues
 ### Added plan guard 19/1/2026   
