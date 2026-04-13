@@ -45,7 +45,7 @@ export const PLANS : any = {
     maxInvoices:900,
     maxPayments:900,
     maxImages:10,
-    maxExpenses:20,
+    maxExpenses:1000,
     maxBookings:1000,
     aiFeature: true,
     analyticsLevel: 3,
