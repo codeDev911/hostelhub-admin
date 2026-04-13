@@ -27,3 +27,4 @@
 ### some bugs with student phone  
 ### fixs some adding rooms issues
 ### Added plan guard 19/1/2026   
+### set maxExpenses = 1000 for premium 
