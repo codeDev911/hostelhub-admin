@@ -40,7 +40,11 @@ export async function GET(request: NextRequest) {
           ],
         },
         include: {
-          hostel: true,
+          hostel: {
+            select:{
+              id:true
+            }
+          },
           students: {
             select: {
               id: true,

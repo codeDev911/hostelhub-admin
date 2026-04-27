@@ -38,7 +38,7 @@ export default function RoomFilter({ rooms = [], onFilter }:any) {
     roomType: "",
     floor: "",
     availableSeats: "",
-    priceRange: [0, 50000],
+    priceRange: [0, 100000],
   });
 
   // derived filteredRooms (kept for local rendering/use) — will update whenever rooms or filters change
@@ -72,13 +72,13 @@ export default function RoomFilter({ rooms = [], onFilter }:any) {
 const removeFilter = (key:any) => {
   setFilters((prev:any) => ({
     ...prev,
-    [key]: key === "priceRange" ? [0, 50000] : ""
+    [key]: key === "priceRange" ? [0, 100000] : ""
   }));
 };
 
 const ActiveFilters = ({ filters, removeFilter }:any) => {
   const active = Object.entries(filters).filter(([_, v]) => {
-    if (Array.isArray(v)) return v[0] !== 0 || v[1] !== 50000;
+    if (Array.isArray(v)) return v[0] !== 0 || v[1] !== 100000;
     return v !== "";
   });
 
@@ -175,8 +175,8 @@ const ActiveFilters = ({ filters, removeFilter }:any) => {
         <div className="space-y-2 ">
           <Label className="">Price Range</Label>
           <Slider
-            defaultValue={[0, 50000]}
-            max={50000}
+            defaultValue={[0, 100000]}
+            max={100000}
             step={1000}
             value={filters.priceRange}
             onValueChange={(v) => handleChange("priceRange", v)}

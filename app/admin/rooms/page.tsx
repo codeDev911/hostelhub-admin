@@ -10,6 +10,7 @@ import AddMultiplyRoomModal from "@/components/AddMultiplyRoomModal";
 import { getRoomCapacity } from "@/lib/room-capicity";
 import RoomsSearch from "@/components/RoomsSearch";
 import { Spinner } from "@/components/ui/spinner";
+import RoomStats from "@/components/RoomsStats";
 
 interface Room {
   id: number;
@@ -43,6 +44,8 @@ export default function RoomManagementPage() {
         const data = await response.json();
         setInitialRooms(data);
         setRooms(data)
+        console.log(data);
+        
       } catch (error) {
         console.error("[v0] Failed to fetch rooms:", error);
         toast.error("Failed to load rooms");
@@ -192,11 +195,16 @@ export default function RoomManagementPage() {
         </div>
       </div>
 
+      <RoomStats rooms={rooms} />
+<br />
       <RoomsSearch  rooms={initialRooms} onFilter={setRooms}/>
 
       {/* Add/Edit Room Form */}
       {(isAddingRoom || editingId) && (
-        <div className="p-6 mb-8 bg-card rounded-lg">
+        <div className="fixed">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" onClick={() => {setIsAddingRoom(false); setEditingId(null)}}></div>
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-card p-2 rounded-lg z-50 w-full max-w-md">
+          <div className="p-6 mb-8 bg-card rounded-lg">
           <h2 className="text-xl font-bold text-primary mb-4">
             {editingId ? "Edit Room" : "Add New Room"}
           </h2>
@@ -311,90 +319,92 @@ export default function RoomManagementPage() {
           </div>
           </form>
         </div>
+          </div>
+        </div>
       )}
 
       {/* Rooms List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {rooms &&
-          rooms?.map((room: any) => (
-            <div key={room.id} className="p-4 bg-card rounded-lg hover:shadow-xl transition-all">
-              <div className="flex justify-between items-start">
-                <div>
-                <h3 className="font-bold text-primary">
-                    Room {room.roomNumber}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  Floor {room.floor}
-                </p>
-                </div>
-                <div className="flex gap-1">
-                   <button
-                    className="p-2 hover:bg-secondary rounded-lg text-primary"
+     <div className="w-full overflow-x-auto bg-card rounded-lg ">
+  <table className="w-full text-sm text-left">
+    <thead className="border-b  border-border bg-secondary/70 text-muted-foreground">
+      <tr>
+        <th className="p-4 font-medium">Room#</th>
+        <th className="p-4 font-medium">Floor</th>
+        <th className="p-4 font-medium">Type</th>
+        <th className="p-4 font-medium">Students</th>
+        <th className="p-4 font-medium">Available</th>
+        <th className="p-4 font-medium">Price</th>
+        <th className="p-4 font-medium text-right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rooms &&
+        rooms?.map((room: any) => (
+          <tr 
+            key={room.id} 
+            className="border-b border-border last:border-0 hover:bg-muted/30 transition-all"
+          >
+            <td className="px-4 py-2">
+              <span className="font-bold text-primary">{room.roomNumber}</span>
+            </td>
+            <td className="px-4 py-2 text-muted-foreground">
+              Floor {room.floor}
+            </td>
+            <td className="px-4 py-2 font-medium text-primary">
+              {room.roomType}
+            </td>
+            <td className="px-4 py-2 font-medium text-primary">
+              {room.students?.length||0}
+            </td>
+            <td className="px-4 py-2">
+              <span
+                className={`font-medium ${
+                  room.totalSeats - (room?.students?.length || 0) > 0
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
+                {room.totalSeats - (room?.students?.length || 0)}
+              </span>
+            </td>
+            <td className="px-4 py-2 font-bold text-accent">
+              Rs {room.pricePerMonth}
+            </td>
+            <td className="px-4 py-2">
+              <div className="flex justify-end gap-1">
+                <button className="p-2 hover:bg-secondary rounded-lg text-primary">
+                  <Link
+                    href={`/admin/rooms/${room.id}`}
+                    className="flex items-center justify-center"
                   >
-                    <Link
-                      href={`/admin/rooms/${room.id}`}
-                      className="space-y-1"
-                    >
-                      <EyeIcon className="w-4 h-4" />
-                    </Link>
-                  </button>
-                  <button
-                    onClick={() => handleEditRoom(room)}
-                    className="p-2 hover:bg-secondary rounded-lg text-primary"
-                  >
-                    <Edit2 className="w-4 h-4" />
-                  </button>
-                  {deleteRoomLoading?
-                  <button 
-                    className="p-2 hover:bg-destructive/10 rounded-lg text-destructive"
-                  >
+                    <EyeIcon className="w-4 h-4" />
+                  </Link>
+                </button>
+                <button
+                  onClick={() => handleEditRoom(room)}
+                  className="p-2 hover:bg-secondary rounded-lg text-primary"
+                >
+                  <Edit2 className="w-4 h-4" />
+                </button>
+                {deleteRoomLoading ? (
+                  <button className="p-2 hover:bg-destructive/10 rounded-lg text-destructive">
                     <Spinner className="w-4 h-4" />
-                  </button>:
+                  </button>
+                ) : (
                   <button
                     onClick={() => handleDeleteRoom(room.id)}
                     className="p-2 hover:bg-destructive/10 rounded-lg text-destructive"
                   >
                     <Trash2 className="w-4 h-4" />
-                  </button>}
-                 
-                </div>
+                  </button>
+                )}
               </div>
-
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Type</span>
-                  <span className="font-medium text-primary">
-                    {room.roomType}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Capacity</span>
-                  <span className="font-medium text-primary">
-                    {room.totalSeats} seats
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Available</span>
-                  <span
-                    className={`font-medium ${
-                      room.totalSeats - (room?.students?.length || 0) > 0
-                        ? "text-green-600"
-                        : "text-red-600"
-                    }`}
-                  >
-                    {room?.totalSeats - (room?.students?.length || 0)}
-                  </span>
-                </div>
-                <div className="flex justify-between pt-2 border-t border-border">
-                  <span className="text-muted-foreground">Price</span>
-                  <span className="font-bold text-accent">
-                    Rs {room.pricePerMonth}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-      </div>
+            </td>
+          </tr>
+        ))}
+    </tbody>
+  </table>
+</div>
     </div>
   );
 }
